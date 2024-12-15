@@ -5,7 +5,7 @@
     <div class="loginForm">
         <p>Welcome Back!👋</p>
         <h4>Login to your account</h4>
-        <form (ngSubmit)="handleLogin()" [formGroup]="loginForm" action="">
+        <form [formGroup]="loginForm" action="">
             <input 
             type="email"
              name="email"
@@ -19,7 +19,7 @@
               formControlName="password" 
               placeholder="Password">            
             <span role="button">Forgot Password?</span>
-            <button type="submit" class="primaryButton" [routerLink]="'/home'">Login</button>
+            <button type="button" class="primaryButton" (click)="handleLogin()" [routerLink]="'/home'" >Login</button>
         </form>
     </div>
 </div>

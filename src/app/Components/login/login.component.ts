@@ -22,7 +22,7 @@ export class LoginComponent {
   });
 
   handleLogin():void{
-    console.log(this.loginForm.value)
+    console.log(this.loginForm)
   }
 
 }
