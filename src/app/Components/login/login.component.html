@@ -1,0 +1,25 @@
+<div class="loginContainer">
+    <div class="logo">
+        <img src="../../../assets/civix_ 1.png"  alt="">
+    </div>
+    <div class="loginForm">
+        <p>Welcome Back!👋</p>
+        <h4>Login to your account</h4>
+        <form (ngSubmit)="handleLogin()" [formGroup]="loginForm" action="">
+            <input 
+            type="email"
+             name="email"
+              id="email"
+              formControlName="email" 
+              placeholder="Email">
+            <input 
+            type="password"
+             name="password"
+              id="password"
+              formControlName="password" 
+              placeholder="Password">            
+            <span role="button">Forgot Password?</span>
+            <button type="submit" class="primaryButton" routerLink="/home">Login</button>
+        </form>
+    </div>
+</div>
