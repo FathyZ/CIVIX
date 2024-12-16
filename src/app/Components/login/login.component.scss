@@ -22,6 +22,8 @@
     border-radius: 10px;
     width: 400px;
     padding: 20px 0px;
+
+    
     p{
         margin-top: 15px;
         color: #666;
@@ -81,5 +83,43 @@
     }
     }
 }
+.dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .dialog-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    i{
+        color: $main-Color;
+        font-size: 50px;
+    }
+  }
 
-
+  .formInput{
+    width: 100%;
+  }
+  .passInput{
+    width: 100%;
+    position: relative;
+  }
+  .eye-icon{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px !important;
+    color: #555;
+  }

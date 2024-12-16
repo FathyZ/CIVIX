@@ -6,20 +6,38 @@
         <p>Welcome Back!👋</p>
         <h4>Login to your account</h4>
         <form [formGroup]="loginForm" action="">
-            <input 
-            type="email"
-             name="email"
-              id="email"
-              formControlName="email" 
-              placeholder="Email">
-            <input 
-            type="password"
-             name="password"
-              id="password"
-              formControlName="password" 
-              placeholder="Password">            
-            <span role="button">Forgot Password?</span>
+            <div class="formInput">
+                <input 
+                type="email"
+                name="email"
+                id="email"
+                formControlName="email" 
+                placeholder="Email">
+            </div>
+            <div class="passInput">
+                <input 
+                [type]="showPassword ? 'text' : 'password'" 
+                name="password"
+                id="password"
+                formControlName="password" 
+                placeholder="Password">
+                <span role="button" class="eye-icon" (click)="togglePasswordVisibility()">
+                    <i [class]="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'"></i>
+                  </span >
+            </div>
+               
+            <span role="button" (click)="openDialog()">Forgot Password?</span>
             <button type="button" class="primaryButton" (click)="handleLogin()" [routerLink]="'/home'" >Login</button>
+            <div *ngIf="isDialogOpen" class="dialog">
+                <div class="dialog-content">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  <p>If you've forgotten your password,<br> please contact your local IT person for assistance.</p>
+                  
+                  <button (click)="closeDialog()" class="close-dialog">
+                    <a class="text-decoration-none text-white" href="mailto:IT@gmail.com" target="_blank">Contact IT</a>
+                  </button>
+                </div>
+              </div>
         </form>
     </div>
 </div>
