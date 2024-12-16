@@ -16,7 +16,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color:#000;
+    background-color:#fff;
     margin: 10px;
     padding: 20px;
     border-radius: 10px;
@@ -119,4 +119,13 @@
     cursor: pointer;
     font-size: 18px !important;
     color: #555;
+  }
+
+
+  #loginBtn {
+    background-color: $main-Color;
+    transition: all ease-in-out 0.25s;
+    &:hover{
+        background-color: $secondary-Color;
+    }
   }

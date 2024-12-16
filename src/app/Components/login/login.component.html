@@ -27,7 +27,7 @@
             </div>
                
             <span role="button" (click)="openDialog()">Forgot Password?</span>
-            <button type="button" class="primaryButton" (click)="handleLogin()" [routerLink]="'/home'" >Login</button>
+            <button id="loginBtn" type="button" class="primaryButton" (click)="handleLogin()" [routerLink]="'/home'" >Login</button>
             <div *ngIf="isDialogOpen" class="dialog">
                 <div class="dialog-content">
                   <i class="fa-solid fa-triangle-exclamation"></i>
