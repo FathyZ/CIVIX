@@ -14,6 +14,14 @@
                 formControlName="email" 
                 placeholder="Email">
             </div>
+
+            <div *ngIf="loginForm.get('email')?.errors && loginForm.get('email')?.touched" class="ErrorMsg">
+              
+              <p *ngIf="loginForm.get('email')?.getError('required')">Email is required</p>
+              <p *ngIf="loginForm.get('email')?.getError('email')">Email Not Valid</p>
+              
+            </div>
+
             <div class="passInput">
                 <input 
                 [type]="showPassword ? 'text' : 'password'" 
@@ -25,9 +33,16 @@
                     <i [class]="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'"></i>
                   </span >
             </div>
+
+            <div *ngIf="loginForm.get('password')?.errors && loginForm.get('password')?.touched" class="ErrorMsg">
+              
+              <p *ngIf="loginForm.get('password')?.getError('required')">Password is required</p>
+
+              
+            </div>
                
             <span role="button" (click)="openDialog()">Forgot Password?</span>
-            <button id="loginBtn" type="button" class="primaryButton" (click)="handleLogin()" [routerLink]="'/home'" >Login</button>
+            <button id="loginBtn" type="button" class="primaryButton" (click)="handleLogin()">Login</button>
             <div *ngIf="isDialogOpen" class="dialog">
                 <div class="dialog-content">
                   <i class="fa-solid fa-triangle-exclamation"></i>
@@ -38,6 +53,7 @@
                   </button>
                 </div>
               </div>
+              <p id="errorMsg" class="alert alert-danger">{{errorMsg}}</p>
         </form>
     </div>
 </div>
