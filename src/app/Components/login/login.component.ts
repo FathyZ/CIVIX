@@ -44,8 +44,14 @@ export class LoginComponent {
           }
         },
         error:(err)=>{
-          this.errorMsg=err.error.title
+        if (err.status == '401') {
+          this.errorMsg = 'Invalid Email or Password' ;
         }
+        else if (err.status == '400') {
+          this.errorMsg = 'Email Can Not Be Empty';
+        } else {
+          this.errorMsg = `Unexpected status: ${err.status}`;
+        }        }
       })
     }
   }

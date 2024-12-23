@@ -53,7 +53,8 @@
                   </button>
                 </div>
               </div>
-              <p id="errorMsg" class="alert alert-danger">{{errorMsg}}</p>
+              <div class="errorMsg" *ngIf="errorMsg"><i class="fa-solid fa-triangle-exclamation d-inline"></i><p id="errorMsg" class=" d-inline ms-1">{{ errorMsg}}</p></div>
+              
         </form>
     </div>
 </div>
