@@ -10,6 +10,6 @@ import { LoginComponent } from "./Components/login/login.component";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent  {
   title = 'CIVIX';
 }

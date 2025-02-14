@@ -1,0 +1,75 @@
+@import '../../../../../styles.scss';
+.card-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.card{
+    border-radius: 10px;
+    transition: 0.3s;
+    width: 21%;
+    background-color: #85D2FF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    border: none;
+    p{
+        margin: 0px;
+    }
+}
+.card-heading{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 10px 10px 0px 15px;
+    i{
+        border-radius: 10%;
+        padding: 10px;
+        border: 1px solid #E0DCFE;
+        background: #E0DCFE;
+        color: $secondary-Color;
+    }
+    
+}
+.card-num{
+    font-size: 3rem;
+    font-weight: 600;
+    padding-left: 15px;
+    
+}
+.card-footing{
+    padding-left: 15px;
+    padding-bottom: 15px;
+    font-size: 0.8rem;
+    span{
+        font-size: 1.2rem;
+        font-weight: 600;   
+    }
+}
+.bg-mc{
+    background-color: $secondary-Color;
+    p{
+        color: white;
+    }
+    i{
+        color: $secondary-Color;
+    }
+}
+.table-map-container{
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    margin-top: 20px;
+}
+.Emp-Table{
+    width: 50%;
+}
+#map{
+    width: 50%;
+    height: 400px;
+  
+}

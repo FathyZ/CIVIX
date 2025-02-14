@@ -1,5 +1,13 @@
 @import '../../../../styles.scss';
-
+a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+i{
+    margin-right: 10px;
+}
 .sidebar{
     
     top: 0;
@@ -11,8 +19,6 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: start;
-    padding-left: 40px;
-
     li{
         list-style: none;
         margin: 10px 0;
@@ -22,14 +28,15 @@
         a{
             text-decoration: none;
             color: white;
-            font-size: 1rem;
+            
+            padding: 0px 30px;
 
         }
     }
     
 }
 .logo{
-    height: 100px;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,6 +44,7 @@
     color: white;
     font-size: 1.5rem;
     font-weight: bold;
+    text-align: center;
 }
 .nav-links{
     width: 100%;
@@ -46,5 +54,7 @@
     align-items: start;
 }
 .active{
-    font-weight: bold;
+    font-weight: bold; 
+    
+    
 }
