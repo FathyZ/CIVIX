@@ -1,0 +1,128 @@
+@import '../../../../styles.scss';
+
+.navbar-content{
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    color: black;
+}
+.nav-left{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    p{
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-right: 1rem;
+    }
+    .nav-search{
+        margin-left: 1rem;
+    }
+}
+.nav-right{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    a{
+        text-decoration: none;
+        color: black;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        padding: 0.5rem;
+        border: none;
+        transition: all 0.3s ease;
+
+        &:hover{
+            color:white;
+            background-color: $main-Color;
+        }
+    }
+
+    i{
+        font-size: 1.2rem;
+    }
+}
+
+//start of searchbar styles
+.form button {
+    border: none;
+    background: none;
+    color: #8b8ba7;
+  }
+  .form {
+    --timing: 0.3s;
+    --width-of-input: 200px;
+    --height-of-input: 40px;
+    --border-height: 2px;
+    --input-bg: #fff;
+    --border-color: $main-Color;
+    --border-radius: 30px;
+    --after-border-radius: 1px;
+    position: relative;
+    width: var(--width-of-input);
+    height: var(--height-of-input);
+    display: flex;
+    align-items: center;
+    padding-inline: 0.8em;
+    border-radius: var(--border-radius);
+    transition: border-radius 0.5s ease;
+    background: var(--input-bg,#fff);
+    border: 0.5px solid #8b8ba7;
+  }
+  .input {
+    font-size: 0.9rem;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    padding-inline: 0.5em;
+    padding-block: 0.7em;
+    border: none;
+    color: black;
+  }
+  .form:before {
+    content: "";
+    position: absolute;
+    background:$main-Color;
+    transform: scaleX(0);
+    transform-origin: center;
+    width: 100%;
+    height: var(--border-height);
+    left: 0;
+    bottom: 0;
+    border-radius: 1px;
+    transition: transform var(--timing) ease;
+  }
+  .form:focus-within {
+    border-radius: var(--after-border-radius);
+    border: none;
+  }
+  
+  input:focus {
+    outline: none;
+  }
+    .form:focus-within:before {
+    transform: scale(1);
+  }
+  .reset {
+    border: none;
+    background: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  input:not(:placeholder-shown) ~ .reset {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .form svg {
+    width: 17px;
+  }
+
+//end of searchbar styles
