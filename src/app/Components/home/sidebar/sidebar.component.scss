@@ -24,6 +24,7 @@ i{
         margin: 10px 0;
         &:hover{
             transform: scale(1.1);
+            transition: 0.2s;
         }
         a{
             text-decoration: none;
@@ -36,12 +37,15 @@ i{
     
 }
 .logo{
-    width: 100%;
+    img{
+     width: 100%;   
+    }
+    align-self: center;
+    width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: $main-Color;
-    color: white;
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
@@ -54,7 +58,9 @@ i{
     align-items: start;
 }
 .active{
-    font-weight: bold; 
+    font-weight: bold;
+    color: $secondary-Color !important;
     
-    
+
 }
+

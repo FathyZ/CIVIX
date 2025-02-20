@@ -13,7 +13,7 @@ export class AuthService {
   adminData:any;
 
   loginForm(adminData:Object):Observable<any>{
-    return this._HttpClient.post(`https://civixappapi20241207014740.azurewebsites.net/api/Auth/login`,adminData)
+    return this._HttpClient.post(`https://civix.runasp.net/api/Auth/login`,adminData)
   }
 
 saveAdmin(){

@@ -14,3 +14,42 @@ body{
     font-family: "Lexend", sans-serif;
 }
 
+/* Customize the popup container */
+.leaflet-popup {
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Customize the popup content wrapper */
+  .leaflet-popup-content-wrapper {
+    background: #2c3e50; /* Dark background */
+    color: #ecf0f1; /* Light text */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3); /* Shadow */
+  }
+  
+  /* Customize the popup content */
+  .leaflet-popup-content {
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 2px;
+    text-align: center;
+  }
+  
+  /* Customize the popup tip (arrow) */
+  .leaflet-popup-tip {
+    background: #2c3e50; /* Match the wrapper background */
+    box-shadow: none; /* Remove default shadow */
+  }
+  
+  /* Customize the close button */
+  .leaflet-popup-close-button {
+    color: #ecf0f1; /* Light text */
+    font-size: 20px;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    border-radius: 50%; /* Circular button */
+  }
+  
+  .leaflet-popup-close-button:hover {
+    background: rgba(0, 0, 0, 0.5); /* Darker on hover */
+  }
