@@ -1,11 +1,13 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-// import * as L from 'leaflet';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { FormsModule, NgModel} from '@angular/forms';
+import { TagModule } from 'primeng/tag'; 
 @Component({
   selector: 'app-overview',
   standalone: true,
-  imports: [TableModule ,CommonModule ],
+  imports: [TableModule ,CommonModule,MultiSelectModule,FormsModule ,TagModule],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.scss'
 })
@@ -39,9 +41,19 @@ export class OverviewComponent implements AfterViewInit{
       popupAnchor: [1, -34], // Point where the popup opens
       shadowSize: [41, 41]   // Size of shadow
     });
-    var marker = this.L.marker([30.0771130,31.6568641],
+    var marker1 = this.L.marker([30.0771130,31.6568641],
        {icon:customIcon})
        .addTo(this.map);
-marker.bindPopup("Fathy Lives Here!!").openPopup();
+marker1.bindPopup("Fathy Lives Here!!").openPopup();
+
+var marker2 = this.L.marker([29.99077365957645, 31.431209539739736],
+  {icon:customIcon})
+  .addTo(this.map);
+marker2.bindPopup("2").openPopup();
+
+var marker3 = this.L.marker([30.016173201206136, 31.42984610411218],
+  {icon:customIcon})
+  .addTo(this.map);
+marker3.bindPopup("3").openPopup();
   }
 }
