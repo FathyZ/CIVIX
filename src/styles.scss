@@ -53,3 +53,21 @@ body{
   .leaflet-popup-close-button:hover {
     background: rgba(0, 0, 0, 0.5); /* Darker on hover */
   }
+.p-datatable-tbody > tr > td {
+    background-color: white;
+    color: black;
+  }
+
+  .p-datatable-thead > tr > th {
+    background: $secondary-Color !important;
+    color: white;
+    font-weight: 1000;
+    text-align: center !important;
+  }
+
+  .p-datatable-tbody > tr > td {
+    border-width: 0 0  2px 0 !important;
+    border-color: $secondary-Color !important;
+    text-align: center !important;
+  }
+  

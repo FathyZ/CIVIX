@@ -8,38 +8,36 @@
         </div>
 
         <div class="col-md-6 barChartDiv">
-            <h4>User Reviews</h4>
-            <p>Total User Reviews: 5,623 </p>
+            <h4>Priority Distribution</h4>
+            <p>Total Issues : 5,623 </p>
             <p-chart type="bar" [data]="barChartData" [options]="barChartOptions"></p-chart>
         </div>
     </div>
-    <div class="row">
+    <div class="row my-4">
         <div class="col-md-12">
             <h4>Most Reported Issues</h4>
-            <p-table [value]="reportedIssues" responsiveLayout="scroll">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Issue ID</th>
-                  <th>Issue Name</th>
-                  <th>Priority</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-issue>
-                <tr>
-                  <td>{{ issue.id }}</td>
-                  <td>{{ issue.name }}</td>
-                  <td>
-                    <span [ngClass]="{
-                      'high-priority': issue.priority === 'High',
-                      'medium-priority': issue.priority === 'Medium',
-                      'low-priority': issue.priority === 'Low'
-                    }">
-                      {{ issue.priority }}
-                    </span>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
+
+            <p-table [value]="issues" stripedRows>
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Count</th>
+                    <th>Issue Name</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-issue>
+                  <tr>
+                    <td>{{ issue.issueCount }}</td>
+                    <td>{{ issue.name }}</td>
+                    <td>{{ issue.priority }}</td>
+                    <td>{{ issue.status }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+              
+              
+
           </div>
           
     </div>
