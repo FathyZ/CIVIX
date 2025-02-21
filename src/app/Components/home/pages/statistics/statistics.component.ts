@@ -28,7 +28,7 @@ export class StatisticsComponent {
         borderColor: [
           'rgba(255, 99, 132, 1)',
           'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
+          'rgba(153, 102, 255, 1)',
         ],
         borderWidth: 3
       }
@@ -41,23 +41,31 @@ export class StatisticsComponent {
     plugins: {
       legend: {
         labels: {
-          color: 'white' 
+          padding:20,
+          color: 'white' ,
+          font: {
+            weight: 'bold', // Make text bold
+            size: 13, // Adjust font size if needed
+          },
         },
         position: 'bottom' 
       }
-    }
+
+      
+    },
+
   };
 
   // BarChart
 
 
   barChartData = {
-    labels: ['Satisfied', 'Neutral', 'Dissatisfied'], // Categories
+    labels: ['High', 'Mid', 'Low'], // Categories
     datasets: [
       {
         label: 'User Reviews',
         data: [120, 50, 30], // Number of votes (change these values dynamically)
-        backgroundColor: ['#28a745', '#ffc107', '#dc3545'], // Green, Yellow, Red
+        backgroundColor: ['#dc3545', '#ffc107', '#28a745'], // Green, Yellow, Red
         borderRadius: 80, // Rounded edges for bars
       }
     ]
@@ -95,13 +103,12 @@ export class StatisticsComponent {
     }
   };
   
-  // TABLE FOR MOST REPORTED ISSUES
 
-  reportedIssues = [
-    { id: 101, name: 'Pothole on Main St', priority: 'High'},
-    { id: 102, name: 'Streetlight Outage', priority: 'Medium'},
-    { id: 103, name: 'Garbage Overflow', priority: 'Low',},
-    { id: 104, name: 'Broken Traffic Light', priority: 'High'}
+
+  issues = [
+    { issueCount: 26, name: 'Pothole', priority: 'High', status: 'Open' },
+    { issueCount: 13, name: 'Streetlight Out', priority: 'Medium', status: 'In Progress' },
+    { issueCount: 41, name: 'Garbage Collection', priority: 'Low', status: 'Resolved' }
   ];
 
 }
