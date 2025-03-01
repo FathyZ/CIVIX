@@ -7,6 +7,7 @@ import { OverviewComponent } from './Components/home/pages/overview/overview.com
 import { StatisticsComponent } from './Components/home/pages/statistics/statistics.component';
 import { ActiveIssuesComponent } from './Components/home/pages/active-issues/active-issues.component';
 import { FixingTeamsComponent } from './Components/home/pages/fixing-teams/fixing-teams.component';
+import { SingleIssueComponent } from './Components/single-issue/single-issue.component';
 
 export const routes: Routes = [
 
@@ -21,8 +22,8 @@ export const routes: Routes = [
         {path:'statistics',component:StatisticsComponent},
         {path:'active-issues',component:ActiveIssuesComponent},
         {path:'fixing-teams',component:FixingTeamsComponent},
-        {path:'', redirectTo: 'overview', pathMatch: 'full'}
-        
+        {path:'', redirectTo: 'overview', pathMatch: 'full'},
+         {path:'issue/:id', component:SingleIssueComponent}
      ]},
     
 ];

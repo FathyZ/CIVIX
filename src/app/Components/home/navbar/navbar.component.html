@@ -18,6 +18,16 @@
         </div>
     </div>
     <div class="nav-right">
-       <a href="#"> <i class="pi pi-cog"></i></a>
+       <a href="#" (click)="openLogoutDialog($event)"> <i class="pi pi-sign-out"></i></a>
     </div>
+
+    <dialog #logoutDialog>
+        <h2>Logout</h2>
+        <p>Are you sure you want to logout?</p>
+        <div>
+          <!-- Cancel button to hide the dialog -->
+          <button type="button" class="greyButton" (click)="closeLogoutDialog()">Cancel</button>
+          <button type="button" (click)="confirmLogout()">Logout</button>
+        </div>
+      </dialog>
 </div>

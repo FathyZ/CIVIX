@@ -62,62 +62,69 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
+                          <tr *ngFor="let report of reports" (click)="viewIssue(report.id)" >
+                            <th scope="row">{{ report.id }}</th>
+                            <td>{{ report.category }}</td>
+                            <td>{{ report.location }}</td>
+                            <td>{{ report.status }}</td>
+                            <td [class]="getPriorityClass(report.priority)">{{ report.priority }}</td>
+                          </tr>
+                          <!-- <tr>
                             <th scope="row">1</th>
                             <td>Broken StreetLight</td>
                             <td>South 90</td>
                             <td>In-Progress</td>
-                            <td>Medium</td>
+                            <td><p class="text-warning fw-bold">Medium</p></td>
                           </tr>
                           <tr>
                             <th scope="row">2</th>
                             <td>Flooding</td>
                             <td>Arabella Square</td>
                             <td>Pending</td>
-                            <td>High</td>
+                            <td class="text-danger fw-bold">High</td>
                           </tr>
                           <tr>
                             <th scope="row">3</th>
                             <td>Broken StreetLight</td>
                             <td>South 90</td>
                             <td>In-Progress</td>
-                            <td>Medium</td>
+                            <td><p class="text-warning fw-bold">Medium</p></td>
                           </tr>
                           <tr>
                             <th scope="row">4</th>
                             <td>Flooding</td>
                             <td>Arabella Square</td>
                             <td>Pending</td>
-                            <td>High</td>
+                            <td class="text-danger fw-bold">High</td>
                           </tr>
                           <tr>
                             <th scope="row">5</th>
                             <td>Broken StreetLight</td>
                             <td>South 90</td>
                             <td>In-Progress</td>
-                            <td>Medium</td>
+                            <td><p class="text-success fw-bold">Low</p></td>
                           </tr>
                           <tr>
                             <th scope="row">6</th>
                             <td>Flooding</td>
                             <td>Arabella Square</td>
                             <td>Pending</td>
-                            <td>High</td>
+                            <td class="text-danger fw-bold">High</td>
                           </tr>
                           <tr>
                             <th scope="row">7</th>
                             <td>Broken StreetLight</td>
                             <td>South 90</td>
                             <td>In-Progress</td>
-                            <td>Medium</td>
+                            <td><p class="text-warning fw-bold">Medium</p></td>
                           </tr>
                           <tr>
                             <th scope="row">8</th>
                             <td>Flooding</td>
                             <td>Arabella Square</td>
                             <td>Pending</td>
-                            <td>High</td>
-                          </tr>
+                            <td class="text-success fw-bold">Low</td>
+                          </tr> -->
                         </tbody>
                       </table> 
                 </div>

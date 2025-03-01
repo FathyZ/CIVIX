@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-navbar',
@@ -9,4 +10,24 @@ import { ButtonModule } from 'primeng/button';
 })
 export class NavbarComponent {
 
-}
+  @ViewChild('logoutDialog') logoutDialog: any; 
+
+  constructor(private router: Router) {}
+
+  // Open the dialog
+  openLogoutDialog(event: Event): void {
+    event.preventDefault(); // Prevent the default link behavior
+    this.logoutDialog.nativeElement.showModal(); // Open the dialog
+  }
+
+  // Close the dialog
+  closeLogoutDialog(): void {
+    this.logoutDialog.nativeElement.close(); // Close the dialog
+  }
+
+  // Confirm logout and remove token
+  confirmLogout(): void {
+    localStorage.removeItem('_token'); // Remove the token from localStorage
+    this.closeLogoutDialog(); // Close the dialog
+    window.location.reload();
+  }}

@@ -34,7 +34,7 @@
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        padding: 0.5rem;
+        padding: 0.8rem;
         border: none;
         transition: all 0.3s ease;
 
@@ -124,5 +124,67 @@
   .form svg {
     width: 17px;
   }
+  //end of searchbar styles
 
-//end of searchbar styles
+  dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    
+    h2{
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: black;
+        margin-bottom: 10px;
+    }
+    p{
+        font-size: 1.2rem;
+        font-weight: 500;
+        color:grey;
+    }
+    button{
+        padding: 0.5rem 1rem;
+        border: solid 1px transparent;
+        background-color: $main-Color;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 500;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+    }
+    .greyButton {
+      background-color: #f0f0f2;
+      color: black;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+  
+      
+  }
+  }
+  
+  dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  dialog div {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+.hidden{
+    display: none;
+}
+
