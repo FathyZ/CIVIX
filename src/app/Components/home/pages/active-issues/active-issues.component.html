@@ -1,1 +1,56 @@
-<p>active-issues works!</p>
+<div class="card">
+    <p-table
+        #dt
+        [value]="issues"
+        dataKey="id"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 15, 20]"
+        [globalFilterFields]="['name', 'location', 'status']"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        selectionMode="single"
+        (rowSelect)="goToIssue($event)"
+    >
+        <!-- Search Bar -->
+        <ng-template pTemplate="caption">
+            <div class="flex justify-end">
+                <input type="text" pInputText (input)="filterTable($event, dt)" placeholder="Search Issues" />
+            </div>
+        </ng-template>
+
+        <!-- Table Headers -->
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="name">Issue Name <i class="pi pi-sort"></i></th>
+                <th pSortableColumn="location">Location <i class="pi pi-sort"></i></th>
+                <th>Image</th>
+                <th>Team Assigned</th>
+                <th pSortableColumn="timeSubmitted">Time Submitted <i class="pi pi-sort"></i></th>
+                <th pSortableColumn="status">Status <i class="pi pi-sort"></i></th>
+            </tr>
+        </ng-template>
+
+        <!-- Table Data -->
+        <ng-template pTemplate="body" let-issue>
+            <tr [pSelectableRow]="issue">
+                <td>{{ issue.name }}</td>
+                <td>{{ issue.location }}</td>
+                <td>
+                    <img [src]="issue.imageUrl" alt="Issue Image" width="50" height="50" />
+                </td>
+                <td>{{ issue.teamAssigned }}</td>
+                <td>{{ issue.timeSubmitted }}</td>
+                <td>
+                    <p-tag [value]="issue.status" [severity]="getSeverity(issue.status)"></p-tag>
+                </td>
+            </tr>
+        </ng-template>
+
+        <!--Empty State -->
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6">No issues found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

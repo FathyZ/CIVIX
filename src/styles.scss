@@ -58,23 +58,6 @@ body{
   .leaflet-popup-close-button:hover {
     background: rgba(0, 0, 0, 0.5); /* Darker on hover */
   }
-.p-datatable-tbody > tr > td {
-    background-color: white;
-    color: black;
-  }
-
-  .p-datatable-thead > tr > th {
-    background: $secondary-Color !important;
-    color: white;
-    font-weight: 1000;
-    text-align: center !important;
-  }
-
-  .p-datatable-tbody > tr > td {
-    border-width: 0 0  2px 0 !important;
-    border-color: $secondary-Color !important;
-    text-align: center !important;
-  }
   
 /* For WebKit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
@@ -93,4 +76,51 @@ body{
 
 ::-webkit-scrollbar-thumb:hover {
   background: $secondary-Color; /* Color of the scrollbar thumb on hover */
+}
+
+/* Apply rounded corners to PrimeNG tables globally */
+.p-datatable {
+  border-radius: 10px !important; /* Rounded corners for the whole table */
+  overflow: hidden !important; /* Prevents child elements from breaking the roundness */
+}
+
+/* Make the table header rounded */
+.p-datatable .p-datatable-thead > tr > th:first-child {
+  border-top-left-radius: 10px !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th:last-child {
+  border-top-right-radius: 10px !important;
+}
+
+/* Make the last row's corners rounded */
+.p-datatable .p-datatable-tbody > tr:last-child td:first-child {
+  border-bottom-left-radius: 10px !important;
+}
+
+.p-datatable .p-datatable-tbody > tr:last-child td:last-child {
+  border-bottom-right-radius: 10px !important;
+}
+
+
+
+.p-datatable {
+  background-color: black !important;
+  color: white !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: #222 !important;
+  color: white !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th.p-highlight,
+.p-datatable .p-datatable-thead > tr > th.p-sortable-column {
+  background-color: #444 !important;
+  color: white !important;
+}
+
+.p-datatable .p-datatable-tbody > tr.p-highlight {
+  background-color: #333 !important;
+  color: white !important;
 }
