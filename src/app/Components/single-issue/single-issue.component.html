@@ -1,15 +1,15 @@
 <div class="issueContainer">
     <div class="container-fluid">
         <div class="row">
-        <div class=" bgshadow issueCard col-lg-6 col-12">
+        <div class=" bgshadow issueCard col-lg-6 col-12 " *ngIf="issue">
             <img src="assets/Background.png" alt="" >
-            <p class="fw-bold">Issue Id: {{issue.id}} </p>
-            <p>Category: {{issue.category}}</p>
-            <p>Priority: {{issue.priority}} </p>
-            <p>Description: </p>
-            <p>Date: </p>
-            <p>Time: </p>
-            <p>Reported By: </p>
+            <p class="fw-bold">Issue Id: {{ issue?.id }} </p>
+            <p>Category: {{ issue?.category }}</p>
+            <p>Priority: {{ issue?.priority }} </p>
+            <p>Description: {{ issue?.description }}</p>
+            <p>Date: {{ issue?.createdOn | date: 'fullDate' }}</p>
+            <p>Time: {{ issue?.createdOn | date: 'shortTime' }}</p>
+            <p>Reported By: {{ issue?.createdById }}</p>
         </div>
 
         <div class="col-lg-6 col-12 ps-lg-2 ">

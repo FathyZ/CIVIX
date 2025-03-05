@@ -5,6 +5,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { FormsModule, NgModel} from '@angular/forms';
 import { TagModule } from 'primeng/tag'; 
 import { Router } from '@angular/router';
+import { IssuesService } from '../../../../Services/issues.service';
+import { ApiResponse, Issue } from '../../../../models/issue';
 @Component({
   selector: 'app-overview',
   standalone: true,
@@ -12,20 +14,12 @@ import { Router } from '@angular/router';
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.scss'
 })
-export class OverviewComponent implements AfterViewInit{
+export class OverviewComponent implements OnInit, AfterViewInit{
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private issueService:IssuesService) {}
 
-  reports = [
-    { id: 1, category: 'Broken StreetLight', location: 'South 90', status: 'In-Progress', priority: 'Medium' },
-    { id: 2, category: 'Flooding', location: 'Arabella Square', status: 'Pending', priority: 'High' },
-    { id: 3, category: 'Broken StreetLight', location: 'South 90', status: 'In-Progress', priority: 'Medium' },
-    { id: 4, category: 'Flooding', location: 'Arabella Square', status: 'Pending', priority: 'High' },
-    { id: 5, category: 'Broken StreetLight', location: 'South 90', status: 'In-Progress', priority: 'Low' },
-    { id: 6, category: 'Flooding', location: 'Arabella Square', status: 'Pending', priority: 'High' },
-    { id: 7, category: 'Broken StreetLight', location: 'South 90', status: 'In-Progress', priority: 'Medium' },
-    { id: 8, category: 'Flooding', location: 'Arabella Square', status: 'Pending', priority: 'Low' }
-  ];
+  issues: Issue[] = []; // Will hold the fetched issues
+  
   getPriorityClass(priority: string) {
     switch (priority.toLowerCase()) {
       case 'high': return 'text-danger fw-bold';
@@ -35,16 +29,30 @@ export class OverviewComponent implements AfterViewInit{
     }
   }
 
-  viewIssue(id: number) {
+  viewIssue(id: string) { // Redirect to the single issue page
     this.router.navigate(['/home/issue', id]);
   }
 
   private map!: L.Map;
   private L!: any; // Store Leaflet dynamically
 
-  async ngAfterViewInit(): Promise<void> {
+  ngOnInit(): void { // Fetch issues when the component is initialized
+    this.fetchIssues();  
+  }
+
+  fetchIssues() { // Fetch issues from the API
+    this.issueService.getIssues().subscribe((response: ApiResponse) => { // Subscribe to the API response
+      this.issues = response.data; // Access the `data` property
+      console.log(this.issues);// Log the issues to the console for debugging
+    }, (error) => {
+      console.log(error); // Log any errors to the console for debugging
+    });
+  }
+
+
+  async ngAfterViewInit(): Promise<void> { // Initialize Leaflet after the view is initialized
     if (typeof window !== 'undefined') { // ✅ Ensure we're in the browser
-      const leaflet = await import('leaflet');
+      const leaflet = await import('leaflet');// Dynamically import the Leaflet library
       this.L = leaflet; // Store the module
       this.initMap();
     
