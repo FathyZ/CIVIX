@@ -1,55 +1,52 @@
 <div class="card">
-    <p-table
-        #dt
-        [value]="issues"
-        dataKey="id"
-        [paginator]="true"
-        [rows]="10"
-        [rowsPerPageOptions]="[10, 15, 20]"
-        [globalFilterFields]="['name', 'location', 'status']"
-        [tableStyle]="{ 'min-width': '75rem' }"
-        selectionMode="single"
-        (rowSelect)="goToIssue($event)"
-    >
-        <!-- Search Bar -->
-        <ng-template pTemplate="caption">
-            <div class="flex justify-end">
-                <input type="text" pInputText (input)="filterTable($event, dt)" placeholder="Search Issues" />
-            </div>
-        </ng-template>
+    <div class="search-container">
+        <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input #searchInput type="text" pInputText class="p-inputtext-sm" placeholder="Search issues..." (input)="filterTable($event, dt)">
+        </span>
+    </div>
+    
+    
 
-        <!-- Table Headers -->
+    <p-table #dt
+        [value]="issues"
+        [paginator]="true"
+        responsiveLayout="scroll"   
+        [scrollable]="true"
+        scrollHeight="505px"
+        [rows]="10"
+        [globalFilterFields]="['title', 'description', 'category', 'priority', 'status']">
+
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="name">Issue Name <i class="pi pi-sort"></i></th>
-                <th pSortableColumn="location">Location <i class="pi pi-sort"></i></th>
-                <th>Image</th>
-                <th>Team Assigned</th>
-                <th pSortableColumn="timeSubmitted">Time Submitted <i class="pi pi-sort"></i></th>
-                <th pSortableColumn="status">Status <i class="pi pi-sort"></i></th>
+                <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
+                <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
+                <th>Location</th>
+                <th>Category</th>
+                <th>Images</th>
+                <th pSortableColumn="priority">Priority <p-sortIcon field="priority"></p-sortIcon></th>
+                <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
             </tr>
         </ng-template>
 
-        <!-- Table Data -->
         <ng-template pTemplate="body" let-issue>
-            <tr [pSelectableRow]="issue">
-                <td>{{ issue.name }}</td>
-                <td>{{ issue.location }}</td>
+            <tr (click)="viewIssue(issue.id)" class="clickable-row">
+                <td>{{ issue.title }}</td>
+                <td>{{ issue.description }}</td>
+                <td>{{ issue.latitude }}, {{ issue.longitude }}</td>
+                <td>{{ issue.category }}</td>
                 <td>
-                    <img [src]="issue.imageUrl" alt="Issue Image" width="50" height="50" />
+                    <img *ngIf="issue.images.length > 0" [src]="issue.images[0]" alt="Issue Image" width="50" height="50" class="rounded-md">
+                    <span *ngIf="issue.images.length === 0">No Image</span>
                 </td>
-                <td>{{ issue.teamAssigned }}</td>
-                <td>{{ issue.timeSubmitted }}</td>
-                <td>
-                    <p-tag [value]="issue.status" [severity]="getSeverity(issue.status)"></p-tag>
-                </td>
+                <td [ngClass]="getPriorityClass(issue.priority)">{{ issue.priority }}</td>
+                <td>{{ issue.status }}</td>
             </tr>
         </ng-template>
 
-        <!--Empty State -->
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="6">No issues found.</td>
+                <td colspan="7" class="text-center">No issues found</td>
             </tr>
         </ng-template>
     </p-table>

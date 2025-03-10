@@ -10,13 +10,14 @@ export class IssuesService {
  private apiUrl = 'https://civix.runasp.net/api/Issues';
   constructor(private http:HttpClient) { }
 
-  getIssues():Observable<ApiResponse>{ // Return an observable of type ApiResponse (defined in models/issue.ts)
-    const token = localStorage.getItem('_token'); // Retrieve token (update if stored elsewhere)
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`    // Set the Authorization header with the token
+  getIssues(pageSize: number = 10): Observable<ApiResponse> {  
+    const token = localStorage.getItem('_token');  
+    const headers = new HttpHeaders({  
+      Authorization: `Bearer ${token}`  
     });
-    return this.http.get<ApiResponse>(this.apiUrl ,  { headers });
-  }
+
+    return this.http.get<ApiResponse>(`${this.apiUrl}?pageSize=${pageSize}`, { headers });
+}
 
 
 
