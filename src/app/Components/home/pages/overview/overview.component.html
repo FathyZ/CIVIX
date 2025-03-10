@@ -62,10 +62,10 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let issue of issues" (click)="viewIssue(issue.id)" >
-                            <th scope="row">{{ issue.id }}</th>
+                          <tr *ngFor="let issue of issues , let i = index" (click)="viewIssue(issue.id)" class="tableHover" >
+                            <th scope="row">{{i+1 }}</th>
                             <td>{{ issue.category }}</td>
-                            <td>{{ issue.latitude }}</td>
+                            <td>{{ issue.address ? issue.address : 'Loading...'}}</td>
                             <td>{{ issue.status }}</td>
                             <td [class]="getPriorityClass(issue.priority)">{{ issue.priority }}</td>
                           </tr>

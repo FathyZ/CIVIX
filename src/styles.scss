@@ -124,3 +124,16 @@ body{
   background-color: #333 !important;
   color: white !important;
 }
+.p-button-text{
+  color: $main-Color !important;
+ }
+ .p-button:not(:disabled):hover{
+  border: 1px solid $main-Color !important;
+  background: color-mix(in srgb,$main-Color, transparent 80%) !important;
+ }
+ .p-carousel-indicator-active .p-carousel-indicator-button {
+  background-color: $main-Color !important;
+ }
+ .p-carousel-indicator-button {
+  background-color: $secondary-Color !important;
+ }
