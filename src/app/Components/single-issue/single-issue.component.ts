@@ -1,21 +1,27 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { GeocodingService } from './../../Services/geocoding.service';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Issue } from '../../models/issue';
 import { IssuesService } from '../../Services/issues.service';
 import { Observable, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { CarouselModule } from 'primeng/carousel'; 
+
 
 @Component({
   selector: 'app-single-issue',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,CarouselModule],
   templateUrl: './single-issue.component.html',
   styleUrl: './single-issue.component.scss'
 })
 export class SingleIssueComponent implements OnInit {
   issue: any;  // Will hold the fetched issue
+  @ViewChild('carouselImg') carouselImg!: ElementRef<HTMLImageElement>;
+  @ViewChild('singleImage') singleImage!: ElementRef<HTMLImageElement>;
+  fullscreenImage: string | null = null;
 
-  constructor(private route: ActivatedRoute, private issueService: IssuesService) {}
+  constructor(private route: ActivatedRoute, private issueService: IssuesService , private geocodingService:GeocodingService  ) {}
 
   ngOnInit() {
     const issueId = this.route.snapshot.paramMap.get('id'); // Get issue ID from URL
@@ -32,6 +38,20 @@ export class SingleIssueComponent implements OnInit {
         console.log('Issue data received:', data); // Check if API returns data
         this.issue = data;
 
+        this.geocodingService.getAddressFromCoords(this.issue.latitude, this.issue.longitude).subscribe(
+          (response) => {
+            if (response && response.display_name) {
+              this.issue.address = response.display_name; // Update issue object with address
+              console.log('Reverse geocoded address:', this.issue.address);
+            } else {
+              console.warn('Address not found in response:', response);
+            }
+          },
+          (error) => {
+            console.error('Error fetching address:', error);
+          }
+        );
+        
 
 
 
@@ -51,6 +71,21 @@ export class SingleIssueComponent implements OnInit {
     );
   }
 
+
+   // Open full-screen image viewer
+   openFullScreen(imageUrl: string): void {
+    this.fullscreenImage = imageUrl;
+  }
+
+  // Close full-screen image viewer
+  closeFullScreen(event?: Event): void {
+    if (event) {
+      event.stopPropagation(); // Prevents the click from bubbling to the overlay
+    }
+    this.fullscreenImage = null;
+  }
+
+ 
   private map!: L.Map;
   private L!: any; // Store Leaflet dynamically
 

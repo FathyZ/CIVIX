@@ -16,6 +16,7 @@ export interface Issue { // interface for the issue with all its attributes
     "description": '';
     "latitude": '';
     "longitude": '';
+    "address"?: '';
     "priority": '';
     "status": '';
     "category":'';

@@ -2,14 +2,46 @@
     <div class="container-fluid">
         <div class="row">
         <div class=" bgshadow issueCard col-lg-6 col-12 " *ngIf="issue">
-            <img src="assets/Background.png" alt="" >
+            
+            <p-carousel *ngIf="issue.images && issue.images.length > 1"
+                [value]="issue.images"
+                [numVisible]="1"
+                [numScroll]="1"
+                >
+        <ng-template pTemplate="item" let-imageUrl>
+            <div class="clickable-img-wrapper" (click)="openFullScreen(imageUrl)">
+                <img #carouselImg [src]="imageUrl" class="carousel-img clickable-img" alt="Issue Image">
+                <div class="hover-overlay">
+                    <i class="pi pi-search"></i>
+                    <span class="hover-text">View Full Image</span>
+                </div>
+            </div>
+        </ng-template>
+    </p-carousel>
+
+    <div class="clickable-img-wrapper" *ngIf="issue.images?.length === 1" (click)="openFullScreen(issue.images[0])">
+        <img [src]="issue.images[0]" class="carousel-img clickable-img" alt="Issue Image">
+        <div class="hover-overlay">
+            <i class="pi pi-search"></i>
+            <span class="hover-text">View Full Image</span>
+        </div>
+    </div>
+        <!-- Show single image if there's only one -->
+        <!-- <img *ngIf="issue.images?.length === 1" 
+            [src]="issue.images[0]" 
+            class="carousel-img clickable-img"
+            (click)="openFullScreen(issue.images[0])" 
+            alt="Issue Image"> -->
+
+
             <p class="fw-bold">Issue Id: {{ issue?.id }} </p>
-            <p>Category: {{ issue?.category }}</p>
-            <p>Priority: {{ issue?.priority }} </p>
-            <p>Description: {{ issue?.description }}</p>
-            <p>Date: {{ issue?.createdOn | date: 'fullDate' }}</p>
-            <p>Time: {{ issue?.createdOn | date: 'shortTime' }}</p>
-            <p>Reported By: {{ issue?.createdById }}</p>
+            <p> <span class="fw-bold"> Address :</span> {{issue.address}}</p>
+            <p> <span class="fw-bold">Category:</span> {{ issue?.category }}</p>
+            <p> <span class="fw-bold">Priority:</span> {{ issue?.priority }} </p>
+            <p> <span class="fw-bold">Description:</span> {{ issue?.description }}</p>
+            <p> <span class="fw-bold">Date:</span> {{ issue?.createdOn | date: 'fullDate' }}</p>
+            <p> <span class="fw-bold">Time:</span> {{ issue?.createdOn | date: 'shortTime' }}</p>
+            <p> <span class="fw-bold">Reported By:</span> {{ issue?.createdById }}</p>
         </div>
 
         <div class="col-lg-6 col-12 ps-lg-2 ">
@@ -24,3 +56,15 @@
     </div>
     </div>
 </div>
+
+<div class="fullscreen-overlay" *ngIf="fullscreenImage" (click)="closeFullScreen()">
+    <div class="fullscreen-content">
+        <button class="close-btn" (click)="closeFullScreen($event)">&times;</button>
+        <img [src]="fullscreenImage" class="fullscreen-img">
+        <div class="hover-overlay">
+            <i class="pi pi-search"></i>
+            <span class="hover-text">View Full Image</span>
+        </div>
+    </div>
+</div>
+
