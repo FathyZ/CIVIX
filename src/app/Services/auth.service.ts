@@ -24,4 +24,11 @@ saveAdmin(){
   }
 }
 
+getToken(): string | null {
+  return localStorage.getItem('_token'); // Retrieve token from local storage
 }
+
+
+}
+
+

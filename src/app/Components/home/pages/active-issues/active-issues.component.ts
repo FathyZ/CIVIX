@@ -1,12 +1,12 @@
-import { Component,AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { TagModule } from 'primeng/tag';
-import { OnInit } from '@angular/core';
 import { IssuesService } from '../../../../Services/issues.service';
 import { ApiResponse, Issue } from '../../../../models/issue';
+import { forkJoin } from 'rxjs';
 
 @Component({
     standalone: true,
@@ -17,13 +17,9 @@ import { ApiResponse, Issue } from '../../../../models/issue';
 })
 export class ActiveIssuesComponent implements OnInit {
 
+    issues: Issue[] = [];
 
     constructor(private router: Router, private IssuesService: IssuesService) {}
-
-
-
-
-    issues: Issue[] = [];
 
     getPriorityClass(priority: string) {
       switch (priority.toLowerCase()) {
@@ -34,31 +30,38 @@ export class ActiveIssuesComponent implements OnInit {
       }
     }
 
-    viewIssue(id: string) { // Redirect to the single issue page
+    viewIssue(id: string) { 
       this.router.navigate(['/home/issue', id]);
     }
 
-    ngOnInit(): void { // Fetch issues when the component is initialized
+    ngOnInit(): void { 
       this.fetchIssues();  
     }
 
-    fetchIssues() { // Fetch issues from the API
-      this.IssuesService.getIssues(10).subscribe((response: ApiResponse) => { // Subscribe to the API response
-        this.issues = response.data; // Access the `data` property
-        console.log(this.issues);// Log the issues to the console for debugging
-      }, (error) => {
-        console.log(error); // Log any errors to the console for debugging
+    fetchIssues() {
+      this.issues = []; // Clear the array to prevent duplicate issues
+    
+      this.IssuesService.getIssues(1, 5).subscribe((response: ApiResponse) => {
+        const totalIssues = response.totatIssues;  
+        const pageSize = response.pageSize;  
+        const totalPages = Math.ceil(totalIssues / pageSize);  
+    
+        let requests = [];
+        for (let page = 1; page <= totalPages; page++) {  
+          requests.push(this.IssuesService.getIssues(page, pageSize));
+        }
+    
+        forkJoin(requests).subscribe(results => {
+          this.issues = results.flatMap(res => res.data); // Merge all pages into one array
+        });
       });
     }
-
-    
 
     filterTable(event: Event, dt: any) {
       const inputValue = (event.target as HTMLInputElement).value;
       dt.filterGlobal(inputValue, 'contains');
-  }
+    }
   
-    // Navigate to Single Issue Page
     goToIssue(event: any) {
         this.router.navigate(['/issue', event.data.id]);
     }
