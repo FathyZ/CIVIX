@@ -24,7 +24,6 @@
     img{
         border-radius: 10px 10px 0px 0px;
         margin-bottom: 10px;
-        max-height: 300px;
         width: 100%;
         object-fit: cover;
     }
@@ -75,7 +74,7 @@
 }
 
 .fullscreen-img {
-  max-width: 90%;
+  
   max-height: 90vh;
   object-fit: contain;
   border-radius: 10px;
@@ -83,8 +82,8 @@
 
 .close-btn {
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: -20px;
+  right: -20px;
   font-size: 2rem;
   background: none;
   border: none;
@@ -111,7 +110,7 @@
 
   .clickable-img {
       transition: filter 0.3s, transform 0.2s;
-      max-height: 250px; // Ensures all images have a consistent max height
+      max-height: 300px; // Ensures all images have a consistent max height
   }
 
   &:hover .clickable-img {

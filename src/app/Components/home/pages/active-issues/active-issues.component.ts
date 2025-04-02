@@ -7,6 +7,7 @@ import { TagModule } from 'primeng/tag';
 import { OnInit } from '@angular/core';
 import { IssuesService } from '../../../../Services/issues.service';
 import { ApiResponse, Issue } from '../../../../models/issue';
+import { GeocodingService } from '../../../../Services/geocoding.service';
 
 @Component({
     standalone: true,
@@ -18,7 +19,7 @@ import { ApiResponse, Issue } from '../../../../models/issue';
 export class ActiveIssuesComponent implements OnInit {
 
 
-    constructor(private router: Router, private IssuesService: IssuesService) {}
+    constructor(private router: Router, private IssuesService: IssuesService , private geocodingService : GeocodingService) {}
 
 
 
@@ -45,6 +46,11 @@ export class ActiveIssuesComponent implements OnInit {
     fetchIssues() { // Fetch issues from the API
       this.IssuesService.getIssues(10).subscribe((response: ApiResponse) => { // Subscribe to the API response
         this.issues = response.data; // Access the `data` property
+        this.issues.forEach((issue)=>{
+          this.geocodingService.getAddressFromCoords(issue.latitude,issue.longitude).subscribe((res:any)=>{
+            issue.address = res.display_name;
+        });
+      });
         console.log(this.issues);// Log the issues to the console for debugging
       }, (error) => {
         console.log(error); // Log any errors to the console for debugging

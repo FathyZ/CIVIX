@@ -33,7 +33,7 @@
             <tr (click)="viewIssue(issue.id)" class="clickable-row">
                 <td>{{ issue.title }}</td>
                 <td>{{ issue.description }}</td>
-                <td>{{ issue.latitude }}, {{ issue.longitude }}</td>
+                <td>{{ issue.address }}</td>
                 <td>{{ issue.category }}</td>
                 <td>
                     <img *ngIf="issue.images.length > 0" [src]="issue.images[0]" alt="Issue Image" width="50" height="50" class="rounded-md">

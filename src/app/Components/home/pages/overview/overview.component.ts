@@ -20,10 +20,10 @@ export class OverviewComponent implements OnInit, AfterViewInit{
   constructor(private router: Router,private issueService:IssuesService , private geocodingService: GeocodingService) {}
 
   issues: Issue[] = []; // Will hold the fetched issues
-  
+  totalIssues : number = 0;
   getPriorityClass(priority: string) {
     switch (priority.toLowerCase()) {
-      case 'high': return 'text-danger fw-bold';
+      case 'critical': return 'text-danger fw-bold';
       case 'medium': return 'text-warning fw-bold';
       case 'low': return 'text-success fw-bold';
       default: return '';
@@ -43,9 +43,9 @@ export class OverviewComponent implements OnInit, AfterViewInit{
   }
 
   fetchIssues() { // Fetch issues from the API
-    this.issueService.getIssues().subscribe((response: ApiResponse) => { // Subscribe to the API response
+    this.issueService.getIssues(5).subscribe((response: ApiResponse) => { // Subscribe to the API response
       this.issues = response.data; // Access the `data` property
-      
+      this.totalIssues = response.totatIssues;
       this.issues.forEach((issue)=>{
         this.geocodingService.getAddressFromCoords(issue.latitude,issue.longitude).subscribe((res:any)=>{
           issue.address = res.display_name;
