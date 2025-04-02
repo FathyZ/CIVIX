@@ -1,7 +1,9 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { StatisticsService } from './../../../../Services/statistics.service';
+import { Component, ViewEncapsulation,OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { TableModule } from 'primeng/table';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,28 +14,55 @@ import { TableModule } from 'primeng/table';
   styleUrl: './statistics.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class StatisticsComponent {
+export class StatisticsComponent implements OnInit{
 
-  doughnutChartData = {
-    labels: ['Completed 78%', 'Behind 12%', 'In Progress 10%'],
-    datasets: [
-      {
-        label: 'No. of Issues',
-        data: [300, 50, 100], 
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.5)',  
-          'rgba(54, 162, 235, 0.5)',  
-          'rgba(153, 102, 255, 0.5)', 
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(153, 102, 255, 1)',
-        ],
-        borderWidth: 3
+  taskPerformanceData:any;
+  priorityDistributionData:any;
+  
+  
+  
+
+  constructor(private statisticsService: StatisticsService, private router: Router){}
+
+  ngOnInit(): void {
+    this.loadTaskPerformance();
+    this.loadPriorityDistribution();
+  }
+
+  loadTaskPerformance() {
+    this.statisticsService.getTaskPerformance().subscribe((data: { name: string; count: number }[]) => {
+      
+  
+      if (data && data.length) {
+        this.taskPerformanceData = {
+          labels: data.map((item) => item.name), 
+          datasets: [
+            {
+              data: data.map((item) => item.count), 
+              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+            }
+          ]
+        };
+      } 
+    });
+  }
+  
+  loadPriorityDistribution() {
+    this.statisticsService.getPriorityDistribution().subscribe((data: { name: string; count: number }[]) => {
+      if (data && data.length) {
+        this.priorityDistributionData = {
+          labels: data.map((item) => item.name),
+          datasets: [
+            {
+              data: data.map((item) => item.count),
+              backgroundColor: ['#dc3545', '#8B0000', '#FFFF00']
+            }
+          ]
+        };
       }
-    ]
-  };
+    });
+  }
+
 
   DoughnutChartOptions = {
     responsive: true,
@@ -53,23 +82,19 @@ export class StatisticsComponent {
 
       
     },
-
+    onClick: (event: any, elements: any, chart: any) => {
+      console.log('Chart clicked!', event, elements);
+    
+      if (elements && elements.length > 0) {
+        console.log('Navigating to Active Issues page...');
+        this.router.navigate(['/home/active-issues']);
+      }
+    },
   };
 
   // BarChart
 
 
-  barChartData = {
-    labels: ['High', 'Mid', 'Low'], // Categories
-    datasets: [
-      {
-        label: 'User Reviews',
-        data: [120, 50, 30], // Number of votes (change these values dynamically)
-        backgroundColor: ['#dc3545', '#ffc107', '#28a745'], // Green, Yellow, Red
-        borderRadius: 80, // Rounded edges for bars
-      }
-    ]
-  };
   
   barChartOptions = {
     responsive: true,

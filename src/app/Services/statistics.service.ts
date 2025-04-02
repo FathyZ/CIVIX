@@ -1,0 +1,43 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class StatisticsService {
+  private baseUrl = 'https://civix.runasp.net/api/Issues/count-by-status';
+  private priorityBaseUrl = 'https://civix.runasp.net/api/Issues/count-by-priority';
+
+  constructor(private http: HttpClient) {}
+
+  getTaskPerformance(): Observable<{ name: string; count: number }[]> {
+    const token = localStorage.getItem('_token');
+    if (!token) {
+      console.error('Token not found!');
+      return new Observable(); // Return empty observable to prevent API call without token
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.get<{ name: string; count: number }[]>(this.baseUrl, { headers });
+  }
+
+  getPriorityDistribution(): Observable<{name:string; count:number}[]> {
+    const token = localStorage.getItem('_token');
+    if (!token) {
+      console.error('Token not found!');
+      return new Observable();
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.get<{ name: string; count: number }[]>(this.priorityBaseUrl, { headers });
+  }
+}
