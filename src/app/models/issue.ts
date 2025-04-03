@@ -6,19 +6,19 @@ export interface ApiResponse { // interface for the whole api response
     totatIssues: number; // The total number of issues
   }
 
-export interface Issue { // interface for the issue with all its attributes
-    "createdById": '';
-    "createdOn": '';
-    "updatedById": '';
-    "updatedOn": '';
-    "id": '';
-    "title": '';
-    "description": '';
-    "latitude": '';
-    "longitude": '';
-    "address"?: '';
-    "priority": '';
-    "status": '';
-    "category":'';
-    "images": [];
+  export interface Issue {
+    createdById: string;  // userId or similar type
+    createdOn: Date;      // Date type is more appropriate
+    updatedById: string;  // userId or similar type
+    updatedOn: Date;      // Date type is more appropriate
+    id: string;           // Unique identifier for the issue
+    title: string;        // Title of the issue
+    description: string;  // Description of the issue
+    latitude: string;     // Latitude coordinate (number)
+    longitude: string;    // Longitude coordinate (number)
+    address?: string;     // Optional address
+    priority: string;     // Priority level (string, possibly an enum)
+    status: string;       // Current status (string, possibly an enum)
+    category: string;     // Category of the issue
+    images: string[];     // Array of image URLs or paths (string array)
 }
