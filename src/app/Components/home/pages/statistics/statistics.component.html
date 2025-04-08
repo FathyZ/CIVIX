@@ -7,7 +7,7 @@
         <div class="card ">
             <div class="card-heading">
                 <p class="fw-bold">New Issues Today </p>
-                <!-- <i class="pi pi-flag-fill"></i> -->
+                <i class="pi pi-flag-fill"></i>
             </div>
             <p class="card-num">18</p>
             <p class="card-footing"> <span></span>Reported in the last 24 hours</p>
@@ -18,7 +18,7 @@
     <div class="card bg-mc ">
         <div class="card-heading">
             <p class="fw-bold">Most Common Issue</p>
-            <!-- <i class="pi pi-flag-fill"></i> -->
+            <i class="pi pi-flag-fill"></i>
         </div>
         <p class="card-num">132</p>
         <p class="card-footing"> <span>Pothole</span></p>
@@ -29,9 +29,9 @@
     <div class="card">
         <div class="card-heading">
             <p class="fw-bold">Issues in Progress</p>
-            <!-- <i class="pi pi-flag-fill"></i> -->
+            <i class="pi pi-flag-fill"></i>
         </div>
-        <p class="card-num">7</p>
+        <p class="card-num">{{inProgressCount}}</p>
         <p class="card-footing"> <span></span>Currently being worked on</p>
 
     </div>
@@ -40,7 +40,7 @@
     <div class="card bg-mc">
         <div class="card-heading">
             <p class="fw-bold">Unassigned Issues</p>
-            <!-- <i class="pi pi-flag-fill"></i> -->
+            <i class="pi pi-flag-fill"></i>
         </div>
         <p class="card-num">3</p>
         <p class="card-footing"> <span></span>Issues that haven't been assigned to a team yet</p>
@@ -57,7 +57,7 @@
 
         <div class="col-md-6 barChartDiv" *ngIf="priorityDistributionData">
             <h4>Priority Distribution</h4>
-            <p>Total Issues : 5,623 </p>
+            <p>Total Issues: {{ issuesCount }}</p>
             <p-chart type="bar" [data]="priorityDistributionData" [options]="barChartOptions"></p-chart>
         </div>
     </div>

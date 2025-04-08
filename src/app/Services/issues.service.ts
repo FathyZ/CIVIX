@@ -32,4 +32,22 @@ export class IssuesService {
 
     return this.http.get<Issue>(`${this.apiUrl}/${id}`, { headers });
   }
+
+  getTotalIssuesCount(): Observable<any> {
+    const token = localStorage.getItem('_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get<any>(`${this.apiUrl}`, { headers });
+  }
+
+  getAllIssuesData(): Observable<ApiResponse> {
+    const token = localStorage.getItem('_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get<ApiResponse>(`${this.apiUrl}`, { headers });
+  }
 }

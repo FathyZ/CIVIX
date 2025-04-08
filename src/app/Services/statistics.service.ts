@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ApiResponse } from '../models/issue';
 
 @Injectable({
   providedIn: 'root',
@@ -39,5 +40,20 @@ export class StatisticsService {
     });
 
     return this.http.get<{ name: string; count: number }[]>(this.priorityBaseUrl, { headers });
+  }
+
+  getIssuesStatusCount(): Observable<any>{
+    const token = localStorage.getItem('_token');
+    if (!token) {
+      console.error('Token not found!');
+      return new Observable();
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.get<any>(this.baseUrl, { headers });
   }
 }

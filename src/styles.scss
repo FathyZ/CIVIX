@@ -5,6 +5,9 @@
 $main-Color: #ffa400;
 $secondary-Color:#2a2a72;
 
+
+
+
 *{
     padding: 0;
     margin: 0;
@@ -103,27 +106,6 @@ body{
 }
 
 
-
-.p-datatable {
-  background-color: black !important;
-  color: white !important;
-}
-
-.p-datatable .p-datatable-thead > tr > th {
-  background-color: #222 !important;
-  color: white !important;
-}
-
-.p-datatable .p-datatable-thead > tr > th.p-highlight,
-.p-datatable .p-datatable-thead > tr > th.p-sortable-column {
-  background-color: #444 !important;
-  color: white !important;
-}
-
-.p-datatable .p-datatable-tbody > tr.p-highlight {
-  background-color: #333 !important;
-  color: white !important;
-}
 .p-button-text{
   color: $main-Color !important;
  }
@@ -137,3 +119,4 @@ body{
  .p-carousel-indicator-button {
   background-color: $secondary-Color !important;
  }
+

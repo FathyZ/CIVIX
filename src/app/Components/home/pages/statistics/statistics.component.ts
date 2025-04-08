@@ -1,9 +1,12 @@
+import { Issue, ApiResponse } from './../../../../models/issue';
 import { StatisticsService } from './../../../../Services/statistics.service';
+import { IssuesService } from './../../../../Services/issues.service';
 import { Component, ViewEncapsulation,OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
+import { response } from 'express';
 
 
 @Component({
@@ -18,15 +21,34 @@ export class StatisticsComponent implements OnInit{
 
   taskPerformanceData:any;
   priorityDistributionData:any;
-  
-  
+  issuesCount:any;
+  inProgressCount: number = 0;
+
+
   
 
-  constructor(private statisticsService: StatisticsService, private router: Router){}
+  constructor(private statisticsService: StatisticsService, private router: Router, private issuesService: IssuesService){}
 
   ngOnInit(): void {
     this.loadTaskPerformance();
     this.loadPriorityDistribution();
+    this.getTotalIssues();
+    this.getStatusCounts();
+  }
+
+  getStatusCounts() {
+    this.statisticsService.getIssuesStatusCount().subscribe((data: { name: string, count: number }[]) => {
+      const inProgress = data.find(item => item.name === 'InProgress');
+      this.inProgressCount = inProgress ? inProgress.count : 0;
+    });
+  }
+
+
+  getTotalIssues(){
+    this.issuesService.getTotalIssuesCount().subscribe((data) => {
+      this.issuesCount = data.count;
+    })
+
   }
 
   loadTaskPerformance() {

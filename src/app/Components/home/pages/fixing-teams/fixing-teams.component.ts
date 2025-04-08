@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
+import { FixingTeamsService } from '../../../../Services/fixing-teams.service';
 
 @Component({
   selector: 'app-fixing-teams',
@@ -11,59 +12,66 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './fixing-teams.component.scss'
 })
 export class FixingTeamsComponent {
+
+  teamname: string='';
+
+  constructor(private fixingTeamsService: FixingTeamsService){}
+
+ 
+
   teams = [
     {
       name: 'Engineering Team 1',
-      teamLeader: 'Michael Johnson',
+      teamLeader: 'Ziad Fathy Elsayed',
       members: [
-        { name: 'Sarah Lee' },
-        { name: 'David Smith' },
-        { name: 'Laura Brown' }
+        { name: 'Islam Bahaa', phone: '01234567890' },
+        { name: 'Ahmed Amin', phone: '01234567890' },
+        { name: 'Ahmed Sherif', phone: '01234567890' }
       ]
     },
     {
       name: 'Flooding Team 1',
-      teamLeader: 'Emma Williams',
+      teamLeader: 'Islam Bahaa',
       members: [
-        { name: 'James Wilson' },
-        { name: 'Olivia Davis' },
-        { name: 'Ethan Thomas' }
+        { name: 'Ziad Fathy', phone: '01234567890' },
+        { name: 'Ebram Adel', phone: '01234567890' },
+        { name: 'Hana Adel', phone: '01234567890' }
       ]
     },
     {
       name: 'Graffiti Team 1',
-      teamLeader: 'Daniel Martinez',
+      teamLeader: 'Ahmed Amin',
       members: [
-        { name: 'Sophia White' },
-        { name: 'William Harris' },
-        { name: 'Emily Clark' }
+        { name: 'Ziad Fathy', phone: '01234567890' },
+        { name: 'Ebram Adel', phone: '01234567890' },
+        { name: 'Hana Adel', phone: '01234567890' }
       ]
     },
     {
       name: 'Electricity Team 1',
-      teamLeader: 'Benjamin Moore',
+      teamLeader: 'Ziad Fathy Elsayed',
       members: [
-        { name: 'Liam Anderson' },
-        { name: 'Mia Walker' },
-        { name: 'Noah Young' }
+        { name: 'Islam Bahaa', phone: '01234567890' },
+        { name: 'Ahmed Amin', phone: '01234567890' },
+        { name: 'Ahmed Sherif', phone: '01234567890' }
       ]
     },
     {
       name: 'Manhole Team 1',
-      teamLeader: 'Alexander Scott',
+      teamLeader: 'Islam Bahaa',
       members: [
-        { name: 'Charlotte Hall' },
-        { name: 'Henry King' },
-        { name: 'Grace Adams' }
+        { name: 'Ziad Fathy', phone: '01234567890' },
+        { name: 'Ebram Adel', phone: '01234567890' },
+        { name: 'Hana Adel', phone: '01234567890' }
       ]
     },
     {
       name: 'Garbage Team 1',
-      teamLeader: 'Lucas Green',
+      teamLeader: 'Ahmed Amin',
       members: [
-        { name: 'Amelia Baker' },
-        { name: 'Mason Wright' },
-        { name: 'Isabella Perez' }
+        { name: 'Ziad Fathy', phone: '01234567890' },
+        { name: 'Ebram Adel', phone: '01234567890' },
+        { name: 'Hana Adel', phone: '01234567890' }
       ]
     }
   ];
