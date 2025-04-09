@@ -152,3 +152,49 @@
       font-size: 0.7rem;
   }
 }
+.assignBtn{
+    background-color: $main-Color  ;
+    color: white  ;
+    border-radius: 10px  ;
+    padding: 10px 20px  ;
+    font-size: 1rem  ;
+    margin-top: 10px  ;
+    border: 1px solid transparent  ;
+    cursor: pointer  ;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2)  ;
+    transition: all 0.3s  ;
+    &:hover  {
+      border: 1px solid $main-Color  ;
+      background-color: white  ;
+      color: $main-Color  ;
+    }
+  }
+
+  ::ng-deep .team-dialog .p-dialog-content {
+    width: 50vw;
+   
+  }
+  
+  .team-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2rem 1rem;
+    margin-bottom: 1rem;
+    li{
+      list-style: none;
+
+    }
+    p{
+      font-size: 1.2rem;
+    }
+
+  }
+  
+  .assign-btn {
+    margin-top: 0.5rem;
+  }
+  
+  .p-dialog{
+    background: #09c!important;
+    width: 100%!important;
+  }
