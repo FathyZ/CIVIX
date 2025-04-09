@@ -1,53 +1,69 @@
 <div class="card">
     <div class="search-container">
-        <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input #searchInput type="text" pInputText class="p-inputtext-sm" placeholder="Search issues..." (input)="filterTable($event, dt)">
-        </span>
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          #searchInput
+          type="text"
+          pInputText
+          class="p-inputtext-sm"
+          placeholder="Search issues..."
+          (input)="filterTable($event, dt)"
+        />
+      </span>
     </div>
-    
-    
-
-    <p-table #dt
-        [value]="issues"
-        [paginator]="true"
-        responsiveLayout="scroll"   
-        [scrollable]="true"
-        scrollHeight="505px"
-        [rows]="10"
-        [globalFilterFields]="['title', 'description', 'category', 'priority', 'status']">
-
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
-                <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
-                <th>Location</th>
-                <th>Category</th>
-                <th>Images</th>
-                <th pSortableColumn="priority">Priority <p-sortIcon field="priority"></p-sortIcon></th>
-                <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-            </tr>
-        </ng-template>
-
-        <ng-template pTemplate="body" let-issue>
-            <tr (click)="viewIssue(issue.id)" class="clickable-row">
-                <td>{{ issue.title }}</td>
-                <td>{{ issue.description }}</td>
-                <td>{{ issue.address }}</td>
-                <td>{{ issue.category }}</td>
-                <td>
-                    <img *ngIf="issue.images.length > 0" [src]="issue.images[0]" alt="Issue Image" width="50" height="50" class="rounded-md">
-                    <span *ngIf="issue.images.length === 0">No Image</span>
-                </td>
-                <td [ngClass]="getPriorityClass(issue.priority)">{{ issue.priority }}</td>
-                <td>{{ issue.status }}</td>
-            </tr>
-        </ng-template>
-
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="7" class="text-center">No issues found</td>
-            </tr>
-        </ng-template>
+  
+    <p-table
+      #dt
+      [value]="issues"
+      [paginator]="true"
+      responsiveLayout="scroll"
+      [scrollable]="true"
+      scrollHeight="505px"
+      [rows]="10"
+      [globalFilterFields]="['title', 'description', 'category', 'priority', 'status','location']"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
+          <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
+          <th>Location</th>
+          <th>Category</th>
+          <th>Images</th>
+          <th pSortableColumn="priority">Priority <p-sortIcon field="priority"></p-sortIcon></th>
+          <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+        </tr>
+      </ng-template>
+  
+      <ng-template pTemplate="body" let-issue>
+        <tr (click)="viewIssue(issue.id)" class="clickable-row">
+          <td>{{ issue.title }}</td>
+          <td>{{ issue.description }}</td>
+          <td>{{ issue.address }}</td>
+          <td>{{ issue.category }}</td>
+          <td>
+            <img
+              *ngIf="issue.images.length > 0"
+              [src]="issue.images[0]"
+              alt="Issue Image"
+              width="50"
+              height="50"
+              class="rounded-md"
+            />
+            <span *ngIf="issue.images.length === 0">No Image</span>
+          </td>
+          <td [ngClass]="getPriorityClass(issue.priority)">
+            {{ issue.priority }}
+          </td>
+          <td>{{ issue.status }}</td>
+        </tr>
+      </ng-template>
+  
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="text-center">No issues found</td>
+        </tr>
+      </ng-template>
     </p-table>
-</div>
+  </div>
+  
