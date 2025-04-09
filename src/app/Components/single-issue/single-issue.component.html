@@ -1,4 +1,6 @@
 <div class="issueContainer">
+    <p-toast></p-toast>
+
     <div class="container-fluid">
         <div class="row">
         <div class=" bgshadow issueCard col-lg-6 col-12 " *ngIf="issue">
@@ -27,12 +29,6 @@
             <span class="hover-text">View Full Image</span>
         </div>
     </div>
-        <!-- Show single image if there's only one -->
-        <!-- <img *ngIf="issue.images?.length === 1" 
-            [src]="issue.images[0]" 
-            class="carousel-img clickable-img"
-            (click)="openFullScreen(issue.images[0])" 
-            alt="Issue Image"> -->
 
 
             <p class="fw-bold">Issue Id: {{ issue?.id }} </p>
@@ -54,6 +50,7 @@
                     
                 </div>  
             </div>
+            <button class="assignBtn" (click)="toggleTeamPopup()">Assign Issue</button>
         </div>
         
     </div>
@@ -71,3 +68,21 @@
     </div>
 </div>
 
+<p-dialog header="Assign to Fixing Team" [(visible)]="showTeamPopup" modal="true" class="team-dialog">
+    <ng-container *ngIf="fixingTeams.length; else loadingOrError">
+        <div *ngFor="let team of fixingTeams" class="team-card">
+            <h4 class="mb-1">{{ team.category }}</h4>
+            <p class="mb-1"><span class="fw-bold">Leader :</span> {{ team.teamLeaderName }} ({{ team.teamLeaderEmail }})</p>
+            <p class="mb-1"><span class="fw-bold">Members :</span></p>
+            <ul class="mb-1">
+                <li *ngFor="let member of team.teamMembers">
+                    {{ member.name }} - {{ member.jobTitle }} ({{ member.age }} y/o)
+                </li>
+            </ul>
+            <button class="assignBtn" (click)="assignToTeam(team.id)">Assign This Team</button>
+        </div>
+    </ng-container>
+    <ng-template #loadingOrError>
+        <p>Loading teams or something went wrong.</p>
+    </ng-template>
+</p-dialog>

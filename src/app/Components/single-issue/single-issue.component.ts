@@ -5,11 +5,18 @@ import { IssuesService } from '../../Services/issues.service';
 import { CommonModule } from '@angular/common';
 import { CarouselModule } from 'primeng/carousel'; 
 import { tap } from 'rxjs/operators';
+import { DialogModule } from 'primeng/dialog';
+import { HttpClient } from '@angular/common/http';
+import { FixingTeam } from '../../models/fixingTeams'; // if you create the interface
+import { FixingTeamsService } from '../../Services/fixing-teams.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-single-issue',
   standalone: true,
-  imports: [CommonModule, CarouselModule],
+  imports: [CommonModule, CarouselModule,DialogModule,ToastModule],
+  providers: [MessageService],
   templateUrl: './single-issue.component.html',
   styleUrl: './single-issue.component.scss'
 })
@@ -21,9 +28,47 @@ export class SingleIssueComponent implements OnInit {
 
   private map!: L.Map;
   private L!: any; // Store Leaflet dynamically
+  showTeamPopup = false;
+  fixingTeams: FixingTeam[] = [];
 
-  constructor(private route: ActivatedRoute, private issueService: IssuesService, private geocodingService: GeocodingService) {}
-
+  constructor(private route: ActivatedRoute, private issueService: IssuesService, private geocodingService: GeocodingService ,   private fixingTeamsService: FixingTeamsService  ,   private messageService: MessageService  ) {}
+  toggleTeamPopup(): void {
+    this.showTeamPopup = !this.showTeamPopup;
+  
+    if (this.showTeamPopup && this.fixingTeams.length === 0) {
+      this.fixingTeamsService.getAllTeams().subscribe({
+        next: (teams) => {
+          this.fixingTeams = teams;
+        },
+        error: (err) => {
+          console.error('Failed to load fixing teams', err);
+          alert('Could not fetch teams.');
+        }
+      });
+    }
+  }
+  assignToTeam(teamId: number) {
+    const issueId = this.issue.id;
+    this.fixingTeamsService.assignIssueToTeam(issueId, teamId).subscribe({
+      next: () => {
+        this.showTeamPopup = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Assigned Successfully',
+          detail: 'The issue has been assigned to the selected team.',
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Assignment Failed',
+          detail: 'Something went wrong while assigning the issue.',
+        });
+        console.error('Assignment failed:', err);
+      }
+    });
+  }
+   
   ngOnInit() {
     const issueId = this.route.snapshot.paramMap.get('id');
     if (!issueId) {

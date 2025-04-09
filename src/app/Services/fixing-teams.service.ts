@@ -26,4 +26,18 @@ export class FixingTeamsService {
     return this._HttpClient.get<any>(`${this.baseUrl}FixingTeams`, { headers });
   }
 
-}
+  assignIssueToTeam(issueId: number, teamId: number): Observable<any> {
+    const token = localStorage.getItem('_token');
+    if (!token) {
+      console.error('Token not found!');
+      return new Observable(); // Prevent API call
+    }
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+  
+    const url = `https://civix.runasp.net/api/issues/${issueId}/assign/${teamId}`;
+    return this._HttpClient.post(url, {}, { headers }); // ✅ Using POST as per docs
+  }}
