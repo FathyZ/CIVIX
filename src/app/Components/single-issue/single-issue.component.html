@@ -37,7 +37,8 @@
 
             <p class="fw-bold">Issue Id: {{ issue?.id }} </p>
             <p> <span class="fw-bold"> Address :</span> {{issue.address}}</p>
-            <p>Latitude : {{issue.latitude }} , Longitude : {{issue.longitude}} </p>
+            <p><span class="fw-bold"> Latitude :</span>{{issue.latitude }} ,<span class="fw-bold"> Longitude :</span> {{issue.longitude}} </p>
+            <p><span><a href="http://maps.google.com/maps?q={{issue.latitude}},{{issue.longitude}}" target="_blank"> Go To Location </a></span> </p>
             <p> <span class="fw-bold">Category:</span> {{ issue?.category }}</p>
             <p> <span class="fw-bold">Priority:</span> {{ issue?.priority }} </p>
             <p> <span class="fw-bold">Description:</span> {{ issue?.description }}</p>
