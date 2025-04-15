@@ -1,88 +1,90 @@
 <div class="card">
-<div class="teams-table">
-  <p-table
-    [value]="teams"
-    dataKey="name"
-    rowGroupMode="subheader"
-    groupRowsBy="name"
-    [tableStyle]="{'width': '100%'}"
-  >
-    <!-- Table Header -->
-    <ng-template pTemplate="header">
-      <tr>
-        <th><span>Team Name</span></th>
-        <th><span>Status</span></th>
-        <th><span>Assigned Issues</span></th>
-        <th><span>Actions</span></th>
-      </tr>
-    </ng-template>
+  <div class="teams-table">
+    <p-table
+      [value]="teams"
+      dataKey="category"
+      rowGroupMode="subheader"
+      groupRowsBy="category"
+      [tableStyle]="{ width: '100%' }"
+    >
+      <!-- Table Header -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th><span>Team Name</span></th>
+          <th><span>Status</span></th>
+          <th><span>No. of Assigned Issues</span></th>
+          <th><span>Actions</span></th>
+        </tr>
+      </ng-template>
 
-    <!-- Group Header (Expandable Row) -->
-    <ng-template pTemplate="groupheader" let-team let-expanded="expanded">
-      <tr class="group-header">
-        <td colspan="4">
-          <div class="header-content">
+      <!-- Group Header (Expandable Row) -->
+      <ng-template pTemplate="groupheader" let-team let-expanded="expanded">
+        <tr class="group-header">
+          <td colspan="4">
+            <div class="header-content">
+              <button
+                type="button"
+                pButton
+                pRipple
+                [pRowToggler]="team"
+                text
+                rounded
+                plain
+                class="toggle-btn"
+                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+              ></button>
+              <span class="team-name">{{ team.category }}</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <!-- Expanded Row -->
+      <ng-template pTemplate="rowexpansion" let-team>
+        <tr class="expanded-row">
+          <td>
+            <strong><i class="pi pi-crown" style="color:#ffa400"></i> Team Leader:</strong>
+            <p class="mb-2"><strong>{{ team.teamLeaderName }}</strong></p>
+
+            <div class="members-section">
+              <div class="members-headers">
+                <strong><i class="pi pi-users" style="color:#ffa400"></i> Members</strong>
+                <strong><i class="pi pi-phone" style="color:#ffa400"></i> Phone Numbers</strong>
+              </div>
+
+              <ul>
+                <li *ngFor="let member of team.teamMembers">
+                  <span class="member-name">{{ member.name }}</span>
+                  <span class="phone-number">{{ member.phoneNumber }}</span>
+                </li>
+              </ul>
+            </div>
+          </td>
+          <td>Busy</td>
+          <td>4</td>
+          <td>
             <button
               type="button"
               pButton
               pRipple
-              [pRowToggler]="team"
               text
               rounded
               plain
-              class="toggle-btn"
-              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+              class="action-btn"
+              icon="pi pi-ellipsis-h"
             ></button>
-            <span class="team-name">{{ team.name }}</span>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
+          </td>
+        </tr>
+      </ng-template>
 
-    <!-- Expanded Row -->
-    <ng-template pTemplate="rowexpansion" let-team>
-      <tr class="expanded-row">
-        <td> 
-          <strong><i class="pi pi-crown" style="color:#ffa400"></i> Team Leader:</strong>
-          <p class="mb-2"><strong>{{ team.teamLeader }}</strong></p>
-          <div class="members-section">
-            <div class="members-headers">
-              <strong><i class="pi pi-users" style="color:#ffa400"></i> Members</strong>
-              <strong><i class="pi pi-phone" style="color:#ffa400"></i> Phone Numbers</strong>
-            </div>
-            <ul>
-              <li *ngFor="let member of team.members">
-                <span class="member-name">{{ member.name }}</span>
-                <span class="phone-number">{{ member.phone }}</span>
-              </li>
-            </ul>
-          </div>
-        </td>
-        <td>Busy</td>
-        <td>4</td>
-        <td>
-          <button
-            type="button"
-            pButton
-            pRipple
-            text
-            rounded
-            plain
-            class="action-btn"
-            icon="pi pi-ellipsis-h"
-          ></button>
-        </td>
-      </tr>
-    </ng-template>
-
-    <!-- Group Footer -->
-    <ng-template pTemplate="groupfooter" let-team>
-      <tr class="group-footer">
-        <td colspan="2">Total Members</td>
-        <td>{{ getTotalMembers(team.name)+1 }}</td>
-        <td></td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
+      <!-- Group Footer -->
+      <ng-template pTemplate="groupfooter" let-team>
+        <tr class="group-footer">
+          <td colspan="2">Total Members</td>
+          <td>{{ getTotalMembers(team.category) }}</td>
+          <td></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </div>

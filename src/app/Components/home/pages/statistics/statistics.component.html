@@ -1,92 +1,80 @@
-
-
 <div class="container-fluid">
-  <div class=" card-container p-0">
+  <div class="card-container p-0">
     <div class="row w-100 justify-content-between bgshadow g-0">
-    <div class="col-lg-3 col-md-6 col-12 p-2">
-        <div class="card ">
-            <div class="card-heading">
-                <p class="fw-bold">New Issues Today </p>
-                <i class="pi pi-flag-fill"></i>
-            </div>
-            <p class="card-num">18</p>
-            <p class="card-footing"> <span></span>Reported in the last 24 hours</p>
+      <div class="col-lg-3 col-md-6 col-12 p-2">
+        <div class="card">
+          <div class="card-heading">
+            <p class="fw-bold">New Issues Today</p>
+            <i class="pi pi-flag-fill"></i>
+          </div>
+          <p class="card-num">18</p>
+          <p class="card-footing"> <span></span>Reported in the last 24 hours</p>
         </div>
-    </div>
-       <div class="col-lg-3 col-md-6 col-12 p-2">
-        
-    <div class="card bg-mc ">
-        <div class="card-heading">
+      </div>
+      <div class="col-lg-3 col-md-6 col-12 p-2">
+        <div class="card bg-mc">
+          <div class="card-heading">
             <p class="fw-bold">Most Common Issue</p>
             <i class="pi pi-flag-fill"></i>
+          </div>
+          <p class="card-num">132</p>
+          <p class="card-footing"> <span>Pothole</span></p>
         </div>
-        <p class="card-num">132</p>
-        <p class="card-footing"> <span>Pothole</span></p>
-
-    </div>
-</div>
-<div class=" col-lg-3 col-md-6 col-12 p-2">
-    <div class="card">
-        <div class="card-heading">
+      </div>
+      <div class="col-lg-3 col-md-6 col-12 p-2">
+        <div class="card">
+          <div class="card-heading">
             <p class="fw-bold">Issues in Progress</p>
             <i class="pi pi-flag-fill"></i>
+          </div>
+          <p class="card-num">{{inProgressCount}}</p>
+          <p class="card-footing"> <span></span>Currently being worked on</p>
         </div>
-        <p class="card-num">{{inProgressCount}}</p>
-        <p class="card-footing"> <span></span>Currently being worked on</p>
-
-    </div>
-</div>
-<div class="col-lg-3 col-md-6 col-12 p-2">
-    <div class="card bg-mc">
-        <div class="card-heading">
+      </div>
+      <div class="col-lg-3 col-md-6 col-12 p-2">
+        <div class="card bg-mc">
+          <div class="card-heading">
             <p class="fw-bold">Unassigned Issues</p>
             <i class="pi pi-flag-fill"></i>
-        </div>
-        <p class="card-num">3</p>
-        <p class="card-footing"> <span></span>Issues that haven't been assigned to a team yet</p>
-
-    </div>
-</div>
-    </div>
-</div>
-    <div class="row justify-content-between">
-        <div class="col-md-5 doughnutChartDiv"  *ngIf="taskPerformanceData">
-            <h4>Task Performance</h4>
-            <p-chart type="doughnut" [data]="taskPerformanceData" [options]="DoughnutChartOptions"></p-chart>
-        </div>
-
-        <div class="col-md-6 barChartDiv" *ngIf="priorityDistributionData">
-            <h4>Priority Distribution</h4>
-            <p>Total Issues: {{ issuesCount }}</p>
-            <p-chart type="bar" [data]="priorityDistributionData" [options]="barChartOptions"></p-chart>
-        </div>
-    </div>
-    <div class="row my-4">
-        <div class="col-md-12 p-0">
-            <h4>Most Reported Issues</h4>
-
-            <p-table [value]="issues" stripedRows>
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th>Count</th>
-                    <th>Issue Name</th>
-                    <th>Priority</th>
-                    <th>Status</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-issue>
-                  <tr>
-                    <td>{{ issue.issueCount }}</td>
-                    <td>{{ issue.name }}</td>
-                    <td>{{ issue.priority }}</td>
-                    <td>{{ issue.status }}</td>
-                  </tr>
-                </ng-template>
-              </p-table>
-              
-              
-
           </div>
-          
+          <p class="card-num">3</p>
+          <p class="card-footing"> <span></span>Issues that haven't been assigned to a team yet</p>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="row justify-content-between">
+    <div class="col-md-5 doughnutChartDiv" *ngIf="taskPerformanceData">
+      <h4>Task Performance</h4>
+      <p-chart type="doughnut" [data]="taskPerformanceData" [options]="DoughnutChartOptions"></p-chart>
+    </div>
+    <div class="col-md-6 barChartDiv" *ngIf="priorityDistributionData">
+      <h4>Priority Distribution</h4>
+      <p>Total Issues: {{ issuesCount }}</p>
+      <p-chart type="bar" [data]="priorityDistributionData" [options]="barChartOptions"></p-chart>
+    </div>
+  </div>
+  <div class="row my-4">
+    <div class="col-md-12 p-0">
+      <h4>Most Reported Issues</h4>
+      <p-table [value]="issues" stripedRows>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Count</th>
+            <th>Issue Name</th>
+            <th>Priority</th>
+            <th>Status</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-issue>
+          <tr>
+            <td>{{ issue.issueCount }}</td>
+            <td>{{ issue.name }}</td>
+            <td>{{ issue.priority }}</td>
+            <td>{{ issue.status }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
 </div>

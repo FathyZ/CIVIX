@@ -1,13 +1,11 @@
 import { Issue, ApiResponse } from './../../../../models/issue';
 import { StatisticsService } from './../../../../Services/statistics.service';
 import { IssuesService } from './../../../../Services/issues.service';
-import { Component, ViewEncapsulation,OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
-import { response } from 'express';
-
 
 @Component({
   selector: 'app-statistics',
@@ -17,17 +15,14 @@ import { response } from 'express';
   styleUrl: './statistics.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class StatisticsComponent implements OnInit{
+export class StatisticsComponent implements OnInit {
 
-  taskPerformanceData:any;
-  priorityDistributionData:any;
-  issuesCount:any;
+  taskPerformanceData: any;
+  priorityDistributionData: any;
+  issuesCount: any;
   inProgressCount: number = 0;
 
-
-  
-
-  constructor(private statisticsService: StatisticsService, private router: Router, private issuesService: IssuesService){}
+  constructor(private statisticsService: StatisticsService, private router: Router, private issuesService: IssuesService) { }
 
   ngOnInit(): void {
     this.loadTaskPerformance();
@@ -43,41 +38,21 @@ export class StatisticsComponent implements OnInit{
     });
   }
 
-
-  getTotalIssues(){
+  getTotalIssues() {
     this.issuesService.getTotalIssuesCount().subscribe((data) => {
       this.issuesCount = data.count;
-    })
-
+    });
   }
 
   loadTaskPerformance() {
     this.statisticsService.getTaskPerformance().subscribe((data: { name: string; count: number }[]) => {
-      
-  
       if (data && data.length) {
         this.taskPerformanceData = {
-          labels: data.map((item) => item.name), 
-          datasets: [
-            {
-              data: data.map((item) => item.count), 
-              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-            }
-          ]
-        };
-      } 
-    });
-  }
-  
-  loadPriorityDistribution() {
-    this.statisticsService.getPriorityDistribution().subscribe((data: { name: string; count: number }[]) => {
-      if (data && data.length) {
-        this.priorityDistributionData = {
           labels: data.map((item) => item.name),
           datasets: [
             {
               data: data.map((item) => item.count),
-              backgroundColor: ['#dc3545', '#8B0000', '#FFFF00']
+              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
             }
           ]
         };
@@ -85,6 +60,27 @@ export class StatisticsComponent implements OnInit{
     });
   }
 
+  loadPriorityDistribution() {
+    this.statisticsService.getPriorityDistribution().subscribe((data: { name: string; count: number }[]) => {
+      // Define all possible priorities, even with 0 values.
+      const allPriorities = ['High', 'Medium', 'Low'];
+      const priorityData = allPriorities.map(priority => {
+        const priorityItem = data.find(item => item.name === priority);
+        return priorityItem ? priorityItem.count : 0;
+      });
+
+      // Update the chart data
+      this.priorityDistributionData = {
+        labels: allPriorities,
+        datasets: [
+          {
+            data: priorityData,
+            backgroundColor: ['#dc3545', '#8B0000', '#FFFF00'],
+          },
+        ],
+      };
+    });
+  }
 
   DoughnutChartOptions = {
     responsive: true,
@@ -92,21 +88,19 @@ export class StatisticsComponent implements OnInit{
     plugins: {
       legend: {
         labels: {
-          padding:20,
-          color: 'white' ,
+          padding: 20,
+          color: 'white',
           font: {
             weight: 'bold', // Make text bold
             size: 13, // Adjust font size if needed
           },
         },
-        position: 'bottom' 
+        position: 'bottom'
       }
-
-      
     },
     onClick: (event: any, elements: any, chart: any) => {
       console.log('Chart clicked!', event, elements);
-    
+
       if (elements && elements.length > 0) {
         console.log('Navigating to Active Issues page...');
         this.router.navigate(['/home/active-issues']);
@@ -115,9 +109,6 @@ export class StatisticsComponent implements OnInit{
   };
 
   // BarChart
-
-
-  
   barChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -143,14 +134,18 @@ export class StatisticsComponent implements OnInit{
         }
       }
     },
+    elements: {
+      bar: {
+        barThickness: 10,
+        borderRadius: 20,
+      }
+    },
     plugins: {
       legend: {
         display: false
       }
     }
   };
-  
-
 
   issues = [
     { issueCount: 26, name: 'Pothole', priority: 'High', status: 'Open' },

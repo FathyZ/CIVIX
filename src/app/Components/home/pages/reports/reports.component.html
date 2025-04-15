@@ -1,0 +1,35 @@
+<div class="allPageContainer">
+  <div id="report-content">
+    <div class="img w-100">
+      <img src="../../../../../assets/civix_ 1.png" class="w-25" alt="">
+    </div>
+    <div class="header">
+      <h1>Issue Report</h1>
+      <p>Region: {{ regionName }}</p>
+      <p>Date: {{ today | date: 'short' }}</p>
+    </div>
+
+    <div class="stats">
+      <div *ngFor="let stat of stats" class="stat">
+        <i [class]="stat.icon"></i>
+        <p>{{ stat.label }}: {{ stat.value }}</p>
+      </div>
+    </div>
+
+    <div class="issues">
+      <div *ngFor="let issue of issues" class="issue">
+        <h3>{{ issue.title }}</h3>
+        <p>Status: {{ issue.status }}</p>
+        <p>Location: {{ issue.location }}</p>
+        <p>Assigned Team: {{ issue.assignedTeam }}</p>
+        <p>Priority: {{ issue.priority }}</p>
+        <p>Description: {{ issue.description }}</p>
+        <p>Date Reported: {{ issue.dateReported | date: 'short' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="downloadBtn" (click)="downloadReport()">
+    <i class="fa fa-download"></i> Download Report
+  </button>
+</div>

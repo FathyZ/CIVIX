@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { FixingTeamsService } from '../../../../Services/fixing-teams.service';
+import { FixingTeam } from '../../../../models/fixingTeams';
 
 @Component({
   selector: 'app-fixing-teams',
@@ -12,72 +13,24 @@ import { FixingTeamsService } from '../../../../Services/fixing-teams.service';
   styleUrl: './fixing-teams.component.scss'
 })
 export class FixingTeamsComponent {
+  teamname: string = '';
+  teams: FixingTeam[] = [];
 
-  teamname: string='';
+  constructor(private fixingTeamsService: FixingTeamsService) {}
 
-  constructor(private fixingTeamsService: FixingTeamsService){}
+  ngOnInit(): void {
+    this.getAllTeams();
+  }
 
- 
-
-  teams = [
-    {
-      name: 'Engineering Team 1',
-      teamLeader: 'Ziad Fathy Elsayed',
-      members: [
-        { name: 'Islam Bahaa', phone: '01234567890' },
-        { name: 'Ahmed Amin', phone: '01234567890' },
-        { name: 'Ahmed Sherif', phone: '01234567890' }
-      ]
-    },
-    {
-      name: 'Flooding Team 1',
-      teamLeader: 'Islam Bahaa',
-      members: [
-        { name: 'Ziad Fathy', phone: '01234567890' },
-        { name: 'Ebram Adel', phone: '01234567890' },
-        { name: 'Hana Adel', phone: '01234567890' }
-      ]
-    },
-    {
-      name: 'Graffiti Team 1',
-      teamLeader: 'Ahmed Amin',
-      members: [
-        { name: 'Ziad Fathy', phone: '01234567890' },
-        { name: 'Ebram Adel', phone: '01234567890' },
-        { name: 'Hana Adel', phone: '01234567890' }
-      ]
-    },
-    {
-      name: 'Electricity Team 1',
-      teamLeader: 'Ziad Fathy Elsayed',
-      members: [
-        { name: 'Islam Bahaa', phone: '01234567890' },
-        { name: 'Ahmed Amin', phone: '01234567890' },
-        { name: 'Ahmed Sherif', phone: '01234567890' }
-      ]
-    },
-    {
-      name: 'Manhole Team 1',
-      teamLeader: 'Islam Bahaa',
-      members: [
-        { name: 'Ziad Fathy', phone: '01234567890' },
-        { name: 'Ebram Adel', phone: '01234567890' },
-        { name: 'Hana Adel', phone: '01234567890' }
-      ]
-    },
-    {
-      name: 'Garbage Team 1',
-      teamLeader: 'Ahmed Amin',
-      members: [
-        { name: 'Ziad Fathy', phone: '01234567890' },
-        { name: 'Ebram Adel', phone: '01234567890' },
-        { name: 'Hana Adel', phone: '01234567890' }
-      ]
-    }
-  ];
+  getAllTeams() {
+    this.fixingTeamsService.getAllTeams().subscribe((response) => {
+      this.teams = response;
+      console.log(this.teams);
+    });
+  }
 
   getTotalMembers(teamName: string): number {
-    const team = this.teams.find(t => t.name === teamName);
-    return team ? team.members.length : 0;
+    const team = this.teams.find(t => t.category === teamName);
+    return team ? team.teamMembers.length : 0;
   }
 }
