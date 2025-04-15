@@ -17,7 +17,7 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: start;
     border: none;
     background-color: white;
@@ -155,7 +155,7 @@
 .assignBtn{
     background-color: $main-Color  ;
     color: white  ;
-    border-radius: 10px  ;
+    border-radius: 20px  ;
     padding: 10px 20px  ;
     font-size: 1rem  ;
     margin-top: 10px  ;
@@ -190,11 +190,45 @@
 
   }
   
-  .assign-btn {
-    margin-top: 0.5rem;
-  }
   
   .p-dialog{
     background: #09c!important;
     width: 100%!important;
   }
+  .deleteBtn{
+    background-color: tomato  ;
+    color: white  ;
+    border-radius: 20px  ;
+    padding: 10px 20px  ;
+    font-size: 1rem  ;
+    margin-top: 10px  ;
+    border: 1px solid transparent  ;
+    cursor: pointer  ;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2)  ;
+    transition: all 0.3s  ;
+    &:hover  {
+      border: 1px solid tomato  ;
+      background-color: white  ;
+      color: tomato  ;
+    }
+  }
+  .updateBtn{
+    background-color: #5ed61f  ;
+    color: white  ;
+    border-radius: 20px  ;
+    padding: 10px 20px  ;
+    font-size: 1rem  ;
+    margin-top: 10px  ;
+    border: 1px solid transparent  ;
+    cursor: pointer  ;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2)  ;
+    transition: all 0.3s  ;
+    &:hover  {
+      border: 1px solid #5ed61f  ;
+      background-color: white  ;
+      color: #5ed61f  ;
+    }
+  }
+.btnContainer{
+  align-self: flex-end;
+}

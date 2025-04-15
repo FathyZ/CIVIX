@@ -2,7 +2,7 @@
     <p-toast></p-toast>
 
     <div class="container-fluid">
-        <div class="row">
+        <div class="row justify-content-between">
         <div class=" bgshadow issueCard col-lg-6 col-12 " *ngIf="issue">
             
             <p-carousel 
@@ -43,17 +43,64 @@
             <p> <span class="fw-bold">Reported By:</span> {{ issue?.createdById }}</p>
         </div>
 
-        <div class="col-lg-6 col-12 ps-lg-2 ">
-            <div class="bgshadow ">
-    
-                <div id="map" >
-                    
-                </div>  
+        <div class=" bgshadow issueCard col-lg-6 col-12 " *ngIf="issue">
+            
+            <p-carousel 
+            class="w-100" *ngIf="issue.images && issue.images.length > 1"
+                [value]="issue.images"
+                [numVisible]="1"
+                [numScroll]="1"
+                >
+        <ng-template pTemplate="item" let-imageUrl>
+            <div class="clickable-img-wrapper" (click)="openFullScreen(imageUrl)">
+                <img #carouselImg [src]="imageUrl" class="carousel-img clickable-img" alt="Issue Image">
+                <div class="hover-overlay">
+                    <i class="pi pi-search"></i>
+                    <span class="hover-text">View Full Image</span>
+                </div>
             </div>
-            <button class="assignBtn" (click)="toggleTeamPopup()">Assign Issue</button>
+        </ng-template>
+    </p-carousel>
+
+    <div class="clickable-img-wrapper" *ngIf="issue.images?.length === 1" (click)="openFullScreen(issue.images[0])">
+        <img [src]="issue.images[0]" class="carousel-img clickable-img" alt="Issue Image">
+        <div class="hover-overlay">
+            <i class="pi pi-search"></i>
+            <span class="hover-text">View Full Image</span>
         </div>
-        
     </div>
+
+
+            <p class="fw-bold">Issue Id: {{ issue?.id }} </p>
+            <p> <span class="fw-bold"> Address :</span> {{issue.address}}</p>
+            <p><span class="fw-bold"> Latitude :</span>{{issue.latitude }} ,<span class="fw-bold"> Longitude :</span> {{issue.longitude}} </p>
+            <p><span><a href="http://maps.google.com/maps?q={{issue.latitude}},{{issue.longitude}}" target="_blank"> Go To Location </a></span> </p>
+            <p> <span class="fw-bold">Category:</span> {{ issue?.category }}</p>
+            <div class="btnContainer d-flex align-items-center justify-content-around w-100 mb-4">
+                <button class="assignBtn" (click)="toggleTeamPopup()">Assign Issue</button>
+                <button class="updateBtn" (click)="toggleTeamPopup()">Update Status</button>
+                <button class="deleteBtn" (click)="toggleTeamPopup()">Delete Issue</button>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-3">
+            <div class="col-lg-10 col-12  ">
+                <div class="bgshadow ">
+        
+                    <div id="map" >
+                        
+                    </div>  
+                </div>
+
+            </div>
+            <div class="col-lg-6 d-flex align-items-center justify-content-around">
+
+            </div>
+        </div>    
+         
+        
+        
+        </div>
     </div>
 </div>
 
