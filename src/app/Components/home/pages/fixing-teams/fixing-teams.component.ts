@@ -25,7 +25,6 @@ export class FixingTeamsComponent {
   getAllTeams() {
     this.fixingTeamsService.getAllTeams().subscribe((response) => {
       this.teams = response;
-      console.log(this.teams);
     });
   }
 

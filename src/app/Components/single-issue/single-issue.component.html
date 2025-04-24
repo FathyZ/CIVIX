@@ -75,13 +75,43 @@
             <p> <span class="fw-bold"> Address :</span> {{issue.address}}</p>
             <p><span class="fw-bold"> Latitude :</span>{{issue.latitude }} ,<span class="fw-bold"> Longitude :</span> {{issue.longitude}} </p>
             <p><span><a href="http://maps.google.com/maps?q={{issue.latitude}},{{issue.longitude}}" target="_blank"> Go To Location </a></span> </p>
+            <p><span class="fw-bold">Description:</span> ...</p>
             <p> <span class="fw-bold">Category:</span> {{ issue?.category }}</p>
             <div class="btnContainer d-flex align-items-center justify-content-around w-100 mb-4">
                 <button class="assignBtn" (click)="toggleTeamPopup()">Assign Issue</button>
-                <button class="updateBtn" (click)="toggleTeamPopup()">Update Status</button>
-                <button class="deleteBtn" (click)="toggleTeamPopup()">Delete Issue</button>
+                <button class="updateBtn" (click)="openUpdateStatusDialog()">Update Status</button>
+                <button class="deleteBtn" (click)="openDeleteDialog()">Delete Issue</button>
             </div>
         </div>
+
+        <dialog #UpdateStatusDialog id="UpdateStatusDialog">
+            <h2>Update Status</h2>
+    
+            <p-dropdown 
+              [(ngModel)]="selectedStatus" 
+              [options]="statusOptions" 
+              optionLabel="label" 
+              optionValue="value" 
+              placeholder="Select Status" class="my-3">
+            </p-dropdown>
+          
+            <div class="button-group">
+              <button type="button" class="greyButton" (click)="closeUpdateStatusDialog()">Cancel</button>
+              <button type="button" (click)="updateStatus()">Update</button>
+            </div>
+          </dialog>
+          
+          
+          
+
+        <dialog #ConfirmDeleteDialog>
+            <h2>Delete Issue</h2>
+            <p>Are you sure you want to delete this issue?</p>
+            <div>
+              <button type="button" class="greyButton" (click)="closeConfirmDeleteDialog()">Cancel</button>
+              <button type="button" class="confirmDeleteBtn" (click)="deleteIssue()">Delete</button>
+            </div>
+          </dialog>
 
         <div class="row justify-content-center mt-3">
             <div class="col-lg-10 col-12  ">

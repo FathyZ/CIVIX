@@ -60,8 +60,13 @@
               </ul>
             </div>
           </td>
-          <td>Busy</td>
-          <td>4</td>
+          <td>
+            <span [ngStyle]="{ color: team.availabilityStatus === 'Busy' ? 'red' : 'green' }">
+              {{ team.availabilityStatus }}
+            </span>
+          </td>
+          
+          <td>{{team.issueCount}}</td>
           <td>
             <button
               type="button"

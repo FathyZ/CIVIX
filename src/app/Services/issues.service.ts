@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse, Issue } from '../models/issue';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -50,4 +51,25 @@ export class IssuesService {
 
     return this.http.get<ApiResponse>(`${this.apiUrl}`, { headers });
   }
+
+  deleteIssue(id: string): Observable<any> {
+    const token = localStorage.getItem('_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers });
+  }
+
+
+
+updateIssueStatus(id: string, status: string): Observable<any> {
+  const token = localStorage.getItem('_token');
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+  });
+
+  return this.http.put<any>(`${this.apiUrl}/${id}/toggle-status/${status}`, null, { headers });
+}
+
 }

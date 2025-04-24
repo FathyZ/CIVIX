@@ -83,14 +83,20 @@
 }
 
 
-
-
-
 p-chart canvas {
     width: 100% !important;
     height: 230px !important;
   }
 
+
+  .chartsContainer{
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    
+  }
   
 
   .doughnutChartDiv, .barChartDiv {
@@ -98,8 +104,8 @@ p-chart canvas {
     color: white;
     border-radius: 10px;
     padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   }
-
 
   .container .row {
     display: flex;
@@ -110,5 +116,18 @@ p-chart canvas {
   .card-container, .doughnutChartDiv, .barChartDiv {
     max-width: 100%; /* Ensures they don’t stretch beyond screen */
     overflow: hidden;
+  }
+  
+  .trendIcon{
+    color: green;
+    font-size: 18px;
+  }
+
+  .separator {
+    width: 1.5px;
+    height: 70%;
+    border-radius: 10px;
+    background-color: #ccc;
+    opacity: 0.5;
   }
   

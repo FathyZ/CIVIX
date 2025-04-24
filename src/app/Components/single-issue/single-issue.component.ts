@@ -11,11 +11,15 @@ import { FixingTeam } from '../../models/fixingTeams'; // if you create the inte
 import { FixingTeamsService } from '../../Services/fixing-teams.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { Router } from '@angular/router';
+import { fadeInOut, popInOut, slideInOut } from '../../animations';
+import { FormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown'; 
 
 @Component({
   selector: 'app-single-issue',
   standalone: true,
-  imports: [CommonModule, CarouselModule,DialogModule,ToastModule],
+  imports: [CommonModule, CarouselModule,DialogModule,ToastModule,FormsModule,DropdownModule],
   providers: [MessageService],
   templateUrl: './single-issue.component.html',
   styleUrl: './single-issue.component.scss'
@@ -24,14 +28,29 @@ export class SingleIssueComponent implements OnInit {
   issue: any;  
   @ViewChild('carouselImg') carouselImg!: ElementRef<HTMLImageElement>;
   @ViewChild('singleImage') singleImage!: ElementRef<HTMLImageElement>;
+  @ViewChild('ConfirmDeleteDialog') ConfirmDeleteDialog: any;
+  @ViewChild('UpdateStatusDialog') UpdateStatusDialog: any;
   fullscreenImage: string | null = null;
 
   private map!: L.Map;
   private L!: any; // Store Leaflet dynamically
   showTeamPopup = false;
   fixingTeams: FixingTeam[] = [];
+  selectedStatus: string = 'Open';
 
-  constructor(private route: ActivatedRoute, private issueService: IssuesService, private geocodingService: GeocodingService ,   private fixingTeamsService: FixingTeamsService  ,   private messageService: MessageService  ) {}
+  statusOptions: { label: string, value: string }[] = [
+    { label: 'Open', value: 'Open' },
+    { label: 'In Progress', value: 'InProgress' },
+    { label: 'Resolved', value: 'Resolved' }
+  ];
+
+  constructor(private route: ActivatedRoute,
+     private issueService: IssuesService,
+     private geocodingService: GeocodingService ,
+     private fixingTeamsService: FixingTeamsService  ,
+     private messageService: MessageService,
+    private router: Router) {}
+
   toggleTeamPopup(): void {
     this.showTeamPopup = !this.showTeamPopup;
   
@@ -105,6 +124,83 @@ export class SingleIssueComponent implements OnInit {
         console.error('Error fetching issue:', error);
       }
     );
+  }
+
+
+  deleteIssue(){
+    this.issueService.deleteIssue(this.issue.id).subscribe(
+      () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Issue Deleted',
+          detail: 'The issue has been successfully deleted.',
+        });
+        this.router.navigate(['/home'])
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Deletion Failed',
+          detail: 'Something went wrong while deleting the issue.',
+        });
+        console.error('Deletion failed:', error);
+      }
+    );
+  }
+
+  updateStatus() {
+    const issueId = this.issue.id;
+    const status = this.selectedStatus; 
+  
+    if (!status || !issueId) {
+      alert('Invalid status or issue ID.');
+      return;
+    }
+  
+    this.issueService.updateIssueStatus(issueId, status).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Status Updated',
+          detail: 'The issue status has been successfully updated.',
+        });
+  
+        
+        this.issue.status = status;
+  
+        
+        this.closeUpdateStatusDialog();
+      },
+      error: (err) => {
+        console.error('Error updating status:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Update Failed',
+          detail: 'Something went wrong while updating the issue status.',
+        });
+      }
+    });
+  }
+  
+
+  openDeleteDialog(): void {
+    const dialog = this.ConfirmDeleteDialog.nativeElement as HTMLDialogElement;
+    dialog.showModal();
+    dialog.classList.remove('closing');
+  }
+  
+  closeConfirmDeleteDialog(): void {
+    this.ConfirmDeleteDialog.nativeElement.close();
+  }
+
+  openUpdateStatusDialog(): void {
+    const dialog = this.UpdateStatusDialog.nativeElement as HTMLDialogElement;
+    dialog.showModal();
+    dialog.classList.remove('closing');
+  }
+
+  closeUpdateStatusDialog(): void {
+    this.UpdateStatusDialog.nativeElement.close();
   }
 
   openFullScreen(imageUrl: string): void {
