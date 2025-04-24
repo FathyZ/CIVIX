@@ -12,7 +12,5 @@ export interface TeamMember {
     teamLeaderName: string;
     teamLeaderEmail: string;
     teamMembers: TeamMember[];
-    issueCount: number;
-    avaialabilityStatus: string;
   }
   
