@@ -9,6 +9,8 @@ import { ActiveIssuesComponent } from './Components/home/pages/active-issues/act
 import { FixingTeamsComponent } from './Components/home/pages/fixing-teams/fixing-teams.component';
 import { SingleIssueComponent } from './Components/single-issue/single-issue.component';
 import { ReportsComponent } from './Components/home/pages/reports/reports.component';
+import { SingleIssueReportComponent } from './Components/single-issue-report/single-issue-report.component';
+import { FixingTeamIssuesComponent } from './Components/fixing-team-issues/fixing-team-issues.component';
 
 export const routes: Routes = [
 
@@ -25,7 +27,11 @@ export const routes: Routes = [
         {path:'fixing-teams',component:FixingTeamsComponent},
         {path:'reports',component:ReportsComponent},
         {path:'', redirectTo: 'overview', pathMatch: 'full'},
-         {path:'issue/:id', component:SingleIssueComponent}
+        {path:'issue/:id', component:SingleIssueComponent},
+        { path: 'issue/:id/report', component: SingleIssueReportComponent },
+        { path: 'fixingteamIssues/:id', component: FixingTeamIssuesComponent }
+
+
      ]},
     
 ];

@@ -61,7 +61,7 @@
             </div>
           </td>
           <td>Busy</td>
-          <td>4</td>
+          <td>{{team.issueCount}}</td>
           <td>
             <button
               type="button"
@@ -71,6 +71,7 @@
               rounded
               plain
               class="action-btn"
+              (click)="goToTeamIssues(team.id)"
               icon="pi pi-ellipsis-h"
             ></button>
           </td>

@@ -1,6 +1,6 @@
 import { GeocodingService } from './../../Services/geocoding.service';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { IssuesService } from '../../Services/issues.service';
 import { CommonModule } from '@angular/common';
 import { CarouselModule } from 'primeng/carousel'; 
@@ -15,7 +15,7 @@ import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'app-single-issue',
   standalone: true,
-  imports: [CommonModule, CarouselModule,DialogModule,ToastModule],
+  imports: [CommonModule, CarouselModule,DialogModule,ToastModule,RouterModule],
   providers: [MessageService],
   templateUrl: './single-issue.component.html',
   styleUrl: './single-issue.component.scss'
