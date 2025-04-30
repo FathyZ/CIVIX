@@ -21,6 +21,8 @@ export class StatisticsComponent implements OnInit {
   priorityDistributionData: any;
   issuesCount: any;
   inProgressCount: number = 0;
+  barChartData: any;
+  allCategories: string[] = ['Pothole', 'Streetlight Out', 'Garbage Collection', 'Graffiti', 'Water Leak', 'Manhole'];
 
   constructor(private statisticsService: StatisticsService, private router: Router, private issuesService: IssuesService) { }
 
@@ -29,6 +31,7 @@ export class StatisticsComponent implements OnInit {
     this.loadPriorityDistribution();
     this.getTotalIssues();
     this.getStatusCounts();
+    this.loadCategoryDistribution();
   }
 
   getStatusCounts() {
@@ -99,10 +102,7 @@ export class StatisticsComponent implements OnInit {
       }
     },
     onClick: (event: any, elements: any, chart: any) => {
-      console.log('Chart clicked!', event, elements);
-
       if (elements && elements.length > 0) {
-        console.log('Navigating to Active Issues page...');
         this.router.navigate(['/home/active-issues']);
       }
     },
@@ -117,26 +117,39 @@ export class StatisticsComponent implements OnInit {
       x: {
         beginAtZero: true,
         ticks: {
-          stepSize: 20, // Adjust steps as needed
+          stepSize: 5, // Adjust steps as needed
           color: 'white',
           font: {
             size: 14
           }
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)' // ✅ Light gray grid lines
+        },
+        border: {
+          color: 'rgba(255, 255, 255, 0.2)' // ✅ Light gray border line
         }
       },
       y: {
         ticks: {
+          stepSize: 5,
           color: 'white',
           font: {
             size: 20, // ✅ Make labels more visible
             weight: 'bold'
           }
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)' // ✅ Light gray grid lines
+        },
+        border: {
+          color: 'rgba(255, 255, 255, 0.2)' // ✅ Light gray border line
         }
       }
     },
     elements: {
       bar: {
-        barThickness: 10,
+        barThickness: 5,
         borderRadius: 20,
       }
     },
@@ -146,11 +159,91 @@ export class StatisticsComponent implements OnInit {
       }
     }
   };
+  
+  verticalBarOptions = {
+    responsive:true,
+    maintainAspectRatio:false,
+    scales: {
+      x: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1, // Adjust steps as needed
+          color: 'black',
+          font: {
+            size: 14
+          }
+        }
+      },
+      y: {
+        ticks: {
+          stepSize: 10,
+          color: 'black',
+          font: {
+            size: 14, // ✅ Make labels more visible
+            weight: 'bold'
+          }
+        }
+      }
+    },
+    elements: {
+      bar: {
+        barThickness: 2,
+        borderRadius: 30,
+      }
+    },
+    plugins: {
+      legend: {
+        display: false
+      }
+    }
 
-  issues = [
-    { issueCount: 26, name: 'Pothole', priority: 'High', status: 'Open' },
-    { issueCount: 13, name: 'Streetlight Out', priority: 'Medium', status: 'In Progress' },
-    { issueCount: 41, name: 'Garbage Collection', priority: 'Low', status: 'Resolved' }
-  ];
+  }
+
+
+  loadCategoryDistribution() {
+    this.issuesService.getAllIssuesData().subscribe((response: ApiResponse) => {
+      const issues: Issue[] = response.data || [];
+  
+      // Define the full list of expected categories
+      const allCategories = [
+        'Potholes and Road Damage',
+        'Streetlight Outages',
+        'Garbage and Litter Issues',
+        'Graffiti and Vandalism',
+        'Water Leaks or Drainage Problems',
+        'Manhole'
+      ];
+  
+      // Initialize a map with all categories set to 0
+      const categoryCountMap: { [key: string]: number } = {};
+      allCategories.forEach(category => {
+        categoryCountMap[category] = 0;
+      });
+  
+      // Count actual issues in each category
+      issues.forEach((issue: Issue) => {
+        if (categoryCountMap.hasOwnProperty(issue.category)) {
+          categoryCountMap[issue.category]++;
+        }
+      });
+  
+      // Prepare data for the chart
+      const categoryData = allCategories.map(category => categoryCountMap[category]);
+  
+      this.barChartData = {
+        labels: allCategories,
+        datasets: [
+          {
+            data: categoryData,
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#9575CD', '#FF7043']
+          }
+        ]
+      };
+    });
+  }
+  
+
+
+
 
 }

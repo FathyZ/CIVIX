@@ -7,9 +7,10 @@ import Aura from '@primeng/themes/aura'
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideHttpClient(),provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(),
-    provideAnimationsAsync(), providePrimeNG({theme:{preset: Aura}})]
+    provideAnimationsAsync(), providePrimeNG({theme:{preset: Aura}}), provideAnimations()]
   
 };

@@ -5,8 +5,6 @@ import { ButtonModule } from 'primeng/button';
 import { FixingTeamsService } from '../../../../Services/fixing-teams.service';
 import { FixingTeam } from '../../../../models/fixingTeams';
 import { Router } from '@angular/router';
-
-
 @Component({
   selector: 'app-fixing-teams',
   standalone: true,
@@ -17,8 +15,8 @@ import { Router } from '@angular/router';
 export class FixingTeamsComponent {
   teamname: string = '';
   teams: FixingTeam[] = [];
-
   constructor(private fixingTeamsService: FixingTeamsService , private router:Router) {}
+
 
   goToTeamIssues(teamId: number) {
     this.router.navigate(['/home/fixingteamIssues', teamId]);
@@ -31,7 +29,6 @@ export class FixingTeamsComponent {
   getAllTeams() {
     this.fixingTeamsService.getAllTeams().subscribe((response) => {
       this.teams = response;
-      console.log(this.teams);
     });
   }
 

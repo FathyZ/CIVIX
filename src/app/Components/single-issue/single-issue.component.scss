@@ -232,3 +232,144 @@
 .btnContainer{
   align-self: flex-end;
 }
+
+
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  width: 50%;
+  max-width: 500px;
+  
+  h2{
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: black;
+      margin-bottom: 10px;
+  }
+  p{
+      font-size: 1.2rem;
+      font-weight: 500;
+      color:grey;
+  }
+  button{
+      padding: 0.5rem 1rem;
+      border: solid 1px transparent;
+      background-color: $main-Color;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 500;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+  }
+  .greyButton {
+    background-color: #f0f0f2;
+    color: black;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    
+}
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+
+#UpdateStatusDialog {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fff;
+  overflow: visible;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+#UpdateStatusDialog h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #333;
+  text-align: center;
+}
+
+#UpdateStatusDialog p {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+  margin: 0;
+}
+
+#UpdateStatusDialog .p-dropdown {
+  width: 100%;
+  z-index: 1000;
+}
+
+#UpdateStatusDialog .button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+#UpdateStatusDialog button {
+  flex: 1;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#UpdateStatusDialog .greyButton {
+  background-color: #eee;
+  color: #333;
+}
+
+#UpdateStatusDialog .greyButton:hover {
+  background-color: #ddd;
+}
+
+#UpdateStatusDialog button:not(.greyButton) {
+  background-color: $main-Color;
+  color: #fff;
+}
+
+#UpdateStatusDialog button:not(.greyButton):hover {
+  background-color: $secondary_Color;
+}
+
+
+
+.confirmDeleteBtn{
+  background-color: $main-Color;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.confirmDeleteBtn:hover{
+  background-color: $secondary_Color;
+}

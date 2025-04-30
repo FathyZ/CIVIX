@@ -45,4 +45,3 @@ export class FixingTeamIssuesComponent implements OnInit {
   
 }
 
-

@@ -30,8 +30,6 @@ export const routes: Routes = [
         {path:'issue/:id', component:SingleIssueComponent},
         { path: 'issue/:id/report', component: SingleIssueReportComponent },
         { path: 'fixingteamIssues/:id', component: FixingTeamIssuesComponent }
-
-
      ]},
     
 ];
