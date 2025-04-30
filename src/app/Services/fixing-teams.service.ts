@@ -11,6 +11,20 @@ export class FixingTeamsService {
 
   constructor(private _HttpClient:HttpClient) { }
 
+  getTeamsWithIssues(): Observable<any> {
+    const token = localStorage.getItem('_token');
+    if (!token) {
+      console.error('Token not found!');
+      return new Observable(); // Prevent API call
+    }
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+  
+    return this._HttpClient.get<any>(`${this.baseUrl}FixingTeams/teams-with-issues`, { headers });
+  }
+
   getAllTeams():Observable<any>{
     const token = localStorage.getItem('_token');
     if (!token) {

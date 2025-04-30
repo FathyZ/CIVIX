@@ -138,7 +138,7 @@ export class OverviewComponent implements OnInit, AfterViewInit {
   // Determines CSS class based on issue priority
   getPriorityClass(priority: string) {
     switch (priority.toLowerCase()) {
-      case 'critical':
+      case 'high':
         return 'text-danger fw-bold';
       case 'medium':
         return 'text-warning fw-bold';

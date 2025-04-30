@@ -79,8 +79,12 @@
             <p> <span class="fw-bold">Category:</span> {{ issue?.category }}</p>
             <div class="btnContainer d-flex align-items-center justify-content-around w-100 mb-4">
                 <button class="assignBtn" (click)="toggleTeamPopup()">Assign Issue</button>
+
                 <button class="updateBtn" (click)="openUpdateStatusDialog()">Update Status</button>
                 <button class="deleteBtn" (click)="openDeleteDialog()">Delete Issue</button>
+                <a [routerLink]="['/home/issue', issue.id, 'report']" class="reportBtn">Generate Report</a>
+
+                
             </div>
         </div>
 
