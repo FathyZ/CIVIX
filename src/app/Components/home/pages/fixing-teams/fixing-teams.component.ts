@@ -4,7 +4,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { FixingTeamsService } from '../../../../Services/fixing-teams.service';
 import { FixingTeam } from '../../../../models/fixingTeams';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-fixing-teams',
   standalone: true,
@@ -15,8 +15,12 @@ import { FixingTeam } from '../../../../models/fixingTeams';
 export class FixingTeamsComponent {
   teamname: string = '';
   teams: FixingTeam[] = [];
+  constructor(private fixingTeamsService: FixingTeamsService , private router:Router) {}
 
-  constructor(private fixingTeamsService: FixingTeamsService) {}
+
+  goToTeamIssues(teamId: number) {
+    this.router.navigate(['/home/fixingteamIssues', teamId]);
+  }
 
   ngOnInit(): void {
     this.getAllTeams();
