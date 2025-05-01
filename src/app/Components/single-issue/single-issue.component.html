@@ -2,9 +2,9 @@
     <p-toast></p-toast>
 
     <div class="container-fluid">
-        <div class="row justify-content-between">
+        <div class="row d-flex align-items-stretch justify-content-between">
         <div class=" bgshadow issueCard col-lg-6 col-12 " *ngIf="issue">
-            
+            <h3 class="text-center align-self-center mb-4">Reported Issue</h3>
             <p-carousel 
             class="w-100" *ngIf="issue.images && issue.images.length > 1"
                 [value]="issue.images"
@@ -30,8 +30,8 @@
         </div>
     </div>
 
-
-            <p class="fw-bold">Issue Id: {{ issue?.id }} </p>
+            <p ><span class="fw-bold"> Title : </span>{{ issue?.title }} </p>
+            <!-- <p class="fw-bold">Issue Id: {{ issue?.id }} </p> -->
             <p> <span class="fw-bold"> Address :</span> {{issue.address}}</p>
             <p><span class="fw-bold"> Latitude :</span>{{issue.latitude }} ,<span class="fw-bold"> Longitude :</span> {{issue.longitude}} </p>
             <p><span><a href="http://maps.google.com/maps?q={{issue.latitude}},{{issue.longitude}}" target="_blank"> Go To Location </a></span> </p>
@@ -43,50 +43,69 @@
             <p> <span class="fw-bold">Reported By:</span> {{ issue?.createdById }}</p>
         </div>
 
-        <div class=" bgshadow issueCard col-lg-6 col-12 " *ngIf="issue">
-            
-            <p-carousel 
-            class="w-100" *ngIf="issue.images && issue.images.length > 1"
-                [value]="issue.images"
+        <div class="bgshadow issueCard col-lg-6 col-12">
+
+            <h3 class="text-center align-self-center ">Issue Updates</h3>
+            <ng-container *ngIf="issueUpdates.length > 0; else noUpdatesSection">
+          
+              <p-carousel 
+                class="w-100"
+                *ngIf="issueUpdates[0].statusImageUrls && issueUpdates[0].statusImageUrls.length > 1"
+                [value]="issueUpdates[0].statusImageUrls"
                 [numVisible]="1"
-                [numScroll]="1"
-                >
-        <ng-template pTemplate="item" let-imageUrl>
-            <div class="clickable-img-wrapper" (click)="openFullScreen(imageUrl)">
-                <img #carouselImg [src]="imageUrl" class="carousel-img clickable-img" alt="Issue Image">
+                [numScroll]="1">
+                <ng-template pTemplate="item" let-imageUrl>
+                  <div class="clickable-img-wrapper" (click)="openFullScreen('https://civix.runasp.net' + imageUrl)">
+                    <img #carouselImg [src]="'https://civix.runasp.net' + imageUrl" class="carousel-img clickable-img" alt="Status Image">
+                    <div class="hover-overlay">
+                      <i class="pi pi-search"></i>
+                      <span class="hover-text">View Full Image</span>
+                    </div>
+                  </div>
+                </ng-template>
+              </p-carousel>
+          
+              <div
+                class="clickable-img-wrapper"
+                *ngIf="issueUpdates[0].statusImageUrls?.length === 1"
+                (click)="openFullScreen('https://civix.runasp.net' + issueUpdates[0].statusImageUrls[0])">
+                <img [src]="'https://civix.runasp.net' + issueUpdates[0].statusImageUrls[0]" class="carousel-img clickable-img" alt="Status Image">
                 <div class="hover-overlay">
-                    <i class="pi pi-search"></i>
-                    <span class="hover-text">View Full Image</span>
+                  <i class="pi pi-search"></i>
+                  <span class="hover-text">View Full Image</span>
+                </div>
+              </div>
+          
+              <p><strong>Status:</strong> {{ issueUpdates[0].status }}</p>
+              <p><strong>Team Name:</strong> {{ issueUpdates[0].teamName }}</p>
+              <p><strong>Leader Name:</strong> {{ issueUpdates[0].teamLeaderName }}</p>
+              <p><strong>Description:</strong> {{ issueUpdates[0].description }}</p>
+              <p><strong>Date:</strong> {{ issueUpdates[0].createdAt | date: 'fullDate' }} - {{ issueUpdates[0].createdAt | date: 'shortTime' }}</p>
+              <div class="btnContainer d-flex align-items-center justify-content-around w-100 mb-4">
+                <button class="assignBtn" (click)="toggleTeamPopup()">Assign Issue</button>
+                <button class="updateBtn" (click)="openUpdateStatusDialog()" >Update Status</button>
+                <button class="deleteBtn" (click)="openDeleteDialog()">Delete Issue</button>
+                <button [routerLink]="['/home/issue', issue.id, 'report']" class="reportBtn">Generate Report</button>
+            </div>
+            </ng-container>
+          
+            <!-- If no updates exist, show fallback inside the card -->
+            <ng-template #noUpdatesSection>
+              <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center text-center p-4">
+                <i class="pi pi-info-circle" style="font-size: 2rem; color: gray;"></i>
+                <p class="mt-2 mb-0">No updates yet.</p>
+                <div class="btnContainer d-flex align-items-center justify-content-around w-100 mt-4 flex-wrap">
+                    <button class="assignBtn w-40 my-2" (click)="toggleTeamPopup()" disabled>Assign Issue</button>
+                    <button class="updateBtn w-40 my-2" (click)="openUpdateStatusDialog()" disabled>Update Status</button>
+                    <button class="deleteBtn w-40" (click)="openDeleteDialog()">Delete Issue</button>
+                    <button [routerLink]="['/home/issue', issue?.id, 'report']" class="reportBtn w-40">Generate Report</button>
                 </div>
             </div>
-        </ng-template>
-    </p-carousel>
+              
+            </ng-template>
+          
+          </div>  
 
-    <div class="clickable-img-wrapper" *ngIf="issue.images?.length === 1" (click)="openFullScreen(issue.images[0])">
-        <img [src]="issue.images[0]" class="carousel-img clickable-img" alt="Issue Image">
-        <div class="hover-overlay">
-            <i class="pi pi-search"></i>
-            <span class="hover-text">View Full Image</span>
-        </div>
-    </div>
-
-
-            <p class="fw-bold">Issue Id: {{ issue?.id }} </p>
-            <p> <span class="fw-bold"> Address :</span> {{issue.address}}</p>
-            <p><span class="fw-bold"> Latitude :</span>{{issue.latitude }} ,<span class="fw-bold"> Longitude :</span> {{issue.longitude}} </p>
-            <p><span><a href="http://maps.google.com/maps?q={{issue.latitude}},{{issue.longitude}}" target="_blank"> Go To Location </a></span> </p>
-            <p><span class="fw-bold">Description:</span> ...</p>
-            <p> <span class="fw-bold">Category:</span> {{ issue?.category }}</p>
-            <div class="btnContainer d-flex align-items-center justify-content-around w-100 mb-4">
-                <button class="assignBtn" (click)="toggleTeamPopup()">Assign Issue</button>
-
-                <button class="updateBtn" (click)="openUpdateStatusDialog()">Update Status</button>
-                <button class="deleteBtn" (click)="openDeleteDialog()">Delete Issue</button>
-                <a [routerLink]="['/home/issue', issue.id, 'report']" class="reportBtn">Generate Report</a>
-
-                
-            </div>
-        </div>
 
         <dialog #UpdateStatusDialog id="UpdateStatusDialog">
             <h2>Update Status</h2>

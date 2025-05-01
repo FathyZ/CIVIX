@@ -168,6 +168,18 @@
       background-color: white  ;
       color: $main-Color  ;
     }
+    
+    &:disabled{
+      background-color: #ccc  ;
+      color: white  ;
+      border-radius: 20px  ;
+      padding: 10px 20px  ;
+      font-size: 1rem  ;
+      margin-top: 10px  ;
+      border: 1px solid transparent  ;
+      cursor: not-allowed  ;
+      box-shadow: none  ;
+    }
   }
 
   ::ng-deep .team-dialog .p-dialog-content {
@@ -228,11 +240,38 @@
       background-color: white  ;
       color: #5ed61f  ;
     }
+    &:disabled{
+      background-color: #ccc  ;
+      color: white  ;
+      border-radius: 20px  ;
+      padding: 10px 20px  ;
+      font-size: 1rem  ;
+      margin-top: 10px  ;
+      border: 1px solid transparent  ;
+      cursor: not-allowed  ;
+      box-shadow: none  ;
+    }
   }
 .btnContainer{
   align-self: flex-end;
 }
-
+.reportBtn{
+  background-color: #09c  ;
+  color: white  ;
+  border-radius: 20px  ;
+  padding: 10px 20px  ;
+  font-size: 1rem  ;
+  margin-top: 10px  ;
+  border: 1px solid transparent  ;
+  cursor: pointer  ;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2)  ;
+  transition: all 0.3s  ;
+  &:hover  {
+    border: 1px solid #09c  ;
+    background-color: white  ;
+    color: #09c  ;
+  }
+}
 
 dialog {
   position: fixed;
@@ -372,4 +411,21 @@ dialog div {
 
 .confirmDeleteBtn:hover{
   background-color: $secondary_Color;
+}
+
+.update-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  height: 100%;
+}
+
+.carousel-img {
+  max-height: 250px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 8px;
+} 
+.w-40{
+  width: 40%;
 }
