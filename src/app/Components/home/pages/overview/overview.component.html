@@ -7,7 +7,7 @@
                             <p>Problems</p>
                         </div>
                         <p class="card-num">{{totalIssues}}</p>
-                        <p class="card-footing"> <span>2</span> Completed </p>
+                        <p class="card-footing"> <span>{{resolvedIssues}}</span> Completed </p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 p-2">
@@ -16,7 +16,7 @@
                             <p>Active Problems</p>
                         </div>
                         <p class="card-num">{{totalIssues}}</p>
-                        <p class="card-footing"> <span>28</span> Completed </p>
+                        <p class="card-footing"> <span>{{resolvedIssues}}</span> Completed </p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 p-2">
@@ -24,8 +24,8 @@
                         <div class="card-heading">
                             <p>Fixing Teams</p>
                         </div>
-                        <p class="card-num">12</p>
-                        <p class="card-footing"> <span>1</span> Currently Away </p>
+                        <p class="card-num">{{teamNumber}}</p>
+                        <p class="card-footing"> <span>{{busyTeamsNumber}}</span> Currently Busy </p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 p-2">
@@ -33,8 +33,8 @@
                         <div class="card-heading">
                             <p>Productivity</p>
                         </div>
-                        <p class="card-num">76%</p>
-                        <p class="card-footing"> <span>5%</span> Completed </p>
+                        <p class="card-num">{{productivity}}%</p>
+                        <p class="card-footing"> <span>{{openTeamsNumber}}</span> Teams Are Open For Work </p>
                     </div>
                 </div>
             </div>

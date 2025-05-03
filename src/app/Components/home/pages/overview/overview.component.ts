@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { GeocodingService } from './../../../../Services/geocoding.service';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
@@ -7,8 +8,10 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { TagModule } from 'primeng/tag';
 import { Router } from '@angular/router';
 import { IssuesService } from '../../../../Services/issues.service';
+import { FixingTeamsService } from '../../../../Services/fixing-teams.service';
 import { ApiResponse, Issue } from '../../../../models/issue';
 import { ChangeDetectorRef } from '@angular/core';
+import { FixingTeam } from '../../../../models/fixingTeams';
 
 
 @Component({
@@ -21,22 +24,45 @@ import { ChangeDetectorRef } from '@angular/core';
 export class OverviewComponent implements OnInit, AfterViewInit {
   issues: Issue[] = []; // Will hold the fetched issues
   totalIssues: number = 0;
+  resolvedIssues : number =0; // Count resolved issues 
+  teamNumber: number = 0; 
+  openTeamsNumber: number = 0; // Count open teams
+  busyTeamsNumber: number = 0;
+  productivity: number = 0; // Productivity percentage
   private addressCache = new Map<string, string>(); // ✅ Caching for reverse geocoding
   private map!: L.Map;
   private L!: any; // Store Leaflet dynamically
   private markers: L.Marker[] = []; // Declare an array to store markers
 
-  constructor(private router: Router, private issueService: IssuesService, private geocodingService: GeocodingService,private cdRef: ChangeDetectorRef) {}
+  constructor(private router: Router, private issueService: IssuesService, private geocodingService: GeocodingService,private cdRef: ChangeDetectorRef , private fixingTeamService: FixingTeamsService) {}
 
   ngOnInit(): void {
     this.fetchIssues();
+    this.fetchTeamInfo();
   }
+
+  
+  fetchTeamInfo(){
+    this.fixingTeamService.getAllTeams().subscribe((response: any) => {
+      this.teamNumber = response.length;
+      this.busyTeamsNumber = response.filter((team: any) => team.availabilityStatus == "Busy").length;
+      this.openTeamsNumber = this.teamNumber - this.busyTeamsNumber; // Calculate open teams
+    },
+    (error) => {
+      console.log("Error fetching teams:", error);
+    });
+  }
+    
+
 
  fetchIssues() {
   this.issueService.getIssues().subscribe((response: ApiResponse) => {
     this.issues = response.data;
     this.totalIssues = response.totatIssues;
-
+    this.resolvedIssues = this.issues.filter((issue) => issue.status === 'Resolved').length;
+    this.productivity = Math.round((this.resolvedIssues / this.totalIssues) * 100); // Calculate productivity percentage
+    console.log("productivity:", this.productivity);
+    console.log("Resolved Issues:", this.resolvedIssues);
     this.issues.forEach((issue) => {
       const cacheKey = `${issue.latitude},${issue.longitude}`;
       if (this.addressCache.has(cacheKey)) {
