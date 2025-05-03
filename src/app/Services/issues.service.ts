@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponse, Issue } from '../models/issue';
+import { ApiResponse, Issue, issueUpdate } from '../models/issue';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -70,6 +70,16 @@ updateIssueStatus(id: string, status: string): Observable<any> {
   });
 
   return this.http.put<any>(`${this.apiUrl}/${id}/toggle-status/${status}`, null, { headers });
+}
+
+getIssueUpdates(id:string):Observable<issueUpdate[]>{
+  const token = localStorage.getItem('_token');
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+    });
+
+  return this.http.get<issueUpdate[]>(`https://civix.runasp.net/api/fixingteams/issue/${id}/statuses`, { headers });
+
 }
 
 }

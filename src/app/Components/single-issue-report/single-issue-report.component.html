@@ -3,6 +3,7 @@
     <h1 class="text-center my-4">Issue Report</h1>
   
     <div *ngIf="issue" class="report-card bgshadow p-4 w-100">
+      <h2 class="align-self-center mb-2">Reported Issue</h2>
       <img *ngIf="issue.images?.length" [src]="issue.images[0]" alt="Issue" class="img-fluid rounded mb-3" />
   
       <!-- <p><strong>ID:</strong> {{ issue.id }}</p> -->
@@ -11,13 +12,21 @@
       <p><strong>Description:</strong> {{ issue.description }}</p>
       <p><strong>Address:</strong> {{ issue.address }}</p>
       <p><strong>Coordinates:</strong> {{ issue.latitude }}, {{ issue.longitude }}</p>
-      <!-- <p><strong>Reported By:</strong> {{ issue.createdById }}</p> --> 
       <p><strong>Date:</strong> {{ issue.createdOn | date:'fullDate' }}</p>
       <p><strong>Time:</strong> {{ issue.createdOn | date:'shortTime' }}</p>
   
-      <!-- <a [href]="'http://maps.google.com/maps?q=' + issue.latitude + ',' + issue.longitude" target="_blank">
-        View on Map
-      </a> -->
+
+    </div>
+    
+    <div *ngFor="let issueUpdate of issueUpdates; let i = index" class="report-card bgshadow p-4 w-100 mt-4">
+      <h2 class="align-self-center mb-2">Issue Update #{{i+1}}</h2>
+      <img *ngIf="issueUpdate.statusImageUrls.length" [src]="'https://civix.runasp.net'+issueUpdate.statusImageUrls[0]" alt="IssueUpdate {{i+1}}" class="img-fluid rounded mb-3" />
+  
+      <p><strong>Date : </strong> {{ issueUpdate.createdAt | date: 'fullDate' }} - {{ issueUpdate.createdAt | date: 'shortTime' }}</p>
+      <p><strong>Team Name : </strong> {{ issueUpdate.teamName }}</p>
+      <p><strong>Description:</strong> {{ issueUpdate.description }}</p>
+
+
     </div>
   </div>
   

@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { fadeInOut, popInOut, slideInOut } from '../../animations';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown'; 
+import { issueUpdate } from '../../models/issue';
 
 @Component({
   selector: 'app-single-issue',
@@ -37,6 +38,7 @@ export class SingleIssueComponent implements OnInit {
   showTeamPopup = false;
   fixingTeams: FixingTeam[] = [];
   selectedStatus: string = 'Open';
+  issueUpdates: issueUpdate[] = [];
 
   statusOptions: { label: string, value: string }[] = [
     { label: 'Open', value: 'Open' },
@@ -101,7 +103,7 @@ export class SingleIssueComponent implements OnInit {
       async (data) => {
         console.log('Issue data received:', data);
         this.issue = data;
-
+        this.fetchIssueUpdates(issueId);
         this.geocodingService.getAddressFromCoords(this.issue.latitude, this.issue.longitude).pipe(
           tap(address => console.log(`Fetched Address: ${address}`))
         ).subscribe(
@@ -126,7 +128,18 @@ export class SingleIssueComponent implements OnInit {
     );
   }
 
-
+  fetchIssueUpdates(issueId: string): void {
+    this.issueService.getIssueUpdates(issueId).subscribe({
+      next: (updates: issueUpdate[]) => {
+        this.issueUpdates = updates;
+        console.log('Issue updates fetched:', this.issueUpdates);
+      },
+      error: (err) => {
+        console.error('Failed to fetch issue updates', err);
+      }
+    });
+  }
+  
   deleteIssue(){
     this.issueService.deleteIssue(this.issue.id).subscribe(
       () => {

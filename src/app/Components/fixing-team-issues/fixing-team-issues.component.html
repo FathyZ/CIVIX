@@ -4,7 +4,7 @@
 
   <div *ngFor="let issue of issues" class="issue-card">
     <div class="image-section" *ngIf="issue.images?.length">
-      <img [src]="'https://civix.runasp.net/'+ issue.images[0]" alt="Issue Image" class="issue-img" />
+      <img [src]="issue.images[0]" alt="Issue Image" class="issue-img" />
     </div>
 
     <div class="issue-info">

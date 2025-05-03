@@ -22,3 +22,14 @@ export interface ApiResponse { // interface for the whole api response
     category: string;     // Category of the issue
     images: string[];     // Array of image URLs or paths (string array)
 }
+export interface issueUpdate { 
+issueId : string; 
+description : string;
+status : string;
+teamName : string;
+teamLeaderName : string;
+teamLeaderId : string;
+issueCreatedByName : string;
+createdAt : Date;
+statusImageUrls : string[];
+}
