@@ -206,10 +206,10 @@ export class StatisticsComponent implements OnInit {
   
       // Define the full list of expected categories
       const allCategories = [
-        'Potholes and Road Damage',
-        'Streetlight Outages',
+        'Pothole',
+        'Broken streetlight\n',
         'Garbage and Litter Issues',
-        'Graffiti and Vandalism',
+        'Graffiti',
         'Water Leaks or Drainage Problems',
         'Manhole'
       ];
