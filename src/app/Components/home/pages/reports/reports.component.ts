@@ -11,6 +11,8 @@ import html2canvas from 'html2canvas';
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss']
 })
+
+
 export class ReportsComponent {
   today = new Date();
   regionName = 'Cairo';
@@ -25,6 +27,7 @@ export class ReportsComponent {
   issues = [
     {
       title: 'Broken Streetlight',
+      no:"1",
       status: 'Resolved',
       location: 'Tahrir Square',
       dateReported: new Date('2025-02-15'),
@@ -33,7 +36,39 @@ export class ReportsComponent {
       description: 'Streetlight has been out for 3 days, causing safety concerns.'
     },
     {
-      title: 'Pothole on Main Road',
+      title: 'Broken Streetlight',
+      no:"2",
+      status: 'Pending',
+      location: 'Tahrir Square',
+      dateReported: new Date('2025-02-15'),
+      assignedTeam: 'Lighting Fixers',
+      priority: 'High',
+      description: 'Streetlight has been out for 3 days, causing safety concerns.'
+    },
+    {
+      title: 'Pothole',
+      no:"1",
+      status: 'Pending',
+      location: 'Zamalek Main Street',
+      dateReported: new Date('2025-03-10'),
+      assignedTeam: 'Road Repair Unit',
+      priority: 'Medium',
+      description: 'Large pothole making the road dangerous for cars.'
+    },
+    {
+      title: 'Pothole',
+      no:"2",
+      status: 'Resolved',
+      location: 'Zamalek Main Street',
+      dateReported: new Date('2025-03-10'),
+      assignedTeam: 'Road Repair Unit',
+      priority: 'Medium',
+      description: 'Large pothole making the road dangerous for cars.'
+    },
+
+    {
+      title: 'Flooding',
+      no:"1",
       status: 'Pending',
       location: 'Zamalek Main Street',
       dateReported: new Date('2025-03-10'),
@@ -41,45 +76,95 @@ export class ReportsComponent {
       priority: 'Medium',
       description: 'Large pothole making the road dangerous for cars.'
     }
+    ,{
+      title: 'Pothole',
+      no:"3",
+      status: 'Denied',
+      location: 'Zamalek Main Street',
+      dateReported: new Date('2025-03-10'),
+      assignedTeam: 'Road Repair Unit',
+      priority: 'Medium',
+      description: 'Large pothole making the road dangerous for cars.'
+    }
+
   ];
 
-  downloadReport() {
-    const content = document.getElementById('report-content');
+  groupedIssues: { [key: string]: any[] } = {};
 
-    if (content) {
-      html2canvas(content, {
-        scale: 3, 
-        useCORS: true
-      }).then(canvas => {
-        const imgData = canvas.toDataURL('image/jpeg', 0.8); 
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
+  ngOnInit() {
+    this.groupIssuesByTitle();
+  }
+  groupIssuesByTitle() {
+    this.groupedIssues = this.issues.reduce((groups, issue) => {
+      if (!groups[issue.title]) {
+        groups[issue.title] = [];  
+      }
+      groups[issue.title].push(issue);
+      return groups;
+    }, {} as { [key: string]: any[] }); 
+  }
+  
 
-        const imgWidth = pageWidth;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-        let position = 0;
-
-        if (imgHeight > pageHeight) {
-          // If content is taller than one page, slice into pages
-          let heightLeft = imgHeight;
-
-          while (heightLeft > 0) {
-            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
-            if (heightLeft > 0) {
-              pdf.addPage();
-              position = - (imgHeight - heightLeft);
-            }
-          }
-        } else {
-          // Fits in one page
-          pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
-        }
-
-        pdf.save('report.pdf');
-      });
+  getStatusColor(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'resolved':
+        return 'green';
+      case 'pending':
+        return 'orange';
+      case 'denied':
+        return 'red';
+      default:
+        return 'black';
     }
+  }
+
+  downloadReport() {
+    const headerElement = document.getElementById('report-header');
+    const tableElements = document.querySelectorAll('.issue-table-wrapper');
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 10;
+  
+    // 1. Capture the header section
+    html2canvas(headerElement!, { scale: 3, useCORS: true }).then(headerCanvas => {
+      const headerImg = headerCanvas.toDataURL('image/jpeg', 1.0);
+      const headerHeight = (headerCanvas.height * (pageWidth - 2 * margin)) / headerCanvas.width;
+  
+      // Draw background color for first page
+      pdf.setFillColor(240, 244, 248);
+      pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+  
+      // Add header image to first page
+      pdf.addImage(headerImg, 'JPEG', margin, margin, pageWidth - 2 * margin, headerHeight);
+  
+      const processNext = (index: number) => {
+        if (index >= tableElements.length) {
+          pdf.save('report.pdf');
+          return;
+        }
+  
+        const element = tableElements[index] as HTMLElement;
+  
+        html2canvas(element, { scale: 3, useCORS: true }).then(canvas => {
+          const imgData = canvas.toDataURL('image/jpeg', 1.0);
+          const imgHeight = (canvas.height * (pageWidth - 2 * margin)) / canvas.width;
+  
+          pdf.addPage();
+  
+          // Set background color for the new page
+          pdf.setFillColor(240, 244, 248);
+          pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+  
+          // Draw table image
+          pdf.addImage(imgData, 'JPEG', margin, margin, pageWidth - 2 * margin, imgHeight);
+  
+          processNext(index + 1);
+        });
+      };
+  
+      processNext(0);
+    });
   }
 }

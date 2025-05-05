@@ -95,7 +95,7 @@
                 <i class="pi pi-info-circle" style="font-size: 2rem; color: gray;"></i>
                 <p class="mt-2 mb-0">No updates yet.</p>
                 <div class="btnContainer d-flex align-items-center justify-content-around w-100 mt-4 flex-wrap">
-                    <button class="assignBtn w-40 my-2" (click)="toggleTeamPopup()" disabled>Assign Issue</button>
+                    <button class="assignBtn w-40 my-2" (click)="toggleTeamPopup()" >Assign Issue</button>
                     <button class="updateBtn w-40 my-2" (click)="openUpdateStatusDialog()" disabled>Update Status</button>
                     <button class="deleteBtn w-40" (click)="openDeleteDialog()">Delete Issue</button>
                     <button [routerLink]="['/home/issue', issue?.id, 'report']" class="reportBtn w-40">Generate Report</button>
