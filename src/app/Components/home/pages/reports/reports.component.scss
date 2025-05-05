@@ -1,6 +1,19 @@
 @import '../../../../../styles.scss';
 
-#report-content {
+#report-header {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background-color: #f0f4f8;
+}
+.allPageContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: #f0f4f8;
   padding: 2rem;
   border-radius: 12px;
@@ -34,6 +47,7 @@
 
 .stats {
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-bottom: 2rem;
@@ -61,24 +75,48 @@
 }
 
 .issues {
-  .issue {
-    background-color: #fff;
-    padding: 1rem 1.5rem;
-    margin-bottom: 1rem;
-    border-left: 4px solid #ff9800;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-
+  max-width: 800px;
     h3 {
       color: #007ad9;
-      margin-top: 0;
+      margin: bottom 5px; ;
     }
 
     p {
       margin: 0.3rem 0;
     }
   }
+
+
+.issue-table-wrapper {
+  margin-bottom: 2rem;
 }
+
+
+.issue-table {
+  background-color: #fff;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+  border-left: 4px solid #ff9800;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.issue-table th,
+.issue-table td {
+  border: 1px solid #f0f4f8;
+  padding: 10px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.issue-table th {
+  background-color:#f0f4f8;
+}
+
 
 button {
   display: block;
