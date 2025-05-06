@@ -22,7 +22,8 @@ export class StatisticsComponent implements OnInit {
   issuesCount: any;
   inProgressCount: number = 0;
   barChartData: any;
-  allCategories: string[] = ['Pothole', 'Streetlight Out', 'Garbage Collection', 'Graffiti', 'Water Leak', 'Manhole'];
+  lastDayIssuesCount: number = 0;
+  allCategories: string[] = ['Pothole', 'Broken streetlight', 'Garbage', 'Graffiti', 'Flooding', 'Manhole'];
 
   constructor(private statisticsService: StatisticsService, private router: Router, private issuesService: IssuesService) { }
 
@@ -43,9 +44,16 @@ export class StatisticsComponent implements OnInit {
 
   getTotalIssues() {
     this.issuesService.getTotalIssuesCount().subscribe((data) => {
-      this.issuesCount = data.count;
+      this.issuesCount = data.totatIssues;
     });
   }
+
+  getLastDayIssuesCount() {
+    this.statisticsService.getLastDayIssuesCount().subscribe((data) => {
+      this.lastDayIssuesCount = data;
+    });
+  }
+
 
   loadTaskPerformance() {
     this.statisticsService.getTaskPerformance().subscribe((data: { name: string; count: number }[]) => {
@@ -78,7 +86,7 @@ export class StatisticsComponent implements OnInit {
         datasets: [
           {
             data: priorityData,
-            backgroundColor: ['#dc3545', '#8B0000', '#FFFF00'],
+            backgroundColor: ['#FF3B30', '#FFCC00', '#34C759'],
           },
         ],
       };
@@ -207,10 +215,10 @@ export class StatisticsComponent implements OnInit {
       // Define the full list of expected categories
       const allCategories = [
         'Pothole',
-        'Broken streetlight\n',
-        'Garbage and Litter Issues',
+        'Broken streetlight',
+        'Garbage',
         'Graffiti',
-        'Water Leaks or Drainage Problems',
+        'Flooding',
         'Manhole'
       ];
   
