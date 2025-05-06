@@ -9,6 +9,7 @@ import { ApiResponse } from '../models/issue';
 export class StatisticsService {
   private baseUrl = 'https://civix.runasp.net/api/Issues/count-by-status';
   private priorityBaseUrl = 'https://civix.runasp.net/api/Issues/count-by-priority';
+  private lastDayUrl = 'https://civix.runasp.net/api/Issues/count-last-24-hours'
 
   constructor(private http: HttpClient) {}
 
@@ -55,5 +56,20 @@ export class StatisticsService {
     });
 
     return this.http.get<any>(this.baseUrl, { headers });
+  }
+
+  getLastDayIssuesCount():Observable<any>{
+    const token = localStorage.getItem('_token');
+    if (!token) {
+      console.error('Token not found!');
+      return new Observable();
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.get<any>(this.lastDayUrl, { headers });
   }
 }

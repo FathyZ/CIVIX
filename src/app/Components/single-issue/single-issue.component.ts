@@ -42,7 +42,7 @@ export class SingleIssueComponent implements OnInit {
 
   statusOptions: { label: string, value: string }[] = [
     { label: 'Open', value: 'Open' },
-    { label: 'In Progress', value: 'InProgress' },
+    { label: 'In Progress', value: 'In Progress' },
     { label: 'Resolved', value: 'Resolved' }
   ];
 
