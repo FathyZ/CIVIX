@@ -1,4 +1,31 @@
-<div class="sidebar">
+<div [ngClass]="{'sidebar': true, 'sidebar-open': isOpen, 'sidebar-closed': !isOpen}">
+  <i *ngIf="isOpen" class="pi pi-times minIcon" (click)="toggleSidebar()"></i>
+  <i *ngIf="!isOpen" class="pi pi-arrow-right" (click)="toggleSidebar()"></i>
+
+  <div *ngIf="isOpen" class="logo">
+    <a routerLink="/home/overview" routerLinkActive="active">
+      <img src="assets/civix_testWithLessShadow.png" alt="">
+    </a>
+  </div>
+
+  <ul class="nav-links" *ngIf="isOpen">
+    <li><a routerLink="/home/overview" routerLinkActive="active"><i class="pi pi-list"></i> Overview</a></li>
+    <li><a routerLink="/home/statistics" routerLinkActive="active"><i class="pi pi-chart-bar"></i> Statistics</a></li>
+    <li><a routerLink="/home/active-issues" routerLinkActive="active" #rla="routerLinkActive">
+      <i class="pi" [ngClass]="rla.isActive ? 'pi-flag-fill' : 'pi-flag'"></i> Active Issues
+    </a></li>
+    <li><a routerLink="/home/fixing-teams" routerLinkActive="active"><i class="pi pi-address-book"></i> Fixing Teams</a></li>
+    <li><a routerLink="/home/reports" routerLinkActive="active"><i class="pi pi-file-import"></i> Reports</a></li>
+  </ul>
+
+  <ul class="extra-links" *ngIf="isOpen">
+    <!-- <li><a href="#"><i class="pi pi-cog"></i> Settings</a></li>
+    <li><a href="#"><i class="pi pi-shield"></i> Security</a></li> -->
+  </ul>
+</div>
+<!-- 
+<div *ngIf="isOpen" class="sidebar sidebar-open" >
+    <i class="pi pi-times minIcon" (click)="toggleSidebar()"></i>
     <div class="logo"> <a routerLink="/home/overview" routerLinkActive="active"><img src="assets/civix_testWithLessShadow.png" alt=""></a> </div>
     <ul class="nav-links">
         <li><a routerLink="/home/overview" routerLinkActive="active"> <i class="pi pi-list"></i> Overview</a></li>
@@ -15,4 +42,24 @@
         <li><a href="#"> <i class="pi pi-shield"></i>Security</a></li>
 
     </ul>
-</div>
+</div> -->
+<!-- 
+<div *ngIf="isOpen==false" class=" sidebar-closed" > -->
+    <!-- <div class="logo"> <a routerLink="/home/overview" routerLinkActive="active"><img src="assets/civix_testWithLessShadow.png" alt=""></a> </div>
+    <ul class="nav-links">
+        <li><a routerLink="/home/overview" routerLinkActive="active"> <i class="pi pi-list"></i> Overview</a></li>
+        <li><a routerLink="/home/statistics" routerLinkActive="active"> <i class="pi pi-chart-bar"></i> Statistics</a></li>
+        <li>  <a routerLink="/home/active-issues" routerLinkActive="active" #rla="routerLinkActive">
+            <i class="pi" [ngClass]="rla.isActive ? 'pi-flag-fill' : 'pi-flag'"></i>
+            Active Issues
+        </a></li>
+        <li><a routerLink="/home/fixing-teams" routerLinkActive="active"> <i class="pi pi-address-book"></i> Fixing Teams</a></li>
+        <li><a routerLink="/home/reports" routerLinkActive="active"> <i class="pi pi-file-import"></i> Reports</a></li>
+    </ul>
+    <ul class="extra-links">
+        <li><a href="#"> <i class="pi pi-cog"></i>Settings</a></li>
+        <li><a href="#"> <i class="pi pi-shield"></i>Security</a></li>
+
+    </ul> -->
+    <!-- <i class="pi pi-bars closedIcon" (click)="toggleSidebar()"></i>   
+</div> -->
