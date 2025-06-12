@@ -22,8 +22,8 @@ export class StatisticsComponent implements OnInit {
   issuesCount: any;
   inProgressCount: number = 0;
   barChartData: any;
-  lastDayIssuesCount: number = 0;
-  allCategories: string[] = ['Pothole', 'Broken streetlight', 'Garbage', 'Graffiti', 'Flooding', 'Manhole'];
+  lastDayIssuesCount: any;
+  allCategories: string[] = ['Pothole', 'Broken streetlight', 'Garbage', 'Graffiti', 'Manhole', 'Unknown'];
 
   constructor(private statisticsService: StatisticsService, private router: Router, private issuesService: IssuesService) { }
 
@@ -167,7 +167,7 @@ export class StatisticsComponent implements OnInit {
       }
     }
   };
-  
+
   verticalBarOptions = {
     responsive:true,
     maintainAspectRatio:false,
@@ -218,8 +218,8 @@ export class StatisticsComponent implements OnInit {
         'Broken streetlight',
         'Garbage',
         'Graffiti',
-        'Flooding',
-        'Manhole'
+        'Manhole',
+        'Unknown'
       ];
   
       // Initialize a map with all categories set to 0
