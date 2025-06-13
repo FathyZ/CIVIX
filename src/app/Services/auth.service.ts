@@ -46,6 +46,24 @@ export class AuthService {
     }
   }
 
+setAdminInfo(info: any) {
+  this.adminData = info;
+  localStorage.setItem('adminInfo', JSON.stringify(info)); // optional: persist it
+}
+
+getAdminInfo(): any {
+  if (this.adminData) return this.adminData;
+
+  const info = localStorage.getItem('adminInfo');
+  if (info) {
+    this.adminData = JSON.parse(info);
+    return this.adminData;
+  }
+
+  return null;
+}
+
+
 
   isAdmin(): boolean {
     return this.roles.includes('Admin');

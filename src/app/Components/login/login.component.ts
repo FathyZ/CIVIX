@@ -27,34 +27,34 @@ export class LoginComponent {
     password: new FormControl('', [Validators.required]),
   });
 
-  handleLogin(): void {
-    if (this.loginForm.valid) {
-      this._AuthService.loginForm(this.loginForm.value).subscribe({
-        next: (response) => {
-          if (response?.token) {
-            this._AuthService.saveToken(response.token);
-
+ handleLogin(): void {
+  if (this.loginForm.valid) {
+    this._AuthService.loginForm(this.loginForm.value).subscribe({
+      next: (response) => {
+        if (response) {
+          localStorage.setItem('_token', response.token);
+          this._AuthService.setAdminInfo(response); // ✅ Store full user info
             if (!this._AuthService.isAdmin()) {
               this.errorMsg = 'Access denied — Admins only';
               this._AuthService.logout();
               return;
             }
-
-            this._Router.navigate(['/home']);
-          }
-        },
-        error: (err) => {
-          if (err.status === 401) {
-            this.errorMsg = 'Invalid Email or Password';
-          } else if (err.status === 400) {
-            this.errorMsg = 'Email Can Not Be Empty';
-          } else {
-            this.errorMsg = `Unexpected error: ${err.status}`;
-          }
+          this._Router.navigate(['/home']);
         }
-      });
-    }
+      },
+      error: (err) => {
+        if (err.status == '401') {
+          this.errorMsg = 'Invalid Email or Password';
+        } else if (err.status == '400') {
+          this.errorMsg = 'Email Can Not Be Empty';
+        } else {
+          this.errorMsg = `Unexpected status: ${err.status}`;
+        }
+      }
+    });
+
   }
+} 
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;

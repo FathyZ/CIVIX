@@ -3,7 +3,8 @@
   <i *ngIf="!isOpen" class="pi pi-arrow-right" (click)="toggleSidebar()"></i>
 
   <div *ngIf="isOpen" class="logo">
-    <a routerLink="/home/overview" routerLinkActive="active">
+    <a routerLink="/home/overview" routerLinkActive="active" class="d-flex flex-column ">
+      <img [src] = "areaImage" alt="Area Logo" class="w-75">
       <img src="assets/civix_testWithLessShadow.png" alt="">
     </a>
   </div>
