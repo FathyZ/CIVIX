@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   private readonly TOKEN_KEY = '_token';
-  adminData: any;
+  adminData1: any;
+  adminData2: any;
   private roles: string[] = [];
 
   constructor(private _HttpClient: HttpClient) {
@@ -30,10 +31,10 @@ export class AuthService {
   private decodeAndStoreToken(token: string): void {
     try {
       const decoded: any = jwtDecode(token);
-      this.adminData = decoded;
+      this.adminData1 = decoded;
       this.roles = decoded?.roles || [];
     } catch (e) {
-      this.adminData = null;
+      this.adminData1 = null;
       this.roles = [];
     }
   }
@@ -47,17 +48,17 @@ export class AuthService {
   }
 
 setAdminInfo(info: any) {
-  this.adminData = info;
+  this.adminData2 = info;
   localStorage.setItem('adminInfo', JSON.stringify(info)); // optional: persist it
 }
 
 getAdminInfo(): any {
-  if (this.adminData) return this.adminData;
+  if (this.adminData2) return this.adminData2;
 
   const info = localStorage.getItem('adminInfo');
   if (info) {
-    this.adminData = JSON.parse(info);
-    return this.adminData;
+    this.adminData2 = JSON.parse(info);
+    return this.adminData2;
   }
 
   return null;
@@ -82,7 +83,7 @@ getAdminInfo(): any {
 
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
-    this.adminData = null;
+    this.adminData1 = null;
     this.roles = [];
   }
 }
