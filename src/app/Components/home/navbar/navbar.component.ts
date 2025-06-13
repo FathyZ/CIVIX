@@ -1,3 +1,4 @@
+import { AuthService } from './../../../Services/auth.service';
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -9,10 +10,20 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
+  area: string = '';
 
   @ViewChild('logoutDialog') logoutDialog: any; 
 
-  constructor(private router: Router) {}
+  constructor(private router: Router , private _AuthService : AuthService) {}
+
+  ngOnInit() {
+    const admin = this._AuthService.getAdminInfo();
+    if (admin) {
+      this.area = admin.area;
+      console.log( "Area Is : " + this.area);
+
+    }
+  }
 
   // Open the dialog
   openLogoutDialog(event: Event): void {

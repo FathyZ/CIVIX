@@ -28,6 +28,24 @@ getToken(): string | null {
   return localStorage.getItem('_token'); // Retrieve token from local storage
 }
 
+setAdminInfo(info: any) {
+  this.adminData = info;
+  localStorage.setItem('adminInfo', JSON.stringify(info)); // optional: persist it
+}
+
+getAdminInfo(): any {
+  if (this.adminData) return this.adminData;
+
+  const info = localStorage.getItem('adminInfo');
+  if (info) {
+    this.adminData = JSON.parse(info);
+    return this.adminData;
+  }
+
+  return null;
+}
+
+
 
 }
 

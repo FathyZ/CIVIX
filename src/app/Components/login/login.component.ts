@@ -33,28 +33,29 @@ export class LoginComponent {
     
   });
 
-  handleLogin():void{
-    if(this.loginForm.valid){
-      this._AuthService.loginForm(this.loginForm.value).subscribe({
-        next:(response)=>{
-          if(response){
-            localStorage.setItem('_token', response.token);
-            this._AuthService.saveAdmin();
-            this._Router.navigate(['/home'])
-          }
-        },
-        error:(err)=>{
-        if (err.status == '401') {
-          this.errorMsg = 'Invalid Email or Password' ;
+ handleLogin(): void {
+  if (this.loginForm.valid) {
+    this._AuthService.loginForm(this.loginForm.value).subscribe({
+      next: (response) => {
+        if (response) {
+          localStorage.setItem('_token', response.token);
+          this._AuthService.setAdminInfo(response); // ✅ Store full user info
+
+          this._Router.navigate(['/home']);
         }
-        else if (err.status == '400') {
+      },
+      error: (err) => {
+        if (err.status == '401') {
+          this.errorMsg = 'Invalid Email or Password';
+        } else if (err.status == '400') {
           this.errorMsg = 'Email Can Not Be Empty';
         } else {
           this.errorMsg = `Unexpected status: ${err.status}`;
-        }        }
-      })
-    }
+        }
+      }
+    });
   }
+} 
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
