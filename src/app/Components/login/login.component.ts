@@ -1,58 +1,58 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup , Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterModule,
-    ReactiveFormsModule,CommonModule],
+  imports: [RouterModule, ReactiveFormsModule, CommonModule],
   providers: [Router],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-
 export class LoginComponent {
-
-  constructor(private _AuthService:AuthService, private _Router:Router){
-
-  }
+  constructor(private _AuthService: AuthService, private _Router: Router) {}
 
   password: string = '';
   showPassword: boolean = false;
   isDialogOpen: boolean = false;
-
-  errorMsg:string ='';
+  errorMsg: string = '';
 
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
-    
   });
 
-  handleLogin():void{
-    if(this.loginForm.valid){
+  handleLogin(): void {
+    if (this.loginForm.valid) {
       this._AuthService.loginForm(this.loginForm.value).subscribe({
-        next:(response)=>{
-          if(response){
-            localStorage.setItem('_token', response.token);
-            this._AuthService.saveAdmin();
-            this._Router.navigate(['/home'])
+        next: (response) => {
+          if (response?.token) {
+            this._AuthService.saveToken(response.token);
+
+            if (!this._AuthService.isAdmin()) {
+              this.errorMsg = 'Access denied — Admins only';
+              this._AuthService.logout();
+              return;
+            }
+
+            this._Router.navigate(['/home']);
           }
         },
-        error:(err)=>{
-        if (err.status == '401') {
-          this.errorMsg = 'Invalid Email or Password' ;
+        error: (err) => {
+          if (err.status === 401) {
+            this.errorMsg = 'Invalid Email or Password';
+          } else if (err.status === 400) {
+            this.errorMsg = 'Email Can Not Be Empty';
+          } else {
+            this.errorMsg = `Unexpected error: ${err.status}`;
+          }
         }
-        else if (err.status == '400') {
-          this.errorMsg = 'Email Can Not Be Empty';
-        } else {
-          this.errorMsg = `Unexpected status: ${err.status}`;
-        }        }
-      })
+      });
     }
   }
 
@@ -67,5 +67,4 @@ export class LoginComponent {
   closeDialog(): void {
     this.isDialogOpen = false;
   }
-
 }

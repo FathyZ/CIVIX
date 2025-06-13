@@ -23,7 +23,8 @@ export class StatisticsComponent implements OnInit {
   inProgressCount: number = 0;
   barChartData: any;
   lastDayIssuesCount: number = 0;
-  allCategories: string[] = ['Pothole', 'Broken streetlight', 'Garbage', 'Graffiti', 'Flooding', 'Manhole'];
+  unassignedIssuesCount: number = 0;
+  allCategories: string[] = ['Pothole', 'Broken streetlight', 'Garbage', 'Graffiti', 'Manhole', 'Unknown'];
 
   constructor(private statisticsService: StatisticsService, private router: Router, private issuesService: IssuesService) { }
 
@@ -33,6 +34,8 @@ export class StatisticsComponent implements OnInit {
     this.getTotalIssues();
     this.getStatusCounts();
     this.loadCategoryDistribution();
+    this.getLastDayIssuesCount();
+    this.getUnassignedIssuesCount();
   }
 
   getStatusCounts() {
@@ -49,11 +52,30 @@ export class StatisticsComponent implements OnInit {
   }
 
   getLastDayIssuesCount() {
-    this.statisticsService.getLastDayIssuesCount().subscribe((data) => {
-      this.lastDayIssuesCount = data;
+    this.statisticsService.getLastDayIssuesCount().subscribe({
+      next: (data) => {
+        console.log('Last 24 hours issues count:', data);
+        this.lastDayIssuesCount = data.count || 0;
+      },
+      error: (error) => {
+        console.error('Error fetching last 24 hours count:', error);
+        this.lastDayIssuesCount = 0;
+      }
     });
   }
 
+  getUnassignedIssuesCount() {
+    this.statisticsService.getUnassignedIssuesCount().subscribe({
+      next: (count) => {
+        console.log('Unassigned issues count:', count);
+        this.unassignedIssuesCount = count;
+      },
+      error: (error) => {
+        console.error('Error getting unassigned issues count:', error);
+        this.unassignedIssuesCount = 0;
+      }
+    });
+  }
 
   loadTaskPerformance() {
     this.statisticsService.getTaskPerformance().subscribe((data: { name: string; count: number }[]) => {
@@ -167,7 +189,7 @@ export class StatisticsComponent implements OnInit {
       }
     }
   };
-  
+
   verticalBarOptions = {
     responsive:true,
     maintainAspectRatio:false,
@@ -218,8 +240,8 @@ export class StatisticsComponent implements OnInit {
         'Broken streetlight',
         'Garbage',
         'Graffiti',
-        'Flooding',
-        'Manhole'
+        'Manhole',
+        'Unknown'
       ];
   
       // Initialize a map with all categories set to 0
