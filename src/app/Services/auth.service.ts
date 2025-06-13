@@ -7,26 +7,44 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly TOKEN_KEY = '_token';
+  adminData: any;
+  private roles: string[] = [];
 
-  constructor(private _HttpClient:HttpClient) { }
-
-  adminData:any;
-
-  loginForm(adminData:Object):Observable<any>{
-    return this._HttpClient.post(`https://civix.runasp.net/api/Auth/login`,adminData)
+  constructor(private _HttpClient: HttpClient) {
+    this.loadUserFromToken();
   }
 
-saveAdmin(){
-  const encode = localStorage.getItem('_token');
-  if(encode){
-    const decode = jwtDecode(encode);
-    this.adminData = decode;
+  
+  loginForm(adminData: Object): Observable<any> {
+    return this._HttpClient.post(`https://civix.runasp.net/api/Auth/login`, adminData);
   }
-}
 
-getToken(): string | null {
-  return localStorage.getItem('_token'); // Retrieve token from local storage
-}
+  
+  saveToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+    this.decodeAndStoreToken(token);
+  }
+
+
+  private decodeAndStoreToken(token: string): void {
+    try {
+      const decoded: any = jwtDecode(token);
+      this.adminData = decoded;
+      this.roles = decoded?.roles || [];
+    } catch (e) {
+      this.adminData = null;
+      this.roles = [];
+    }
+  }
+
+  
+  loadUserFromToken(): void {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (token) {
+      this.decodeAndStoreToken(token);
+    }
+  }
 
 setAdminInfo(info: any) {
   this.adminData = info;
@@ -47,6 +65,24 @@ getAdminInfo(): any {
 
 
 
+  isAdmin(): boolean {
+    return this.roles.includes('Admin');
+  }
+
+
+  hasRole(role: string): boolean {
+    return this.roles.includes(role);
+  }
+
+
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+
+  logout(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+    this.adminData = null;
+    this.roles = [];
+  }
 }
-
-

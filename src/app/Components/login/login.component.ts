@@ -1,36 +1,30 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup , Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterModule,
-    ReactiveFormsModule,CommonModule],
+  imports: [RouterModule, ReactiveFormsModule, CommonModule],
   providers: [Router],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-
 export class LoginComponent {
-
-  constructor(private _AuthService:AuthService, private _Router:Router){
-
-  }
+  constructor(private _AuthService: AuthService, private _Router: Router) {}
 
   password: string = '';
   showPassword: boolean = false;
   isDialogOpen: boolean = false;
-
-  errorMsg:string ='';
+  errorMsg: string = '';
 
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
-    
   });
 
  handleLogin(): void {
@@ -40,7 +34,11 @@ export class LoginComponent {
         if (response) {
           localStorage.setItem('_token', response.token);
           this._AuthService.setAdminInfo(response); // ✅ Store full user info
-
+            if (!this._AuthService.isAdmin()) {
+              this.errorMsg = 'Access denied — Admins only';
+              this._AuthService.logout();
+              return;
+            }
           this._Router.navigate(['/home']);
         }
       },
@@ -54,6 +52,7 @@ export class LoginComponent {
         }
       }
     });
+
   }
 } 
 
@@ -68,5 +67,4 @@ export class LoginComponent {
   closeDialog(): void {
     this.isDialogOpen = false;
   }
-
 }
