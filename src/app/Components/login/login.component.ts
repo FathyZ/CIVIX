@@ -32,6 +32,7 @@ export class LoginComponent {
     this._AuthService.loginForm(this.loginForm.value).subscribe({
       next: (response) => {
         if (response) {
+           this._AuthService.saveToken(response.token);
           localStorage.setItem('_token', response.token);
           this._AuthService.setAdminInfo(response); // ✅ Store full user info
             if (!this._AuthService.isAdmin()) {
