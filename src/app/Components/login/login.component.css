@@ -1,0 +1,255 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
+@import "primeicons/primeicons.css";
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Lexend", sans-serif;
+}
+
+.bgshadow {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  background-color: white;
+}
+
+/* Customize the popup container */
+.leaflet-popup {
+  font-family: Arial, sans-serif;
+}
+
+/* Customize the popup content wrapper */
+.leaflet-popup-content-wrapper {
+  background: #2c3e50; /* Dark background */
+  color: #ecf0f1; /* Light text */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3); /* Shadow */
+}
+
+/* Customize the popup content */
+.leaflet-popup-content {
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 2px;
+  text-align: center;
+}
+
+/* Customize the popup tip (arrow) */
+.leaflet-popup-tip {
+  background: #2c3e50; /* Match the wrapper background */
+  box-shadow: none; /* Remove default shadow */
+}
+
+/* Customize the close button */
+.leaflet-popup-close-button {
+  color: #ecf0f1; /* Light text */
+  font-size: 20px;
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+  border-radius: 50%; /* Circular button */
+}
+
+.leaflet-popup-close-button:hover {
+  background: rgba(0, 0, 0, 0.5); /* Darker on hover */
+}
+
+/* For WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffa400; /* Color of the scrollbar thumb */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2a72; /* Color of the scrollbar thumb on hover */
+}
+
+/* Apply rounded corners to PrimeNG tables globally */
+.p-datatable {
+  border-radius: 10px !important; /* Rounded corners for the whole table */
+  overflow: hidden !important; /* Prevents child elements from breaking the roundness */
+}
+
+/* Make the table header rounded */
+.p-datatable .p-datatable-thead > tr > th:first-child {
+  border-top-left-radius: 10px !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th:last-child {
+  border-top-right-radius: 10px !important;
+}
+
+/* Make the last row's corners rounded */
+.p-datatable .p-datatable-tbody > tr:last-child td:first-child {
+  border-bottom-left-radius: 10px !important;
+}
+
+.p-datatable .p-datatable-tbody > tr:last-child td:last-child {
+  border-bottom-right-radius: 10px !important;
+}
+
+.p-button-text {
+  color: #ffa400 !important;
+}
+
+.p-button:not(:disabled):hover {
+  border: 1px solid #ffa400 !important;
+  background: color-mix(in srgb, #ffa400, transparent 80%) !important;
+}
+
+.p-carousel-indicator-active .p-carousel-indicator-button {
+  background-color: #ffa400 !important;
+}
+
+.p-carousel-indicator-button {
+  background-color: #2a2a72 !important;
+}
+
+.loginContainer {
+  background-image: url(../../../assets/steptodown.com563221.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  padding: 20px 0px;
+}
+.loginForm p {
+  margin-top: 15px;
+  color: #666;
+}
+.loginForm h4 {
+  margin: 10px 0px;
+  color: #393537;
+}
+.loginForm form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  margin: 10px 0px;
+}
+.loginForm form input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #F6F6F6;
+  color: #000;
+}
+.loginForm form input::-moz-placeholder {
+  color: #BDBDBD;
+}
+.loginForm form input::placeholder {
+  color: #BDBDBD;
+}
+.loginForm form span {
+  color: rgba(42, 42, 114, 0.5019607843);
+  font-size: 12px;
+  align-self: flex-end;
+  margin-top: 10px;
+}
+.loginForm form span:hover {
+  color: #393537;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.loginForm form button {
+  width: 100%;
+  background-color: #ffa400;
+  color: white;
+  font-size: 20px;
+  padding: 5px;
+  border: none;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+.dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+.dialog-content i {
+  color: #ffa400;
+  font-size: 50px;
+}
+
+.formInput {
+  width: 100%;
+}
+
+.passInput {
+  width: 100%;
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px !important;
+  color: #555;
+}
+
+#loginBtn {
+  background-color: #ffa400;
+  transition: all ease-in-out 0.25s;
+}
+#loginBtn:hover {
+  background-color: #2a2a72;
+}
+
+.errorMsg p, .errorMsg i {
+  color: red !important;
+  font-size: 14px;
+  margin-top: 10px;
+}/*# sourceMappingURL=login.component.css.map */
