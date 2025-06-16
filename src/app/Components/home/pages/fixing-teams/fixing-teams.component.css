@@ -1,0 +1,166 @@
+.teams-table {
+  width: 100%;
+}
+.teams-table ::ng-deep .p-datatable {
+  width: 100%;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-wrapper {
+  width: 100%;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-table {
+  width: 100%;
+  table-layout: fixed;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  color: white;
+  font-weight: bold;
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-thead > tr > th:first-child {
+  width: 40%;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-thead > tr > th:nth-child(2) {
+  width: 20%;
+  text-align: center;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-thead > tr > th:nth-child(3) {
+  width: 20%;
+  text-align: center;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-thead > tr > th:last-child {
+  width: 20%;
+  text-align: center;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr {
+  width: 100%;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.p-rowexpand-content > td {
+  padding: 0;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding: 1rem;
+  color: white;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td:first-child {
+  width: 40%;
+  vertical-align: middle;
+  font-size: 18px;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(2) {
+  width: 20%;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 20px;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(3) {
+  width: 20%;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 20px;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td:last-child {
+  width: 20%;
+  text-align: center;
+  vertical-align: middle;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td:last-child .action-btn {
+  color: white;
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td:last-child .action-btn:hover {
+  color: #ffa400;
+  background-color: rgba(255, 164, 0, 0.1);
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr > td:last-child .action-btn .p-button-icon {
+  font-size: 1.2rem;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.group-header > td {
+  padding: 5px;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.group-header > td .header-content {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.group-header > td .toggle-btn {
+  margin-right: 0.5rem;
+  color: white;
+  transition: transform 0.3s ease;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.group-header > td .toggle-btn.pi-chevron-down {
+  transform: rotate(0);
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.group-header > td .toggle-btn.pi-chevron-right {
+  transform: rotate(-90deg);
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.group-header > td .team-name {
+  font-weight: bold;
+  margin-left: 0.5rem;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row i {
+  font-size: 20px;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row > td:first-child {
+  padding-left: 4rem;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row > td:first-child .members-section {
+  margin-top: 1rem;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row > td:first-child .members-section .members-headers {
+  display: flex;
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row > td:first-child .members-section .members-headers strong:first-child {
+  width: 150px;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row > td:first-child .members-section .members-headers strong:last-child {
+  margin-left: 2rem;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row > td:first-child .members-section ul {
+  list-style-type: disc;
+  padding-left: 1.2rem;
+  margin: 0.5rem 0;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row > td:first-child .members-section ul li {
+  padding-left: 0.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row > td:first-child .members-section ul li::marker {
+  color: white;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row > td:first-child .members-section ul li .member-name {
+  display: inline-block;
+  width: 150px;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row > td:first-child .members-section ul li .phone-number {
+  display: inline-block;
+  margin-left: 2rem;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.expanded-row > td strong {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.group-footer td {
+  font-weight: bold;
+  padding: 1rem;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.group-footer td[colspan="2"] {
+  text-align: right;
+  padding-right: 1rem;
+}
+.teams-table ::ng-deep .p-datatable .p-datatable-tbody > tr.group-footer td:nth-child(2) {
+  text-align: left;
+  padding-left: 0;
+}/*# sourceMappingURL=fixing-teams.component.css.map */

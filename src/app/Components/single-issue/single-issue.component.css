@@ -1,0 +1,539 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
+@import "primeicons/primeicons.css";
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Lexend", sans-serif;
+}
+
+.bgshadow {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  background-color: white;
+}
+
+/* Customize the popup container */
+.leaflet-popup {
+  font-family: Arial, sans-serif;
+}
+
+/* Customize the popup content wrapper */
+.leaflet-popup-content-wrapper {
+  background: #2c3e50; /* Dark background */
+  color: #ecf0f1; /* Light text */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3); /* Shadow */
+}
+
+/* Customize the popup content */
+.leaflet-popup-content {
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 2px;
+  text-align: center;
+}
+
+/* Customize the popup tip (arrow) */
+.leaflet-popup-tip {
+  background: #2c3e50; /* Match the wrapper background */
+  box-shadow: none; /* Remove default shadow */
+}
+
+/* Customize the close button */
+.leaflet-popup-close-button {
+  color: #ecf0f1; /* Light text */
+  font-size: 20px;
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+  border-radius: 50%; /* Circular button */
+}
+
+.leaflet-popup-close-button:hover {
+  background: rgba(0, 0, 0, 0.5); /* Darker on hover */
+}
+
+/* For WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffa400; /* Color of the scrollbar thumb */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2a72; /* Color of the scrollbar thumb on hover */
+}
+
+/* Apply rounded corners to PrimeNG tables globally */
+.p-datatable {
+  border-radius: 10px !important; /* Rounded corners for the whole table */
+  overflow: hidden !important; /* Prevents child elements from breaking the roundness */
+}
+
+/* Make the table header rounded */
+.p-datatable .p-datatable-thead > tr > th:first-child {
+  border-top-left-radius: 10px !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th:last-child {
+  border-top-right-radius: 10px !important;
+}
+
+/* Make the last row's corners rounded */
+.p-datatable .p-datatable-tbody > tr:last-child td:first-child {
+  border-bottom-left-radius: 10px !important;
+}
+
+.p-datatable .p-datatable-tbody > tr:last-child td:last-child {
+  border-bottom-right-radius: 10px !important;
+}
+
+.p-button-text {
+  color: #ffa400 !important;
+}
+
+.p-button:not(:disabled):hover {
+  border: 1px solid #ffa400 !important;
+  background: color-mix(in srgb, #ffa400, transparent 80%) !important;
+}
+
+.p-carousel-indicator-active .p-carousel-indicator-button {
+  background-color: #ffa400 !important;
+}
+
+.p-carousel-indicator-button {
+  background-color: #2a2a72 !important;
+}
+
+#map {
+  width: 100%;
+  min-height: 400px;
+  border-radius: 10px;
+}
+
+.issueContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.issueCard {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+  border: none;
+  background-color: white;
+}
+.issueCard img {
+  border-radius: 10px 10px 0px 0px;
+  margin-bottom: 10px;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.issueCard p {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.p-carousel-item-list {
+  height: 100%;
+  transition: height 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-img {
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+:host ::ng-deep .p-carousel-item {
+  max-height: 0;
+}
+
+:host ::ng-deep .p-carousel-item-active {
+  max-height: 100% !important;
+}
+
+.p-button-text {
+  color: #ffa400 !important;
+}
+
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.fullscreen-content {
+  position: relative;
+}
+
+.fullscreen-img {
+  max-height: 90vh;
+  -o-object-fit: contain;
+     object-fit: contain;
+  border-radius: 10px;
+}
+
+.close-btn {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.clickable-img {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.clickable-img:hover {
+  transform: scale(1.05);
+}
+
+.clickable-img-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  overflow: hidden;
+  width: 100%;
+}
+.clickable-img-wrapper .clickable-img {
+  transition: filter 0.3s, transform 0.2s;
+  max-height: 300px;
+}
+.clickable-img-wrapper:hover .clickable-img {
+  filter: brightness(0.7);
+  transform: scale(1.03);
+}
+.clickable-img-wrapper:hover .hover-overlay {
+  opacity: 1;
+}
+
+.hover-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  width: 120px;
+  height: 60px;
+  text-align: center;
+}
+.hover-overlay i {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+.hover-overlay .hover-text {
+  font-size: 0.7rem;
+}
+
+.assignBtn {
+  background-color: #ffa400;
+  color: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-top: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+}
+.assignBtn:hover {
+  border: 1px solid #ffa400;
+  background-color: white;
+  color: #ffa400;
+}
+.assignBtn:disabled {
+  background-color: #ccc;
+  color: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-top: 10px;
+  border: 1px solid transparent;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+::ng-deep .team-dialog .p-dialog-content {
+  width: 50vw;
+}
+
+.team-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 2rem 1rem;
+  margin-bottom: 1rem;
+}
+.team-card li {
+  list-style: none;
+}
+.team-card p {
+  font-size: 1.2rem;
+}
+
+.p-dialog {
+  background: #09c !important;
+  width: 100% !important;
+}
+
+.deleteBtn {
+  background-color: tomato;
+  color: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-top: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+}
+.deleteBtn:hover {
+  border: 1px solid tomato;
+  background-color: white;
+  color: tomato;
+}
+
+.updateBtn {
+  background-color: #5ed61f;
+  color: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-top: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+}
+.updateBtn:hover {
+  border: 1px solid #5ed61f;
+  background-color: white;
+  color: #5ed61f;
+}
+.updateBtn:disabled {
+  background-color: #ccc;
+  color: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-top: 10px;
+  border: 1px solid transparent;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btnContainer {
+  align-self: flex-end;
+}
+
+.reportBtn {
+  background-color: #09c;
+  color: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-top: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+}
+.reportBtn:hover {
+  border: 1px solid #09c;
+  background-color: white;
+  color: #09c;
+}
+
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  width: 50%;
+  max-width: 500px;
+}
+dialog h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: black;
+  margin-bottom: 10px;
+}
+dialog p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: grey;
+}
+dialog button {
+  padding: 0.5rem 1rem;
+  border: solid 1px transparent;
+  background-color: #ffa400;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+dialog .greyButton {
+  background-color: #f0f0f2;
+  color: black;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#UpdateStatusDialog {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fff;
+  overflow: visible;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+#UpdateStatusDialog h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #333;
+  text-align: center;
+}
+
+#UpdateStatusDialog p {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+  margin: 0;
+}
+
+#UpdateStatusDialog .p-dropdown {
+  width: 100%;
+  z-index: 1000;
+}
+
+#UpdateStatusDialog .button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+#UpdateStatusDialog button {
+  flex: 1;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#UpdateStatusDialog .greyButton {
+  background-color: #eee;
+  color: #333;
+}
+
+#UpdateStatusDialog .greyButton:hover {
+  background-color: #ddd;
+}
+
+#UpdateStatusDialog button:not(.greyButton) {
+  background-color: #ffa400;
+  color: #fff;
+}
+
+#UpdateStatusDialog button:not(.greyButton):hover {
+  background-color: #2a2a72;
+}
+
+.confirmDeleteBtn {
+  background-color: #ffa400;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.confirmDeleteBtn:hover {
+  background-color: #2a2a72;
+}
+
+.update-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+.carousel-img {
+  max-height: 250px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.w-40 {
+  width: 40%;
+}/*# sourceMappingURL=single-issue.component.css.map */

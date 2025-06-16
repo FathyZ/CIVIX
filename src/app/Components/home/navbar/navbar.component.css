@@ -1,0 +1,309 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
+@import "primeicons/primeicons.css";
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Lexend", sans-serif;
+}
+
+.bgshadow {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  background-color: white;
+}
+
+/* Customize the popup container */
+.leaflet-popup {
+  font-family: Arial, sans-serif;
+}
+
+/* Customize the popup content wrapper */
+.leaflet-popup-content-wrapper {
+  background: #2c3e50; /* Dark background */
+  color: #ecf0f1; /* Light text */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3); /* Shadow */
+}
+
+/* Customize the popup content */
+.leaflet-popup-content {
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 2px;
+  text-align: center;
+}
+
+/* Customize the popup tip (arrow) */
+.leaflet-popup-tip {
+  background: #2c3e50; /* Match the wrapper background */
+  box-shadow: none; /* Remove default shadow */
+}
+
+/* Customize the close button */
+.leaflet-popup-close-button {
+  color: #ecf0f1; /* Light text */
+  font-size: 20px;
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+  border-radius: 50%; /* Circular button */
+}
+
+.leaflet-popup-close-button:hover {
+  background: rgba(0, 0, 0, 0.5); /* Darker on hover */
+}
+
+/* For WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffa400; /* Color of the scrollbar thumb */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2a72; /* Color of the scrollbar thumb on hover */
+}
+
+/* Apply rounded corners to PrimeNG tables globally */
+.p-datatable {
+  border-radius: 10px !important; /* Rounded corners for the whole table */
+  overflow: hidden !important; /* Prevents child elements from breaking the roundness */
+}
+
+/* Make the table header rounded */
+.p-datatable .p-datatable-thead > tr > th:first-child {
+  border-top-left-radius: 10px !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th:last-child {
+  border-top-right-radius: 10px !important;
+}
+
+/* Make the last row's corners rounded */
+.p-datatable .p-datatable-tbody > tr:last-child td:first-child {
+  border-bottom-left-radius: 10px !important;
+}
+
+.p-datatable .p-datatable-tbody > tr:last-child td:last-child {
+  border-bottom-right-radius: 10px !important;
+}
+
+.p-button-text {
+  color: #ffa400 !important;
+}
+
+.p-button:not(:disabled):hover {
+  border: 1px solid #ffa400 !important;
+  background: color-mix(in srgb, #ffa400, transparent 80%) !important;
+}
+
+.p-carousel-indicator-active .p-carousel-indicator-button {
+  background-color: #ffa400 !important;
+}
+
+.p-carousel-indicator-button {
+  background-color: #2a2a72 !important;
+}
+
+.navbar-content {
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  color: black;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.nav-left p {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-right: 1rem;
+}
+.nav-left .nav-search {
+  margin-left: 1rem;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.nav-right a {
+  text-decoration: none;
+  color: black;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0.8rem;
+  border: none;
+  transition: all 0.3s ease;
+}
+.nav-right a:hover {
+  color: white;
+  background-color: #ffa400;
+}
+.nav-right i {
+  font-size: 1.2rem;
+}
+
+.form button {
+  border: none;
+  background: none;
+  color: #8b8ba7;
+}
+
+.form {
+  --timing: 0.3s;
+  --width-of-input: 200px;
+  --height-of-input: 40px;
+  --border-height: 2px;
+  --input-bg: #fff;
+  --border-color: $main-Color;
+  --border-radius: 30px;
+  --after-border-radius: 1px;
+  position: relative;
+  width: var(--width-of-input);
+  height: var(--height-of-input);
+  display: flex;
+  align-items: center;
+  padding-inline: 0.8em;
+  border-radius: var(--border-radius);
+  transition: border-radius 0.5s ease;
+  background: var(--input-bg, #fff);
+  border: 0.5px solid #8b8ba7;
+}
+
+.input {
+  font-size: 0.9rem;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  padding-inline: 0.5em;
+  padding-block: 0.7em;
+  border: none;
+  color: black;
+}
+
+.form:before {
+  content: "";
+  position: absolute;
+  background: #ffa400;
+  transform: scaleX(0);
+  transform-origin: center;
+  width: 100%;
+  height: var(--border-height);
+  left: 0;
+  bottom: 0;
+  border-radius: 1px;
+  transition: transform var(--timing) ease;
+}
+
+.form:focus-within {
+  border-radius: var(--after-border-radius);
+  border: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+.form:focus-within:before {
+  transform: scale(1);
+}
+
+.reset {
+  border: none;
+  background: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+input:not(:-moz-placeholder-shown) ~ .reset {
+  opacity: 1;
+  visibility: visible;
+}
+
+input:not(:placeholder-shown) ~ .reset {
+  opacity: 1;
+  visibility: visible;
+}
+
+.form svg {
+  width: 17px;
+}
+
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+dialog h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: black;
+  margin-bottom: 10px;
+}
+dialog p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: grey;
+}
+dialog button {
+  padding: 0.5rem 1rem;
+  border: solid 1px transparent;
+  background-color: #ffa400;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+dialog .greyButton {
+  background-color: #f0f0f2;
+  color: black;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}/*# sourceMappingURL=navbar.component.css.map */
