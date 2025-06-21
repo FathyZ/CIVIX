@@ -1,18 +1,16 @@
-import { resolve } from 'node:path';
-import { GeocodingService } from './../../../../Services/geocoding.service';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
-import { CommonModule, NgClass, NgFor } from '@angular/common';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { TagModule } from 'primeng/tag';
 import { Router } from '@angular/router';
 import { IssuesService } from '../../../../Services/issues.service';
+import { GeocodingService } from './../../../../Services/geocoding.service';
 import { FixingTeamsService } from '../../../../Services/fixing-teams.service';
 import { ApiResponse, Issue } from '../../../../models/issue';
-import { ChangeDetectorRef } from '@angular/core';
 import { FixingTeam } from '../../../../models/fixingTeams';
-
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-overview',
@@ -22,124 +20,97 @@ import { FixingTeam } from '../../../../models/fixingTeams';
   styleUrl: './overview.component.scss',
 })
 export class OverviewComponent implements OnInit, AfterViewInit {
-  issues: Issue[] = []; // Will hold the fetched issues
+  issues: Issue[] = [];
   totalIssues: number = 0;
-  resolvedIssues : number =0; // Count resolved issues 
-  teamNumber: number = 0; 
-  openTeamsNumber: number = 0; // Count open teams
+  resolvedIssues: number = 0;
+  teamNumber: number = 0;
+  openTeamsNumber: number = 0;
   busyTeamsNumber: number = 0;
-  productivity: number = 0; // Productivity percentage
-  private addressCache = new Map<string, string>(); // ✅ Caching for reverse geocoding
+  productivity: number = 0;
+  private addressCache = new Map<string, string>();
   private map!: L.Map;
-  private L!: any; // Store Leaflet dynamically
-  private markers: L.Marker[] = []; // Declare an array to store markers
+  private L!: any;
+  private markers: L.Marker[] = [];
+  isBrowser = false;
 
-  constructor(private router: Router, private issueService: IssuesService, private geocodingService: GeocodingService,private cdRef: ChangeDetectorRef , private fixingTeamService: FixingTeamsService) {}
+  constructor(
+    private router: Router,
+    private issueService: IssuesService,
+    private geocodingService: GeocodingService,
+    private cdRef: ChangeDetectorRef,
+    private fixingTeamService: FixingTeamsService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.fetchIssues();
     this.fetchTeamInfo();
   }
 
-  
-  fetchTeamInfo(){
-    this.fixingTeamService.getAllTeams().subscribe((response: any) => {
-      this.teamNumber = response.length;
-      this.busyTeamsNumber = response.filter((team: any) => team.availabilityStatus == "Busy").length;
-      this.openTeamsNumber = this.teamNumber - this.busyTeamsNumber; // Calculate open teams
-    },
-    (error) => {
-      console.log("Error fetching teams:", error);
-    });
+async ngAfterViewInit(): Promise<void> {
+  if (!this.isBrowser) return;
+
+  try {
+    const leaflet = await import('leaflet');
+    this.L = leaflet.default ?? leaflet; // ✅ This line is critical
+    this.initMap();
+  } catch (err) {
+    console.error('Leaflet failed to load:', err);
   }
-    
-
-
- fetchIssues() {
-  this.issueService.getIssues().subscribe((response: ApiResponse) => {
-    this.issues = response.data;
-    this.totalIssues = response.totatIssues;
-    this.resolvedIssues = this.issues.filter((issue) => issue.status === 'Resolved').length;
-    // this.productivity = Math.round((this.resolvedIssues / this.totalIssues) * 100); // Calculate productivity percentage
-    if (this.totalIssues > 0) {
-    this.productivity = Math.round((this.resolvedIssues / this.totalIssues) * 100);
-    } else {
-    this.productivity = 0; // or any default value you'd like when there are no issues
-    }
-    console.log("productivity:", this.productivity);
-    console.log("Resolved Issues:", this.resolvedIssues);
-    this.issues.forEach((issue) => {
-      const cacheKey = `${issue.latitude},${issue.longitude}`;
-      if (this.addressCache.has(cacheKey)) {
-        issue.address = this.addressCache.get(cacheKey); // Use cached address if available
-      } else {
-        this.geocodingService.getAddressFromCoords(issue.latitude, issue.longitude)
-          .subscribe((address: string) => {
-            issue.address = address; // Directly assign the fetched address
-            console.log(`Fetched Address: ${address}`);
-            this.addressCache.set(cacheKey, address); // Cache the address
-
-            // Manually trigger change detection to update the UI (if necessary)
-            // this.cdRef.detectChanges();
-          });
-      }
-    });
-
-    console.log(response); // Log the issues to the console for debugging
-    if (this.map) {
-      this.addMarkers();
-      this.fitMapToMarkers();
-    }
-  },
-  (error) => {
-    console.log(error); // Log any errors to the console for debugging
-  });
 }
 
-  // Adds markers on the map for the issues
-  private addMarkers(): void {
-    if (!this.map) return;
-
-    const customIcon = new this.L.Icon({
-      iconUrl: '../../../../../assets/marker-icon-2x.png',
-      shadowUrl: '../../../../../assets/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41],
-    });
-
-    // Add markers after issues are fetched
-    this.issues.forEach((issue, index) => {
-      if (issue.latitude && issue.longitude) {
-        const marker = this.L.marker([issue.latitude, issue.longitude], { icon: customIcon })
-          .addTo(this.map)
-          .bindPopup((index + 1).toString()); // Show issue index in popup
-
-        this.markers.push(marker); // Store marker in array
+  fetchTeamInfo() {
+    this.fixingTeamService.getAllTeams().subscribe(
+      (response: any) => {
+        this.teamNumber = response.length;
+        this.busyTeamsNumber = response.filter((team: any) => team.availabilityStatus === 'Busy').length;
+        this.openTeamsNumber = this.teamNumber - this.busyTeamsNumber;
+      },
+      (error) => {
+        console.log('Error fetching teams:', error);
       }
-    });
+    );
   }
 
-  // Adjusts the map's zoom and bounds to fit all markers
-  private fitMapToMarkers() {
-    if (!this.issues.length) return;
+  fetchIssues() {
+    this.issueService.getIssues().subscribe(
+      (response: ApiResponse) => {
+        this.issues = response.data;
+        this.totalIssues = response.totatIssues;
+        this.resolvedIssues = this.issues.filter((issue) => issue.status === 'Resolved').length;
+        this.productivity = this.totalIssues > 0 ? Math.round((this.resolvedIssues / this.totalIssues) * 100) : 0;
 
-    const bounds = this.L.latLngBounds(this.issues.map((issue) => [issue.latitude, issue.longitude]));
-    this.map.fitBounds(bounds); // Adds padding to prevent tight zoom-in
+        this.issues.forEach((issue) => {
+          const cacheKey = `${issue.latitude},${issue.longitude}`;
+          if (this.addressCache.has(cacheKey)) {
+            issue.address = this.addressCache.get(cacheKey);
+          } else {
+            this.geocodingService.getAddressFromCoords(issue.latitude, issue.longitude).subscribe((address: string) => {
+              issue.address = address;
+              this.addressCache.set(cacheKey, address);
+            });
+          }
+        });
+
+        if (this.isBrowser && this.map) {
+          this.addMarkers();
+          this.fitMapToMarkers();
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
-  // Initialize Leaflet after the view is initialized
-  async ngAfterViewInit(): Promise<void> {
-    if (typeof window !== 'undefined') {
-      const leaflet = await import('leaflet'); // Dynamically import Leaflet library
-      this.L = leaflet; // Store the module
-      this.initMap();
-    }
-  }
-
-  // Initializes the map with Leaflet and adds markers
   private initMap(): void {
+    if (!this.L) {
+      console.error('Leaflet not loaded yet.');
+      return;
+    }
+
     this.map = this.L.map('map').setView([30.0784937, 31.6578639], 15);
 
     this.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -159,14 +130,43 @@ export class OverviewComponent implements OnInit, AfterViewInit {
       if (issue.latitude && issue.longitude) {
         const marker = this.L.marker([issue.latitude, issue.longitude], { icon: customIcon })
           .addTo(this.map)
-          .bindPopup((index + 1).toString()); // Show issue index in popup
+          .bindPopup((index + 1).toString());
 
-        this.markers.push(marker); // Store marker in array
+        this.markers.push(marker);
       }
     });
   }
 
-  // Determines CSS class based on issue priority
+  private addMarkers(): void {
+    if (!this.map || !this.L) return;
+
+    const customIcon = new this.L.Icon({
+      iconUrl: '../../../../../assets/marker-icon-2x.png',
+      shadowUrl: '../../../../../assets/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41],
+    });
+
+    this.issues.forEach((issue, index) => {
+      if (issue.latitude && issue.longitude) {
+        const marker = this.L.marker([issue.latitude, issue.longitude], { icon: customIcon })
+          .addTo(this.map)
+          .bindPopup((index + 1).toString());
+
+        this.markers.push(marker);
+      }
+    });
+  }
+
+  private fitMapToMarkers() {
+    if (!this.issues.length || !this.L) return;
+
+    const bounds = this.L.latLngBounds(this.issues.map((issue) => [issue.latitude, issue.longitude]));
+    this.map.fitBounds(bounds);
+  }
+
   getPriorityClass(priority: string) {
     switch (priority.toLowerCase()) {
       case 'high':
@@ -180,7 +180,6 @@ export class OverviewComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Navigate to the single issue page
   viewIssue(id: string) {
     this.router.navigate(['/home/issue', id]);
   }

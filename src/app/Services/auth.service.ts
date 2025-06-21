@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
 
@@ -8,25 +9,39 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   private readonly TOKEN_KEY = '_token';
+  private isBrowser: boolean;
   adminData1: any;
   adminData2: any;
   private roles: string[] = [];
 
-  constructor(private _HttpClient: HttpClient) {
-    this.loadUserFromToken();
+  constructor(
+    private _HttpClient: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    // ❌ DO NOT call loadUserFromToken() here
   }
 
-  
+  // Call this in AppComponent.ngOnInit()
+  loadUserFromToken(): void {
+    if (!this.isBrowser) return;
+
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (token) {
+      this.decodeAndStoreToken(token);
+    }
+  }
+
   loginForm(adminData: Object): Observable<any> {
     return this._HttpClient.post(`https://civix.runasp.net/api/Auth/login`, adminData);
   }
 
-  
   saveToken(token: string): void {
+    if (!this.isBrowser) return;
+
     localStorage.setItem(this.TOKEN_KEY, token);
     this.decodeAndStoreToken(token);
   }
-
 
   private decodeAndStoreToken(token: string): void {
     try {
@@ -39,50 +54,47 @@ export class AuthService {
     }
   }
 
-  
-  loadUserFromToken(): void {
-    const token = localStorage.getItem(this.TOKEN_KEY);
-    if (token) {
-      this.decodeAndStoreToken(token);
+  setAdminInfo(info: any): void {
+    this.adminData2 = info;
+
+    if (this.isBrowser) {
+      localStorage.setItem('adminInfo', JSON.stringify(info));
     }
   }
 
-setAdminInfo(info: any) {
-  this.adminData2 = info;
-  localStorage.setItem('adminInfo', JSON.stringify(info)); // optional: persist it
-}
+  getAdminInfo(): any {
+    if (this.adminData2) return this.adminData2;
 
-getAdminInfo(): any {
-  if (this.adminData2) return this.adminData2;
+    if (this.isBrowser) {
+      const info = localStorage.getItem('adminInfo');
+      if (info) {
+        this.adminData2 = JSON.parse(info);
+        return this.adminData2;
+      }
+    }
 
-  const info = localStorage.getItem('adminInfo');
-  if (info) {
-    this.adminData2 = JSON.parse(info);
-    return this.adminData2;
+    return null;
   }
-
-  return null;
-}
-
-
 
   isAdmin(): boolean {
     return this.roles.includes('Admin');
   }
 
-
   hasRole(role: string): boolean {
     return this.roles.includes(role);
   }
 
-
   getToken(): string | null {
+    if (!this.isBrowser) return null;
+
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
-
   logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
+    if (this.isBrowser) {
+      localStorage.removeItem(this.TOKEN_KEY);
+    }
+
     this.adminData1 = null;
     this.roles = [];
   }
