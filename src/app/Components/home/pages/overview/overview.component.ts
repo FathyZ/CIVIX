@@ -60,7 +60,12 @@ export class OverviewComponent implements OnInit, AfterViewInit {
     this.issues = response.data;
     this.totalIssues = response.totatIssues;
     this.resolvedIssues = this.issues.filter((issue) => issue.status === 'Resolved').length;
-    this.productivity = Math.round((this.resolvedIssues / this.totalIssues) * 100); // Calculate productivity percentage
+    // this.productivity = Math.round((this.resolvedIssues / this.totalIssues) * 100); // Calculate productivity percentage
+    if (this.totalIssues > 0) {
+    this.productivity = Math.round((this.resolvedIssues / this.totalIssues) * 100);
+    } else {
+    this.productivity = 0; // or any default value you'd like when there are no issues
+    }
     console.log("productivity:", this.productivity);
     console.log("Resolved Issues:", this.resolvedIssues);
     this.issues.forEach((issue) => {
