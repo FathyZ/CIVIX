@@ -49,17 +49,17 @@ export class OverviewComponent implements OnInit, AfterViewInit {
     this.fetchTeamInfo();
   }
 
-  async ngAfterViewInit(): Promise<void> {
-    if (!this.isBrowser) return;
+async ngAfterViewInit(): Promise<void> {
+  if (!this.isBrowser) return;
 
-    try {
-      const leaflet = await import('leaflet');
-      this.L = leaflet;
-      this.initMap();
-    } catch (err) {
-      console.error('Leaflet failed to load:', err);
-    }
+  try {
+    const leaflet = await import('leaflet');
+    this.L = leaflet.default ?? leaflet; // ✅ This line is critical
+    this.initMap();
+  } catch (err) {
+    console.error('Leaflet failed to load:', err);
   }
+}
 
   fetchTeamInfo() {
     this.fixingTeamService.getAllTeams().subscribe(
