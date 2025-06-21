@@ -5,14 +5,26 @@
     </div>
     <div class="header">
       <h1>Issue Report</h1>
-      <p>Region: {{ regionName }}</p>
+      <p>Region: {{ area }}</p>
       <p>Date: {{ today | date : "short" }}</p>
     </div>
     
     <div class="stats">
-      <div *ngFor="let stat of stats" class="stat">
-        <i [class]="stat.icon"></i>
-        <p>{{ stat.label }}: {{ stat.value }}</p>
+      <div class="stat">
+        <i class="pi pi-exclamation-circle"></i>
+        <p>Total Issues : {{ totalIssues }}</p>
+      </div>
+      <div class="stat">
+        <i class="pi pi pi-check-circle"></i>
+        <p>Resolved : {{ resolvedIssues }}</p>
+      </div>
+      <div class="stat">
+        <i class="pi pi-clock"></i>
+        <p>Pending : {{ unresolvedIssues }}</p>
+      </div>
+      <div class="stat">
+        <i class="pi pi-calendar"></i>
+        <p>Avg. Resolution Time : 2.3 days</p>
       </div>
     </div>
   </div>

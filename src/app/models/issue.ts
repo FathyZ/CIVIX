@@ -20,7 +20,9 @@ export interface ApiResponse { // interface for the whole api response
     priority: string;     // Priority level (string, possibly an enum)
     status: string;       // Current status (string, possibly an enum)
     category: string;     // Category of the issue
-    images: string[];     // Array of image URLs or paths (string array)
+    images: string[]; 
+    area:string;
+    fixingTeamName: string;     // Name of the team assigned to the issue
 }
 export interface issueUpdate { 
 issueId : string; 
