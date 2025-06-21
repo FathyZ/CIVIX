@@ -1,8 +1,11 @@
+import { AuthService } from './../../../../Services/auth.service';
+import { IssuesService } from './../../../../Services/issues.service';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import { ApiResponse, Issue } from '../../../../models/issue';
 
 @Component({
   selector: 'app-report',
@@ -15,96 +18,102 @@ import html2canvas from 'html2canvas';
 
 export class ReportsComponent {
   today = new Date();
-  regionName = 'Cairo';
+  area :string = '';
+   issues2: Issue[] = []; 
+    totalIssues: number = 0;
+    resolvedIssues : number =0;
+    unresolvedIssues: number = 0;
+  
+  constructor(private IssuesService: IssuesService , private AuthService: AuthService) {}
+  ngOnInit() {
+    this.groupIssuesByCategory(); // move this here
+    this.getissues();
+     const admin = this.AuthService.getAdminInfo();
+    if (admin) {
+      this.area = admin.area;
+      console.log( "Area Is : " + this.area);
+  }}
+
+getissues(){
+  this.IssuesService.getIssues().subscribe({
+    next: (response: ApiResponse) => {
+      this.issues2 = response.data;
+      this.totalIssues = response.totatIssues;
+      this.resolvedIssues = this.issues2.filter((issue) => issue.status === 'Resolved').length;
+      this.unresolvedIssues = this.totalIssues - this.resolvedIssues;
+
+      this.groupIssuesByCategory(); // move this here
+    },
+    error: (error) => {
+      console.error('Error fetching issues:', error);
+    }
+  });
+}
 
   stats = [
-    { label: 'Total Issues', value: 243, icon: 'pi pi-exclamation-circle' },
-    { label: 'Resolved', value: 181, icon: 'pi pi-check-circle' },
-    { label: 'Pending', value: 62, icon: 'pi pi-clock' },
+    { label: 'Total Issues', value: this.totalIssues, icon: 'pi pi-exclamation-circle' },
+    { label: 'Resolved', value: this.resolvedIssues, icon: 'pi pi-check-circle' },
+    { label: 'Pending', value:this.unresolvedIssues, icon: 'pi pi-clock' },
     { label: 'Avg. Resolution Time', value: '2.3 days', icon: 'pi pi-calendar' }
   ];
 
-  issues = [
-    {
-      title: 'Broken Streetlight',
-      no:"1",
-      status: 'Resolved',
-      location: 'Tahrir Square',
-      dateReported: new Date('2025-02-15'),
-      assignedTeam: 'Lighting Fixers',
-      priority: 'High',
-      description: 'Streetlight has been out for 3 days, causing safety concerns.'
-    },
-    {
-      title: 'Broken Streetlight',
-      no:"2",
-      status: 'Pending',
-      location: 'Tahrir Square',
-      dateReported: new Date('2025-02-15'),
-      assignedTeam: 'Lighting Fixers',
-      priority: 'High',
-      description: 'Streetlight has been out for 3 days, causing safety concerns.'
-    },
-    {
-      title: 'Pothole',
-      no:"1",
-      status: 'Pending',
-      location: 'Zamalek Main Street',
-      dateReported: new Date('2025-03-10'),
-      assignedTeam: 'Road Repair Unit',
-      priority: 'Medium',
-      description: 'Large pothole making the road dangerous for cars.'
-    },
-    {
-      title: 'Pothole',
-      no:"2",
-      status: 'Resolved',
-      location: 'Zamalek Main Street',
-      dateReported: new Date('2025-03-10'),
-      assignedTeam: 'Road Repair Unit',
-      priority: 'Medium',
-      description: 'Large pothole making the road dangerous for cars.'
-    },
+  // issues = [
+  //   {
+  //     title: 'Garbage',
+  //     no:"1",
+  //     status: 'resolved',
+  //     location: 'Al Shohda Road, Cairo, 11837, Egypt',
+  //     dateReported:  'Monday, June 16, 2025',
+  //     assignedTeam: 'Garbage Team',
+  //     priority: 'Medium',
+  //     description: 'Garbage in the street causing bad smell'
+  //   }
 
-    {
-      title: 'Flooding',
-      no:"1",
-      status: 'Pending',
-      location: 'Zamalek Main Street',
-      dateReported: new Date('2025-03-10'),
-      assignedTeam: 'Road Repair Unit',
-      priority: 'Medium',
-      description: 'Large pothole making the road dangerous for cars.'
-    }
-    ,{
-      title: 'Pothole',
-      no:"3",
-      status: 'Denied',
-      location: 'Zamalek Main Street',
-      dateReported: new Date('2025-03-10'),
-      assignedTeam: 'Road Repair Unit',
-      priority: 'Medium',
-      description: 'Large pothole making the road dangerous for cars.'
-    }
-
-  ];
+  // ];
 
   groupedIssues: { [key: string]: any[] } = {};
 
-  ngOnInit() {
-    this.groupIssuesByTitle();
-  }
-  groupIssuesByTitle() {
-    this.groupedIssues = this.issues.reduce((groups, issue) => {
-      if (!groups[issue.title]) {
-        groups[issue.title] = [];  
-      }
-      groups[issue.title].push(issue);
-      return groups;
-    }, {} as { [key: string]: any[] }); 
-  }
-  
 
+//   groupIssuesByTitle() {
+//   this.groupedIssues = this.issues2.reduce((groups, issue) => {
+//     if (!groups[issue.title]) {
+//       groups[issue.title] = [];  
+//     }
+//     groups[issue.title].push({
+//       no: groups[issue.title].length + 1,
+//       location: `${issue.area ?? ''}`,
+//       dateReported: issue.createdOn,
+//       priority: issue.priority,
+//       description: issue.description,
+//       assignedTeam: issue.fixingTeamName ?? 'Unassigned',
+//       status: issue.status
+//     });
+//     return groups;
+//   }, {} as { [key: string]: any[] });
+// }
+
+
+groupIssuesByCategory() {
+  this.groupedIssues = this.issues2.reduce((groups, issue) => {
+    const category = issue.category || 'Uncategorized';
+
+    if (!groups[category]) {
+      groups[category] = [];
+    }
+
+    groups[category].push({
+      no: groups[category].length + 1,
+      location: `${issue.area ?? ''}`,
+      dateReported: issue.createdOn,
+      priority: issue.priority,
+      description: issue.description,
+      assignedTeam: issue.fixingTeamName ?? 'Unassigned',
+      status: issue.status
+    });
+
+    return groups;
+  }, {} as { [key: string]: any[] });
+}
 
   getStatusColor(status: string): string {
     switch (status.toLowerCase()) {
