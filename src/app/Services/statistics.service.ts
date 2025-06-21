@@ -12,6 +12,7 @@ export class StatisticsService {
   private priorityBaseUrl = 'https://civix.runasp.net/api/Issues/count-by-priority';
   private lastDayUrl = 'https://civix.runasp.net/api/Issues/count-last-24-hours'
   private issuesUrl = 'https://civix.runasp.net/api/Issues';
+  private mostCommonIssueUrl = 'https://civix.runasp.net/api/Issues/count-by-category';
 
   constructor(private http: HttpClient) {}
 
@@ -104,6 +105,27 @@ export class StatisticsService {
       catchError(error => {
         console.error('Error fetching unassigned issues count:', error);
         return of(0);
+      })
+    );
+  }
+
+  getMostCommonIssue(): Observable<{ name: string; count: number }[]> {
+    const token = localStorage.getItem('_token');
+    if (!token) {
+      console.error('Token not found!');
+      return of([]);
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.get<{ name: string; count: number }[]>(this.mostCommonIssueUrl, { headers }).pipe(
+      tap(response => console.log('Most common issue API response:', response)),
+      catchError(error => {
+        console.error('Error fetching most common issue:', error);
+        return of([]);
       })
     );
   }
