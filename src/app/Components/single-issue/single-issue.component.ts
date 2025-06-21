@@ -54,6 +54,16 @@ export class SingleIssueComponent implements OnInit {
     private router: Router) {}
 
   toggleTeamPopup(): void {
+    // Prevent opening popup if issue is already assigned
+    if (this.isIssueAssigned) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Already Assigned',
+        detail: 'This issue is already assigned to a team.',
+      });
+      return;
+    }
+
     this.showTeamPopup = !this.showTeamPopup;
   
     if (this.showTeamPopup && this.fixingTeams.length === 0) {
@@ -78,6 +88,8 @@ export class SingleIssueComponent implements OnInit {
           summary: 'Assigned Successfully',
           detail: 'The issue has been assigned to the selected team.',
         });
+        // Refresh issue data to get updated assignment status
+        this.refreshIssueData(issueId);
       },
       error: (err) => {
         this.messageService.add({
@@ -88,6 +100,29 @@ export class SingleIssueComponent implements OnInit {
         console.error('Assignment failed:', err);
       }
     });
+  }
+
+  refreshIssueData(issueId: string): void {
+    this.issueService.getIssueById(issueId).subscribe({
+      next: (data) => {
+        this.issue = data;
+        this.fetchIssueUpdates(issueId);
+      },
+      error: (error) => {
+        console.error('Error refreshing issue data:', error);
+      }
+    });
+  }
+
+  // Check if the issue is already assigned to a team
+  get isIssueAssigned(): boolean {
+    const isAssigned = this.issue && this.issue.fixingStatus && this.issue.fixingStatus !== 'Unassigned';
+    console.log('Checking assignment status:', {
+      issue: !!this.issue,
+      fixingStatus: this.issue?.fixingStatus,
+      isAssigned: isAssigned
+    });
+    return isAssigned;
   }
    
   ngOnInit() {

@@ -40,7 +40,6 @@
             <p> <span class="fw-bold">Description:</span> {{ issue?.description }}</p>
             <p> <span class="fw-bold">Date:</span> {{ issue?.createdOn | date: 'fullDate' }}</p>
             <p> <span class="fw-bold">Time:</span> {{ issue?.createdOn | date: 'shortTime' }}</p>
-            <p> <span class="fw-bold">Reported By:</span> {{ issue?.createdById }}</p>
         </div>
 
         <div class="bgshadow issueCard col-lg-6 col-12">
@@ -82,7 +81,9 @@
               <p><strong>Description:</strong> {{ issueUpdates[0].description }}</p>
               <p><strong>Date:</strong> {{ issueUpdates[0].createdAt | date: 'fullDate' }} - {{ issueUpdates[0].createdAt | date: 'shortTime' }}</p>
               <div class="btnContainer d-flex align-items-center justify-content-around w-100 mb-4">
-                <button class="assignBtn" (click)="toggleTeamPopup()">Assign Issue</button>
+                <button class="assignBtn" (click)="toggleTeamPopup()" [disabled]="isIssueAssigned">
+                  {{ isIssueAssigned ? 'Already Assigned' : 'Assign Issue' }}
+                </button>
                 <button class="updateBtn" (click)="openUpdateStatusDialog()" >Update Status</button>
                 <button class="deleteBtn" (click)="openDeleteDialog()">Delete Issue</button>
                 <button [routerLink]="['/home/issue', issue.id, 'report']" class="reportBtn">Generate Report</button>
@@ -95,7 +96,9 @@
                 <i class="pi pi-info-circle" style="font-size: 2rem; color: gray;"></i>
                 <p class="mt-2 mb-0">No updates yet.</p>
                 <div class="btnContainer d-flex align-items-center justify-content-around w-100 mt-4 flex-wrap">
-                    <button class="assignBtn w-40 my-2" (click)="toggleTeamPopup()" >Assign Issue</button>
+                    <button class="assignBtn w-40 my-2" (click)="toggleTeamPopup()" [disabled]="isIssueAssigned">
+                      {{ isIssueAssigned ? 'Already Assigned' : 'Assign Issue' }}
+                    </button>
                     <button class="updateBtn w-40 my-2" (click)="openUpdateStatusDialog()" disabled>Update Status</button>
                     <button class="deleteBtn w-40" (click)="openDeleteDialog()">Delete Issue</button>
                     <button [routerLink]="['/home/issue', issue?.id, 'report']" class="reportBtn w-40">Generate Report</button>

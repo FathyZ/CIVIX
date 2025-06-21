@@ -21,6 +21,7 @@ export interface ApiResponse { // interface for the whole api response
     status: string;       // Current status (string, possibly an enum)
     category: string;     // Category of the issue
     images: string[];     // Array of image URLs or paths (string array)
+    fixingStatus?: string; // Assignment status ('Unassigned', 'Assigned', etc.)
 }
 export interface issueUpdate { 
 issueId : string; 
