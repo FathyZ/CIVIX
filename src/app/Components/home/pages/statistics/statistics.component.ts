@@ -25,6 +25,7 @@ export class StatisticsComponent implements OnInit {
   lastDayIssuesCount: number = 0;
   unassignedIssuesCount: number = 0;
   allCategories: string[] = ['Pothole', 'Broken streetlight', 'Garbage', 'Graffiti', 'Manhole', 'Unknown'];
+  mostCommonIssue: any;
 
   constructor(private statisticsService: StatisticsService, private router: Router, private issuesService: IssuesService) { }
 
@@ -36,6 +37,7 @@ export class StatisticsComponent implements OnInit {
     this.loadCategoryDistribution();
     this.getLastDayIssuesCount();
     this.getUnassignedIssuesCount();
+    this.getMostCommonIssue();
   }
 
   getStatusCounts() {
@@ -60,6 +62,20 @@ export class StatisticsComponent implements OnInit {
       error: (error) => {
         console.error('Error fetching last 24 hours count:', error);
         this.lastDayIssuesCount = 0;
+      }
+    });
+  }
+
+  getMostCommonIssue() {
+    this.statisticsService.getMostCommonIssue().subscribe((data: { name: string; count: number }[]) => {
+      if (data && data.length > 0) {
+        // Find the issue with the highest count
+        this.mostCommonIssue = data.reduce((max, current) => 
+          current.count > max.count ? current : max
+        );
+      } else {
+        // Default value when no data is available
+        this.mostCommonIssue = { name: 'No data', count: 0 };
       }
     });
   }
