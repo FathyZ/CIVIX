@@ -125,43 +125,45 @@ export class SingleIssueComponent implements OnInit {
     return isAssigned;
   }
    
-  ngOnInit() {
-    const issueId = this.route.snapshot.paramMap.get('id');
-    if (!issueId) {
-      console.error('No issue ID found in URL');
-      return;
-    }
-
-    console.log('Fetching issue with ID:', issueId);
-
-    this.issueService.getIssueById(issueId).subscribe(
-      async (data) => {
-        console.log('Issue data received:', data);
-        this.issue = data;
-        this.fetchIssueUpdates(issueId);
-        this.geocodingService.getAddressFromCoords(this.issue.latitude, this.issue.longitude).pipe(
-          tap(address => console.log(`Fetched Address: ${address}`))
-        ).subscribe(
-          (address) => {
-            this.issue.address = address; // ✅ Assign cached or new address
-          },
-          (error) => {
-            console.error('Error fetching address:', error);
-          }
-        );
-
-        // ✅ Initialize Leaflet AFTER fetching data
-        if (typeof window !== 'undefined') {
-          const leaflet = await import('leaflet');
-          this.L = leaflet;
-          this.initMap(this.issue.latitude, this.issue.longitude);
-        }
-      },
-      (error) => {
-        console.error('Error fetching issue:', error);
-      }
-    );
+ ngOnInit() {
+  const issueId = this.route.snapshot.paramMap.get('id');
+  if (!issueId) {
+    console.error('No issue ID found in URL');
+    return;
   }
+
+  console.log('Fetching issue with ID:', issueId);
+
+  this.issueService.getIssueById(issueId).subscribe(
+    async (data) => {
+      console.log('Issue data received:', data);
+      this.issue = data;
+      this.fetchIssueUpdates(issueId);
+
+      this.geocodingService.getAddressFromCoords(this.issue.latitude, this.issue.longitude).pipe(
+        tap(address => console.log(`Fetched Address: ${address}`))
+      ).subscribe(
+        (address) => {
+          this.issue.address = address;
+        },
+        (error) => {
+          console.error('Error fetching address:', error);
+        }
+      );
+
+      // ✅ Safe Leaflet import
+      if (typeof window !== 'undefined') {
+        const leaflet = await import('leaflet');
+        this.L = leaflet.default ?? leaflet;
+        this.initMap(this.issue.latitude, this.issue.longitude);
+      }
+    },
+    (error) => {
+      console.error('Error fetching issue:', error);
+    }
+  );
+}
+
 
   fetchIssueUpdates(issueId: string): void {
     this.issueService.getIssueUpdates(issueId).subscribe({
