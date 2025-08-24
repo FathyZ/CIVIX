@@ -1,6 +1,15 @@
 <div class="container-fluid">
   <div class="card-container p-0">
-    <div class="row w-100 justify-content-between bgshadow g-0">
+    <!-- Loading indicator for cards -->
+    <div *ngIf="isLoadingCards" class="row w-100 justify-content-center bgshadow g-0 p-4">
+      <div class="col-12 text-center">
+        <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #007bff;"></i>
+        <p class="mt-2 text-white">Loading statistics...</p>
+      </div>
+    </div>
+    
+    <!-- Cards content -->
+    <div *ngIf="!isLoadingCards" class="row w-100 justify-content-between bgshadow g-0">
       <div class="col-lg-3 col-md-6 col-12 p-2">
         <div class="card">
           <div class="card-heading">
@@ -43,28 +52,49 @@
       </div>
     </div>
   </div>
+  
+  <!-- Charts section -->
   <div class="row justify-content-between chartsContainer">
-    <div class="col-md-5 doughnutChartDiv" *ngIf="taskPerformanceData">
-      <h4>Task Performance</h4>
-      <p-chart type="doughnut" [data]="taskPerformanceData" [options]="DoughnutChartOptions"></p-chart>
-    </div>
-    <div class="col-md-1 d-flex justify-content-center align-items-center">
-      <div class="separator"></div>
+    <!-- Loading indicator for charts -->
+    <div *ngIf="isLoadingCharts" class="col-12 text-center p-4">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #007bff;"></i>
+      <p class="mt-2 text-white">Loading charts...</p>
     </div>
     
-    <div class="col-md-6 barChartDiv" *ngIf="priorityDistributionData">
-      <h4>Priority Distribution</h4>
-      <p>Total Issues: {{ issuesCount }}</p>
-      <p-chart type="bar" [data]="priorityDistributionData" [options]="barChartOptions"></p-chart>
-    </div>
+    <!-- Charts content -->
+    <ng-container *ngIf="!isLoadingCharts">
+      <div class="col-md-5 doughnutChartDiv" *ngIf="taskPerformanceData">
+        <h4>Task Performance</h4>
+        <p-chart type="doughnut" [data]="taskPerformanceData" [options]="DoughnutChartOptions"></p-chart>
+      </div>
+      <div class="col-md-1 d-flex justify-content-center align-items-center">
+        <div class="separator"></div>
+      </div>
+      
+      <div class="col-md-6 barChartDiv" *ngIf="priorityDistributionData">
+        <h4>Priority Distribution</h4>
+        <p>Total Issues: {{ issuesCount }}</p>
+        <p-chart type="bar" [data]="priorityDistributionData" [options]="barChartOptions"></p-chart>
+      </div>
+    </ng-container>
   </div>
 
+  <!-- Category distribution section -->
   <div class="row my-4">
     <div class="chartsContainer">
-    <div class="col-md-12">
-      <h4><span class="pi pi-chart-line trendIcon"></span> Most Reported Issues</h4>
-      <p-chart type="bar" [data]="barChartData" [options]="verticalBarOptions"></p-chart>
+      <div class="col-md-12">
+        <!-- Loading indicator for category chart -->
+        <div *ngIf="isLoadingCategory" class="text-center p-4">
+          <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #007bff;"></i>
+          <p class="mt-2">Loading issue categories...</p>
+        </div>
+        
+        <!-- Category chart content -->
+        <div *ngIf="!isLoadingCategory">
+          <h4><span class="pi pi-chart-line trendIcon"></span> Most Reported Issues</h4>
+          <p-chart type="bar" [data]="barChartData" [options]="verticalBarOptions"></p-chart>
+        </div>
+      </div>
     </div>
-  </div>
   </div>
 </div>

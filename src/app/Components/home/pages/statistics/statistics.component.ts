@@ -1,11 +1,13 @@
 import { Issue, ApiResponse } from './../../../../models/issue';
 import { StatisticsService } from './../../../../Services/statistics.service';
 import { IssuesService } from './../../../../Services/issues.service';
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
+import { forkJoin, of } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-statistics',
@@ -14,8 +16,14 @@ import { Router } from '@angular/router';
   templateUrl: './statistics.component.html',
   styleUrl: './statistics.component.scss',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StatisticsComponent implements OnInit {
+
+  // Loading states
+  isLoadingCards = true;
+  isLoadingCharts = true;
+  isLoadingCategory = true;
 
   taskPerformanceData: any;
   priorityDistributionData: any;
@@ -27,108 +35,167 @@ export class StatisticsComponent implements OnInit {
   allCategories: string[] = ['Pothole', 'Broken streetlight', 'Garbage', 'Graffiti', 'Manhole', 'Unknown'];
   mostCommonIssue: any;
 
-  constructor(private statisticsService: StatisticsService, private router: Router, private issuesService: IssuesService) { }
+  constructor(
+    private statisticsService: StatisticsService, 
+    private router: Router, 
+    private issuesService: IssuesService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
-    this.loadTaskPerformance();
-    this.loadPriorityDistribution();
-    this.getTotalIssues();
-    this.getStatusCounts();
-    this.loadCategoryDistribution();
-    this.getLastDayIssuesCount();
-    this.getUnassignedIssuesCount();
-    this.getMostCommonIssue();
+    // Load data progressively to prevent lag
+    this.loadCardData();
+    setTimeout(() => this.loadChartData(), 100);
+    setTimeout(() => this.loadCategoryDistribution(), 300);
   }
 
-  getStatusCounts() {
-    this.statisticsService.getIssuesStatusCount().subscribe((data: { name: string, count: number }[]) => {
-      const inProgress = data.find(item => item.name === 'InProgress');
-      this.inProgressCount = inProgress ? inProgress.count : 0;
-    });
-  }
-
-  getTotalIssues() {
-    this.issuesService.getTotalIssuesCount().subscribe((data) => {
-      this.issuesCount = data.totatIssues;
-    });
-  }
-
-  getLastDayIssuesCount() {
-    this.statisticsService.getLastDayIssuesCount().subscribe({
+  // Load card data first (most important)
+  loadCardData(): void {
+    this.isLoadingCards = true;
+    
+    forkJoin({
+      statusCounts: this.statisticsService.getIssuesStatusCount().pipe(
+        catchError(error => {
+          console.error('Error loading status counts:', error);
+          return of([]);
+        })
+      ),
+      totalIssues: this.issuesService.getTotalIssuesCount().pipe(
+        catchError(error => {
+          console.error('Error loading total issues:', error);
+          return of({ totatIssues: 0 });
+        })
+      ),
+      lastDayCount: this.statisticsService.getLastDayIssuesCount().pipe(
+        catchError(error => {
+          console.error('Error loading last day count:', error);
+          return of({ count: 0 });
+        })
+      ),
+      unassignedCount: this.statisticsService.getUnassignedIssuesCount().pipe(
+        catchError(error => {
+          console.error('Error loading unassigned count:', error);
+          return of(0);
+        })
+      ),
+      mostCommon: this.statisticsService.getMostCommonIssue().pipe(
+        catchError(error => {
+          console.error('Error loading most common issue:', error);
+          return of([]);
+        })
+      )
+    }).pipe(
+      finalize(() => {
+        this.isLoadingCards = false;
+        this.cdr.detectChanges();
+      })
+    ).subscribe({
       next: (data) => {
-        console.log('Last 24 hours issues count:', data);
-        this.lastDayIssuesCount = data.count || 0;
+        // Process status counts
+        const inProgress = data.statusCounts.find((item: any) => item.name === 'InProgress');
+        this.inProgressCount = inProgress ? inProgress.count : 0;
+
+        // Process total issues
+        this.issuesCount = data.totalIssues.totatIssues;
+
+        // Process last day count
+        this.lastDayIssuesCount = data.lastDayCount.count || 0;
+
+        // Process unassigned count
+        this.unassignedIssuesCount = data.unassignedCount;
+
+        // Process most common issue
+        if (data.mostCommon && data.mostCommon.length > 0) {
+          this.mostCommonIssue = data.mostCommon.reduce((max: any, current: any) => 
+            current.count > max.count ? current : max
+          );
+        } else {
+          this.mostCommonIssue = { name: 'No data', count: 0 };
+        }
+
+        this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('Error fetching last 24 hours count:', error);
-        this.lastDayIssuesCount = 0;
+        console.error('Error loading card data:', error);
+        this.setDefaultCardValues();
+        this.cdr.detectChanges();
       }
     });
   }
 
-  getMostCommonIssue() {
-    this.statisticsService.getMostCommonIssue().subscribe((data: { name: string; count: number }[]) => {
-      if (data && data.length > 0) {
-        // Find the issue with the highest count
-        this.mostCommonIssue = data.reduce((max, current) => 
-          current.count > max.count ? current : max
-        );
-      } else {
-        // Default value when no data is available
-        this.mostCommonIssue = { name: 'No data', count: 0 };
-      }
-    });
-  }
+  // Load chart data second (secondary priority)
+  loadChartData(): void {
+    this.isLoadingCharts = true;
 
-  getUnassignedIssuesCount() {
-    this.statisticsService.getUnassignedIssuesCount().subscribe({
-      next: (count) => {
-        console.log('Unassigned issues count:', count);
-        this.unassignedIssuesCount = count;
+    forkJoin({
+      taskPerformance: this.statisticsService.getTaskPerformance().pipe(
+        catchError(error => {
+          console.error('Error loading task performance:', error);
+          return of([]);
+        })
+      ),
+      priorityDistribution: this.statisticsService.getPriorityDistribution().pipe(
+        catchError(error => {
+          console.error('Error loading priority distribution:', error);
+          return of([]);
+        })
+      )
+    }).pipe(
+      finalize(() => {
+        this.isLoadingCharts = false;
+        this.cdr.detectChanges();
+      })
+    ).subscribe({
+      next: (data) => {
+        this.processTaskPerformanceData(data.taskPerformance);
+        this.processPriorityDistributionData(data.priorityDistribution);
+        this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('Error getting unassigned issues count:', error);
-        this.unassignedIssuesCount = 0;
+        console.error('Error loading chart data:', error);
+        this.cdr.detectChanges();
       }
     });
   }
 
-  loadTaskPerformance() {
-    this.statisticsService.getTaskPerformance().subscribe((data: { name: string; count: number }[]) => {
-      if (data && data.length) {
-        this.taskPerformanceData = {
-          labels: data.map((item) => item.name),
-          datasets: [
-            {
-              data: data.map((item) => item.count),
-              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-            }
-          ]
-        };
-      }
-    });
+  private setDefaultCardValues(): void {
+    this.inProgressCount = 0;
+    this.issuesCount = 0;
+    this.lastDayIssuesCount = 0;
+    this.unassignedIssuesCount = 0;
+    this.mostCommonIssue = { name: 'No data', count: 0 };
   }
 
-  loadPriorityDistribution() {
-    this.statisticsService.getPriorityDistribution().subscribe((data: { name: string; count: number }[]) => {
-      // Define all possible priorities, even with 0 values.
-      const allPriorities = ['High', 'Medium', 'Low'];
-      const priorityData = allPriorities.map(priority => {
-        const priorityItem = data.find(item => item.name === priority);
-        return priorityItem ? priorityItem.count : 0;
-      });
-
-      // Update the chart data
-      this.priorityDistributionData = {
-        labels: allPriorities,
+  private processTaskPerformanceData(data: { name: string; count: number }[]): void {
+    if (data && data.length) {
+      this.taskPerformanceData = {
+        labels: data.map((item) => item.name),
         datasets: [
           {
-            data: priorityData,
-            backgroundColor: ['#FF3B30', '#FFCC00', '#34C759'],
-          },
-        ],
+            data: data.map((item) => item.count),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+          }
+        ]
       };
+    }
+  }
+
+  private processPriorityDistributionData(data: { name: string; count: number }[]): void {
+    const allPriorities = ['High', 'Medium', 'Low'];
+    const priorityData = allPriorities.map(priority => {
+      const priorityItem = data.find(item => item.name === priority);
+      return priorityItem ? priorityItem.count : 0;
     });
+
+    this.priorityDistributionData = {
+      labels: allPriorities,
+      datasets: [
+        {
+          data: priorityData,
+          backgroundColor: ['#FF3B30', '#FFCC00', '#34C759'],
+        },
+      ],
+    };
   }
 
   DoughnutChartOptions = {
@@ -247,7 +314,18 @@ export class StatisticsComponent implements OnInit {
 
 
   loadCategoryDistribution() {
-    this.issuesService.getAllIssuesData().subscribe((response: ApiResponse) => {
+    this.isLoadingCategory = true;
+    
+    this.issuesService.getAllIssuesData().pipe(
+      catchError(error => {
+        console.error('Error loading category distribution:', error);
+        return of({ data: [] as Issue[], count: 0, pageIndex: 0, pageSize: 0, totatIssues: 0 } as ApiResponse);
+      }),
+      finalize(() => {
+        this.isLoadingCategory = false;
+        this.cdr.detectChanges();
+      })
+    ).subscribe((response: ApiResponse) => {
       const issues: Issue[] = response.data || [];
   
       // Define the full list of expected categories
@@ -285,11 +363,8 @@ export class StatisticsComponent implements OnInit {
           }
         ]
       };
+      
+      this.cdr.detectChanges();
     });
   }
-  
-
-
-
-
 }
